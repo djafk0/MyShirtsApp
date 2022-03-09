@@ -16,3 +16,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.submit-button {
+    margin-top: 15px;
+}

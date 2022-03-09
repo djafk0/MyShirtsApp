@@ -22,7 +22,7 @@
 
         private static void SeedSizes(MyShirtsAppDbContext data)
         {
-            if (!data.Sizes.Any())
+            if (data.Sizes.Any())
             {
                 return;
             }
@@ -35,7 +35,6 @@
                 new Size { Name = "L" },
                 new Size { Name = "XL" },
                 new Size { Name = "XXL" },
-                new Size { Name = "XXXL" }
             });
 
             data.SaveChanges();

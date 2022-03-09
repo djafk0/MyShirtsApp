@@ -11,6 +11,9 @@ builder.Services.AddDbContext<MyShirtsAppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<MyShirtsAppDbContext>();
 builder.Services.AddControllersWithViews();

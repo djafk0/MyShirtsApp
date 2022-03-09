@@ -1,0 +1,51 @@
+﻿@model AddShirtFormModel
+
+@{
+    ViewData["Title"] = "Add Car";
+}
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form method="post" class="needs-validation" novalidate>
+            <div>
+                <h2 class="text-center">Add Shirt</h2>
+            </div>
+            <div>
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter shirt name" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div>
+                <label asp-for="ImageUrl" class="form-label">Image Url</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Enter image url" required>
+                <div class="invalid-feedback">
+                    Please provide a valid url.
+                </div>
+            </div>
+            <div>
+                <label asp-for="SizeId" class="form-label"></label>
+                <select asp-for="SizeId" class="form-select" required>
+                    @foreach (var size in Model.Sizes)
+                    {
+                        <option value="@size.Id">@size.Name</option>
+                    }
+                </select>
+                <div class="invalid-feedback">
+                    Please select a valid size.
+                </div>
+            </div>
+            <div>
+                <label asp-for="Price" class="form-label">Price</label>
+                <input asp-for="Price" class="form-control" placeholder="Enter price" required>
+                <div class="invalid-feedback">
+                    Please provide a valid price.
+                </div>
+            </div>
+            <div class="submit-button col-12 text-center">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
