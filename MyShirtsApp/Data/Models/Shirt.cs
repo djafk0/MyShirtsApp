@@ -21,6 +21,10 @@
         public decimal Price { get; set; }
 
         [Required]
+        [MaxLength(ShirtFabricMaxLength)]
+        public string Fabric { get; set; }
+
+        [Required]
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
 

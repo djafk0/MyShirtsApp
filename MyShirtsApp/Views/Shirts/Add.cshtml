@@ -13,16 +13,19 @@
             <div>
                 <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control" placeholder="Enter shirt name" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
+                <span asp-validation-for="Name" class="small text-danger"></span>
             </div>
             <div>
                 <label asp-for="ImageUrl" class="form-label">Image Url</label>
                 <input asp-for="ImageUrl" class="form-control" placeholder="Enter image url" required>
-                <div class="invalid-feedback">
-                    Please provide a valid url.
-                </div>
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+
+            </div>
+            <div>
+                <label asp-for="Fabric" class="form-label">Fabric</label>
+                <input asp-for="Fabric" class="form-control" placeholder="Enter fabric type" required>
+                <span asp-validation-for="Fabric" class="small text-danger"></span>
+
             </div>
             <div>
                 <label asp-for="SizeId" class="form-label"></label>
@@ -32,16 +35,14 @@
                         <option value="@size.Id">@size.Name</option>
                     }
                 </select>
-                <div class="invalid-feedback">
-                    Please select a valid size.
-                </div>
+                <span asp-validation-for="SizeId" class="small text-danger"></span>
+
             </div>
             <div>
                 <label asp-for="Price" class="form-label">Price</label>
                 <input asp-for="Price" class="form-control" placeholder="Enter price" required>
-                <div class="invalid-feedback">
-                    Please provide a valid price.
-                </div>
+                <span asp-validation-for="Price" class="small text-danger"></span>
+
             </div>
             <div class="submit-button col-12 text-center">
                 <button class="btn btn-primary" type="submit">Submit</button>

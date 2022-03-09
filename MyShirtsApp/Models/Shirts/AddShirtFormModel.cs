@@ -6,7 +6,7 @@
     public class AddShirtFormModel
     {
         [Required]
-        [MaxLength(ShirtNameMaxLength)]
+        [StringLength(ShirtNameMaxLength, MinimumLength = ShirtNameMinLength)]
         public string Name { get; init; }
 
         [Display(Name = "Size")]
@@ -14,6 +14,10 @@
 
         [Range((double)ShirtMinPrice, (double)ShirtMaxPrice)]
         public decimal Price { get; init; }
+
+        [Required]
+        [StringLength(ShirtFabricMaxLength, MinimumLength = ShirtFabricMinLength)]
+        public string Fabric { get; set; }
 
         [Display(Name = "Image Url")]
         [Required]
