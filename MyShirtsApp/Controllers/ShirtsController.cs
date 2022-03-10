@@ -42,13 +42,30 @@
                 SizeId = shirt.SizeId
             };
 
-            data.Shirts.Add(shirtData);
-            data.SaveChanges();
+            this.data.Shirts.Add(shirtData);
+            this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All() => View();
+        public IActionResult All()
+        {
+            var shirts = this.data
+                .Shirts
+                .OrderByDescending(s => s.SizeId)
+                .Select(s => new ShirtListingViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Fabric = s.Fabric,
+                    ImageUrl = s.ImageUrl,
+                    Price = s.Price,
+                    Size = s.Size.Name
+                })
+                .ToList();
+
+            return View(shirts);
+        }
 
         private IEnumerable<ShirtSizeViewModel> GetShirtSizes()
             => this.data

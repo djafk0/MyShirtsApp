@@ -1,8 +1,43 @@
-﻿@{
+﻿@model List<ShirtListingViewModel>
+
+@{
     ViewData["Title"] = "My Shirts";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@if (!Model.Any())
+{
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Welcome to our shop!</h1>
+            <p class="lead">There are not available shirts, do you want to add a new one?<a asp-controller="Shirts" asp-action="Add" class="btn btn-primary" style="margin-left: 10px;">Add shirt</a></p>
+        </div>
+    </div>
+}
+
+<div id="demo" class="carousel slide offset-sm-2 col-sm-8 offset-md-2 col-md-8 offset-lg-3 col-lg-6 offset-xl-4 col-xl-4" data-bs-ride="carousel">
+
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+    </div>
+
+    <div class="carousel-inner">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var shirt = Model[i];
+            <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                <img class="d-block w-100" src="@shirt.ImageUrl" alt="@shirt.Name @shirt.Fabric">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5><a class="btn btn-dark" asp-controller="Shirts" asp-action="Details" asp-route-id="@shirt.Id">@shirt.Name - $@shirt.Price</a></h5>
+                </div>
+            </div>
+        }
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon btn-dark"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon btn-dark"></span>
+        </button>
+    </div>
 </div>

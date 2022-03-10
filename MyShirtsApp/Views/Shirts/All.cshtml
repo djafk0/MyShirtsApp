@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ShirtListingViewModel>
+
+<div class="row">
+    @foreach (var shirt in Model)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name - @shirt.Fabric @shirt.Size">
+                <div class="card-body">
+                    <h5 class="card-title text-center">@shirt.Name</h5>
+                    <p class="card-text text-center">@shirt.Name is 100% @shirt.Fabric.</p>
+                    <div class="text-center">
+                        <a asp-controller="Shirts" asp-action="AddToCart" asp-route-id="@shirt.Id" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
