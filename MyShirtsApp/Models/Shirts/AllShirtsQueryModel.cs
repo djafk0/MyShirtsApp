@@ -4,6 +4,12 @@
 
     public class AllShirtsQueryModel
     {
+        public const int ShirtsPerPage = 3;
+
+        public int CurrentPage { get; init; } = 1;
+
+        public int TotalShirts { get; set; }
+
         public string Size { get; init; }
 
         [Display(Name = "Order by")]
@@ -12,7 +18,5 @@
         public IEnumerable<string> Sizes { get; set; }
 
         public IEnumerable<ShirtListingViewModel> Shirts { get; set; }
-
-        public IEnumerable<string> Fabrics { get; init; }
     }
 }

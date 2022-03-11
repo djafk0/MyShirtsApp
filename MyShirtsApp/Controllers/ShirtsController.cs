@@ -67,7 +67,11 @@
                 ShirtSorting.PriceDesc or _ => shirtsQuery.OrderByDescending(s => s.Price)
             };
 
+            var totalShirts = shirtsQuery.Count();
+
             var shirts = shirtsQuery
+                .Skip((query.CurrentPage - 1) * AllShirtsQueryModel.ShirtsPerPage)
+                .Take(AllShirtsQueryModel.ShirtsPerPage)
                 .Select(s => new ShirtListingViewModel
                 {
                     Id = s.Id,
@@ -86,6 +90,7 @@
                 .OrderBy(s => s)
                 .ToList();
 
+            query.TotalShirts = totalShirts;
             query.Shirts = shirts;
             query.Sizes = shirtSizes;
 

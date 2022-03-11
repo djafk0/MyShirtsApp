@@ -31,6 +31,41 @@
     </div>
 </form>
 
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalShirts / AllShirtsQueryModel.ShirtsPerPage);
+}
+
+<div class="row mb-4">
+    <div class="col-6">
+        <a class="btn btn-primary offset-3 @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+        asp-controller="Shirts"
+        asp-action="All" 
+        asp-route-currentPage="@(previousPage)"
+        asp-route-size="@Model.Size"
+        asp-route-sorting="@((int)Model.Sorting)"><<</a>
+    </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+                                     !Model.Shirts.Any();
+    }
+
+    <div class="col-6">
+        <a class="btn btn-primary offset-8 @(Model.CurrentPage == maxPage || maxPage == 0 ? "disabled" : string.Empty)"
+        asp-controller="Shirts"
+        asp-action="All" 
+        asp-route-currentPage="@(Model.CurrentPage + 1)"
+        asp-route-size="@Model.Size"
+        asp-route-sorting="@((int)Model.Sorting)">>></a>
+    </div>
+</div>
+
 <div class="row">
     @foreach (var shirt in Model.Shirts)
     {
@@ -49,3 +84,4 @@
         </div>
     }
 </div>
+
