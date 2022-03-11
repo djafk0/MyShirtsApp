@@ -3,24 +3,47 @@
     using System.Collections.Generic;
     using MyShirtsApp.Data;
     using MyShirtsApp.Data.Models;
+    using MyShirtsApp.Infrastructure;
     using MyShirtsApp.Models.Shirts;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class ShirtsController : Controller
     {
         private readonly MyShirtsAppDbContext data;
 
-        public ShirtsController(MyShirtsAppDbContext data) 
+        public ShirtsController(MyShirtsAppDbContext data)
             => this.data = data;
 
-        public IActionResult Add() => View(new AddShirtFormModel
+        [Authorize]
+        public IActionResult Add()
         {
-            Sizes = this.GetShirtSizes()
-        });
+            if (!this.UserIsSeller())
+            {
+                return RedirectToAction(nameof(SellersController.Become), "Sellers");
+            }
+
+            return View(new AddShirtFormModel
+            {
+                Sizes = this.GetShirtSizes()
+            });
+        }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddShirtFormModel shirt)
         {
+            var sellerId = this.data
+                .Sellers
+                .Where(s => s.UserId == this.User.GetId())
+                .Select(s => s.Id)
+                .FirstOrDefault();
+
+            if (sellerId == 0)
+            {
+                return RedirectToAction(nameof(SellersController.Become), "Sellers");
+            }
+
             if (!this.data.Sizes.Any(s => s.Id == shirt.SizeId))
             {
                 this.ModelState.AddModelError(nameof(shirt.SizeId), "Size does not exist.");
@@ -39,7 +62,8 @@
                 ImageUrl = shirt.ImageUrl,
                 Fabric = shirt.Fabric,
                 Price = shirt.Price,
-                SizeId = shirt.SizeId
+                SizeId = shirt.SizeId,
+                SellerId = sellerId
             };
 
             this.data.Shirts.Add(shirtData);
@@ -48,7 +72,7 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All([FromQuery]AllShirtsQueryModel query)
+        public IActionResult All([FromQuery] AllShirtsQueryModel query)
         {
             var shirtsQuery = this.data
                 .Shirts
@@ -101,6 +125,11 @@
 
             return View(query);
         }
+
+        private bool UserIsSeller() 
+            => this.data
+                .Sellers
+                .Any(s => s.UserId == this.User.GetId());
 
         private IEnumerable<ShirtSizeViewModel> GetShirtSizes()
             => this.data
