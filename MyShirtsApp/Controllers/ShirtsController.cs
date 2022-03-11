@@ -48,11 +48,26 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All()
+        public IActionResult All([FromQuery]AllShirtsQueryModel query)
         {
-            var shirts = this.data
+            var shirtsQuery = this.data
                 .Shirts
-                .OrderByDescending(s => s.SizeId)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Size))
+            {
+                shirtsQuery = shirtsQuery.Where(s => s.Size.Name == query.Size);
+            }
+
+            shirtsQuery = query.Sorting switch
+            {
+                ShirtSorting.Newest => shirtsQuery.OrderByDescending(s => s.Id),
+                ShirtSorting.Oldest => shirtsQuery.OrderBy(s => s.Id),
+                ShirtSorting.PriceAsc => shirtsQuery.OrderBy(s => s.Price),
+                ShirtSorting.PriceDesc or _ => shirtsQuery.OrderByDescending(s => s.Price)
+            };
+
+            var shirts = shirtsQuery
                 .Select(s => new ShirtListingViewModel
                 {
                     Id = s.Id,
@@ -64,7 +79,17 @@
                 })
                 .ToList();
 
-            return View(shirts);
+            var shirtSizes = this.data
+                .Sizes
+                .Select(s => s.Name)
+                .Distinct()
+                .OrderBy(s => s)
+                .ToList();
+
+            query.Shirts = shirts;
+            query.Sizes = shirtSizes;
+
+            return View(query);
         }
 
         private IEnumerable<ShirtSizeViewModel> GetShirtSizes()

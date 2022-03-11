@@ -1,33 +1,32 @@
 ﻿@model AddShirtFormModel
 
 @{
-    ViewData["Title"] = "Add Car";
+    ViewData["Title"] = "Add Shirt";
 }
 
-<div class="row">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form method="post" class="needs-validation" novalidate>
-            <div>
-                <h2 class="text-center">Add Shirt</h2>
-            </div>
-            <div>
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" placeholder="Enter shirt name" required>
-                <span asp-validation-for="Name" class="small text-danger"></span>
-            </div>
-            <div>
-                <label asp-for="ImageUrl" class="form-label">Image Url</label>
-                <input asp-for="ImageUrl" class="form-control" placeholder="Enter image url" required>
-                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+<div class="offset-1 col-10 offset-sm-1 col-sm-10 offset-md-3 col-md-6">
+    <form method="post" class="needs-validation" novalidate>
+        <div>
+            <h2 class="text-center">Add Shirt</h2>
+        </div>
+        <div>
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Enter shirt name" required>
+            <span asp-validation-for="Name" class="small text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="ImageUrl" class="form-label">Image Url</label>
+            <input asp-for="ImageUrl" class="form-control" placeholder="Enter image url" required>
+            <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Fabric" class="form-label">Fabric</label>
+            <input asp-for="Fabric" class="form-control" placeholder="Enter fabric type" required>
+            <span asp-validation-for="Fabric" class="small text-danger"></span>
 
-            </div>
-            <div>
-                <label asp-for="Fabric" class="form-label">Fabric</label>
-                <input asp-for="Fabric" class="form-control" placeholder="Enter fabric type" required>
-                <span asp-validation-for="Fabric" class="small text-danger"></span>
-
-            </div>
-            <div>
+        </div>
+        <div class="row">
+            <div class="col-6">
                 <label asp-for="SizeId" class="form-label"></label>
                 <select asp-for="SizeId" class="form-select" required>
                     @foreach (var size in Model.Sizes)
@@ -36,17 +35,15 @@
                     }
                 </select>
                 <span asp-validation-for="SizeId" class="small text-danger"></span>
-
             </div>
-            <div>
+            <div class="col-6">
                 <label asp-for="Price" class="form-label">Price</label>
                 <input asp-for="Price" class="form-control" placeholder="Enter price" required>
                 <span asp-validation-for="Price" class="small text-danger"></span>
-
             </div>
-            <div class="submit-button col-12 text-center">
-                <button class="btn btn-primary" type="submit">Submit</button>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="submit-button col-12 text-center">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </form>
 </div>

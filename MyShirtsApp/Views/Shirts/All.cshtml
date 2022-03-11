@@ -1,14 +1,46 @@
-﻿@model IEnumerable<ShirtListingViewModel>
+﻿@model AllShirtsQueryModel
+
+@{
+    ViewData["Title"] = "All shirts";
+}
+
+<form method="get">
+    <div class="row">
+        <div class="offset-2 col-2 mb-3">
+            <label asp-for="Size" class="form-label"></label>
+            <select asp-for="Size" class="form-select">
+                <option value="">All</option>
+                @foreach (var size in Model.Sizes)
+                {
+                    <option value="@size">@size</option>
+                }
+            </select>
+        </div>
+        <div class="offset-2 col-2 mb-3">
+            <label asp-for="Sorting" class="form-label"></label>
+            <select asp-for="Sorting" class="form-select">
+                <option value="0">Newest</option>
+                <option value="1">Oldest</option>
+                <option value="2">Price ascending</option>
+                <option value="3">Price descending</option>
+            </select>
+        </div>
+        <div class="submit-button col-1">
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </div>
+</form>
 
 <div class="row">
-    @foreach (var shirt in Model)
+    @foreach (var shirt in Model.Shirts)
     {
         <div class="col-md-4">
-            <div class="card">
+            <div class="card mb-4">
                 <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name - @shirt.Fabric @shirt.Size">
                 <div class="card-body">
-                    <h5 class="card-title text-center">@shirt.Name</h5>
-                    <p class="card-text text-center">@shirt.Name is 100% @shirt.Fabric.</p>
+                    <h5 class="card-title text-center">@shirt.Name (@shirt.Size)</h5>
+                    <p class="card-text text-center">100% @shirt.Fabric</p>
+                    <p class="card-text text-center">Only for $@shirt.Price</p>
                     <div class="text-center">
                         <a asp-controller="Shirts" asp-action="AddToCart" asp-route-id="@shirt.Id" class="btn btn-primary">Add to cart</a>
                     </div>

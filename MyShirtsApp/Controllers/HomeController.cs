@@ -18,7 +18,6 @@
             var shirts = this.data
                .Shirts
                .OrderByDescending(s => s.SizeId)
-               .Take(3)
                .Select(s => new ShirtListingViewModel
                {
                    Id = s.Id,
