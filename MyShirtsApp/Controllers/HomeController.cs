@@ -1,10 +1,10 @@
 ﻿namespace MyShirtsApp.Controllers
 {
     using System.Diagnostics;
-    using MyShirtsApp.Models;
-    using Microsoft.AspNetCore.Mvc;
     using MyShirtsApp.Data;
+    using MyShirtsApp.Models;
     using MyShirtsApp.Models.Shirts;
+    using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : Controller
     {

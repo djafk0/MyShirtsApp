@@ -2,16 +2,26 @@
 {
     public class DataConstants
     {
-        public const int ShirtNameMaxLength = 30;
-        public const int ShirtNameMinLength = 3;
-        public const decimal ShirtMaxPrice = 999.99M;
-        public const decimal ShirtMinPrice = 0.01M;
-        public const int ShirtFabricMaxLength = 30;
-        public const int ShirtFabricMinLength = 3;
+        public class Shirt
+        {
+            public const int NameMaxLength = 30;
+            public const int NameMinLength = 3;
+            public const decimal MaxPrice = 999.99M;
+            public const decimal MinPrice = 0.01M;
+            public const int FabricMaxLength = 30;
+            public const int FabricMinLength = 3;
+            public const int ImageUrlMaxLength = 2048;
+        }
 
+        public class Size
+        {
+            public const int NameMaxLength = 3;
+        }
 
-        public const int SizeNameMaxLength = 3;
-
-        public const int ImageUrlMaxLength = 2048;
+        public class Seller
+        {
+            public const int NameMaxLength = 30;
+            public const int PhoneNumberMaxLength = 20;
+        }
     }
 }

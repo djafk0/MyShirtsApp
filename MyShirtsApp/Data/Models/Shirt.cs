@@ -3,14 +3,14 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using static Data.DataConstants;
+    using static DataConstants.Shirt;
 
     public class Shirt
     {
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(ShirtNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         public int SizeId { get; set; }
@@ -21,12 +21,16 @@
         public decimal Price { get; set; }
 
         [Required]
-        [MaxLength(ShirtFabricMaxLength)]
+        [MaxLength(FabricMaxLength)]
         public string Fabric { get; set; }
 
         [Required]
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
+
+        public int SellerId { get; init; }
+
+        public Seller Seller { get; init; }
 
         public ICollection<Cart> Carts { get; set; } = new List<Cart>();
     }

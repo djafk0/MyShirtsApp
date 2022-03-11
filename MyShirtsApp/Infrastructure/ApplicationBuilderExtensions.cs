@@ -1,8 +1,8 @@
 ﻿namespace MyShirtsApp.Infrastructure
 {
-    using Microsoft.EntityFrameworkCore;
     using MyShirtsApp.Data;
     using MyShirtsApp.Data.Models;
+    using Microsoft.EntityFrameworkCore;
 
     public static class ApplicationBuilderExtensions
     {

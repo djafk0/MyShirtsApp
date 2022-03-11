@@ -6,7 +6,7 @@
     {
         public const int ShirtsPerPage = 3;
 
-        public int CurrentPage { get; init; } = 1;
+        public int CurrentPage { get; set; } = 1;
 
         public int TotalShirts { get; set; }
 

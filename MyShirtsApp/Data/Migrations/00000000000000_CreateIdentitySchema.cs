@@ -1,8 +1,8 @@
 ﻿namespace MyShirtsApp.Data.Migrations
 {
+    using System;
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Migrations;
-    using System;
 
     public partial class CreateIdentitySchema : Migration
     {

@@ -69,6 +69,11 @@
 
             var totalShirts = shirtsQuery.Count();
 
+            if (query.CurrentPage < 1)
+            {
+                query.CurrentPage = 1;
+            }
+
             var shirts = shirtsQuery
                 .Skip((query.CurrentPage - 1) * AllShirtsQueryModel.ShirtsPerPage)
                 .Take(AllShirtsQueryModel.ShirtsPerPage)

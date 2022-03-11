@@ -2,21 +2,22 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants;
+    using static Data.DataConstants.Shirt;
+
     public class AddShirtFormModel
     {
         [Required]
-        [StringLength(ShirtNameMaxLength, MinimumLength = ShirtNameMinLength)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; init; }
 
         [Display(Name = "Size")]
         public int SizeId { get; init; }
 
-        [Range((double)ShirtMinPrice, (double)ShirtMaxPrice)]
+        [Range((double)MinPrice, (double)MaxPrice)]
         public decimal Price { get; init; }
 
         [Required]
-        [StringLength(ShirtFabricMaxLength, MinimumLength = ShirtFabricMinLength)]
+        [StringLength(FabricMaxLength, MinimumLength = FabricMinLength)]
         public string Fabric { get; set; }
 
         [Display(Name = "Image Url")]

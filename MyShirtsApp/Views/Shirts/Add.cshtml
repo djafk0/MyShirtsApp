@@ -7,25 +7,25 @@
 <div class="offset-1 col-10 offset-sm-1 col-sm-10 offset-md-3 col-md-6">
     <form method="post" class="needs-validation" novalidate>
         <div>
-            <h2 class="text-center">Add Shirt</h2>
+            <h2 class="text-center mt-4">Add Shirt</h2>
         </div>
-        <div>
+        <div class="mb-4">
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control" placeholder="Enter shirt name" required>
             <span asp-validation-for="Name" class="small text-danger"></span>
         </div>
-        <div>
+        <div class="mb-4">
             <label asp-for="ImageUrl" class="form-label">Image Url</label>
             <input asp-for="ImageUrl" class="form-control" placeholder="Enter image url" required>
             <span asp-validation-for="ImageUrl" class="small text-danger"></span>
         </div>
-        <div>
+        <div class="mb-4">
             <label asp-for="Fabric" class="form-label">Fabric</label>
             <input asp-for="Fabric" class="form-control" placeholder="Enter fabric type" required>
             <span asp-validation-for="Fabric" class="small text-danger"></span>
 
         </div>
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-6">
                 <label asp-for="SizeId" class="form-label"></label>
                 <select asp-for="SizeId" class="form-select" required>
