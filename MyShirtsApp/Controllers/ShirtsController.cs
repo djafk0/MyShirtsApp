@@ -1,12 +1,12 @@
 ﻿namespace MyShirtsApp.Controllers
 {
-    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using MyShirtsApp.Data;
     using MyShirtsApp.Data.Models;
     using MyShirtsApp.Infrastructure;
     using MyShirtsApp.Models.Shirts;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
+    using System.Collections.Generic;
 
     public class ShirtsController : Controller
     {
@@ -25,6 +25,7 @@
 
             return View(new AddShirtFormModel
             {
+
                 Sizes = this.GetShirtSizes()
             });
         }
@@ -126,7 +127,7 @@
             return View(query);
         }
 
-        private bool UserIsSeller() 
+        private bool UserIsSeller()
             => this.data
                 .Sellers
                 .Any(s => s.UserId == this.User.GetId());
