@@ -15,21 +15,7 @@
 
         public IActionResult Index()
         {
-            var shirts = this.data
-               .Shirts
-               .OrderByDescending(s => s.SizeId)
-               .Select(s => new ShirtListingViewModel
-               {
-                   Id = s.Id,
-                   Name = s.Name,
-                   Fabric = s.Fabric,
-                   ImageUrl = s.ImageUrl,
-                   Price = s.Price,
-                   Size = s.Size.Name
-               })
-               .ToList();
-
-            return View(shirts);
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

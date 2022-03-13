@@ -4,46 +4,46 @@
     ViewData["Title"] = "Add Shirt";
 }
 
-<div class="offset-1 col-10 offset-sm-1 col-sm-10 offset-md-3 col-md-6">
+<div class="offset-2 col-8 offset-sm-3 col-sm-6 offset-md-3 col-md-6">
     <form method="post" class="needs-validation" novalidate>
         <div>
             <h2 class="text-center mt-4">@ViewData["Title"]</h2>
         </div>
-        <div class="mb-4">
+        <div class="mb-4 text-center">
             <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" placeholder="Enter shirt name" required>
+            <input asp-for="Name" class="form-control ph-center" placeholder="Enter shirt name" required>
             <span asp-validation-for="Name" class="small text-danger"></span>
         </div>
-        <div class="mb-4">
+        <div class="mb-4 text-center">
             <label asp-for="ImageUrl" class="form-label">Image Url</label>
-            <input asp-for="ImageUrl" class="form-control" placeholder="Enter image url" required>
+            <input asp-for="ImageUrl" class="form-control ph-center" placeholder="Enter image url" required>
             <span asp-validation-for="ImageUrl" class="small text-danger"></span>
         </div>
-        <div class="mb-4">
+        <div class="mb-4 text-center">
             <label asp-for="Fabric" class="form-label">Fabric</label>
-            <input asp-for="Fabric" class="form-control" placeholder="Enter fabric type" required>
+            <input asp-for="Fabric" class="form-control ph-center" placeholder="Enter fabric type" required>
             <span asp-validation-for="Fabric" class="small text-danger"></span>
 
         </div>
-        <div class="row mb-4">
+        <div class="row mb-4 text-center">
             <div class="col-6">
                 <label asp-for="SizeId" class="form-label"></label>
                 <select asp-for="SizeId" class="form-select" required>
                     @foreach (var size in Model.Sizes)
                     {
-                        <option value="@size.Id">@size.Name</option>
+                        <option class="ph-center" value="@size.Id">@size.Name</option>
                     }
                 </select>
                 <span asp-validation-for="SizeId" class="small text-danger"></span>
             </div>
-            <div class="col-6">
+            <div class="col-6 text-center">
                 <label asp-for="Price" class="form-label">Price</label>
-                <input asp-for="Price" class="form-control" placeholder="Enter price" required>
+                <input asp-for="Price" class="form-control ph-center" placeholder="Enter price" value="" required>
                 <span asp-validation-for="Price" class="small text-danger"></span>
             </div>
         </div>
         <div class="submit-button col-12 text-center">
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <button class="btn bgcolor-blue text-white" type="submit">Submit</button>
         </div>
     </form>
 </div>

@@ -2,6 +2,7 @@ using MyShirtsApp.Data;
 using MyShirtsApp.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MyShirtsApp.Services.Shirts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<MyShirtsAppDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddTransient<IShirtService, ShirtService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();

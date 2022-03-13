@@ -20,3 +20,30 @@ body {
 .submit-button {
     margin-top: 15px;
 }
+
+.bgcolor-gray {
+    background-color: #D3D3D3;
+}
+
+.bgcolor-blue {
+    background-color: #234465;
+}
+
+.border-none {
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+.ph-center {
+    text-align: center;
+}
+
+.custom-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.custom-toggler.navbar-toggler {
+    border-color: rgb(255,102,203);
+} 

@@ -7,13 +7,18 @@
     using MyShirtsApp.Models.Shirts;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using MyShirtsApp.Services.Shirts;
 
     public class ShirtsController : Controller
     {
+        private readonly IShirtService shirts;
         private readonly MyShirtsAppDbContext data;
 
-        public ShirtsController(MyShirtsAppDbContext data)
-            => this.data = data;
+        public ShirtsController(IShirtService shirts, MyShirtsAppDbContext data)
+        {
+            this.shirts = shirts;
+            this.data = data;
+        }
 
         [Authorize]
         public IActionResult Add()
@@ -74,59 +79,22 @@
 
         public IActionResult All([FromQuery] AllShirtsQueryModel query)
         {
-            var shirtsQuery = this.data
-                .Shirts
-                .AsQueryable();
+            var queryResult = this.shirts.All(
+                query.Size,
+                query.Sorting,
+                query.CurrentPage,
+                AllShirtsQueryModel.ShirtsPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.Size))
-            {
-                shirtsQuery = shirtsQuery.Where(s => s.Size.Name == query.Size);
-            }
+            var shirtSizes = this.shirts.AllShirtSizes();
 
-            shirtsQuery = query.Sorting switch
-            {
-                ShirtSorting.Newest => shirtsQuery.OrderByDescending(s => s.Id),
-                ShirtSorting.Oldest => shirtsQuery.OrderBy(s => s.Id),
-                ShirtSorting.PriceAsc => shirtsQuery.OrderBy(s => s.Price),
-                ShirtSorting.PriceDesc or _ => shirtsQuery.OrderByDescending(s => s.Price)
-            };
-
-            var totalShirts = shirtsQuery.Count();
-
-            if (query.CurrentPage < 1)
-            {
-                query.CurrentPage = 1;
-            }
-
-            var shirts = shirtsQuery
-                .Skip((query.CurrentPage - 1) * AllShirtsQueryModel.ShirtsPerPage)
-                .Take(AllShirtsQueryModel.ShirtsPerPage)
-                .Select(s => new ShirtListingViewModel
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Fabric = s.Fabric,
-                    ImageUrl = s.ImageUrl,
-                    Price = s.Price,
-                    Size = s.Size.Name
-                })
-                .ToList();
-
-            var shirtSizes = this.data
-                .Sizes
-                .Select(s => s.Name)
-                .Distinct()
-                .OrderBy(s => s)
-                .ToList();
-
-            query.TotalShirts = totalShirts;
-            query.Shirts = shirts;
+            query.TotalShirts = queryResult.TotalShirts;
+            query.Shirts = queryResult.Shirts;
             query.Sizes = shirtSizes;
 
             return View(query);
         }
 
-        private bool UserIsSeller() 
+        private bool UserIsSeller()
             => this.data
                 .Sellers
                 .Any(s => s.UserId == this.User.GetId());

@@ -1,5 +1,6 @@
 ﻿namespace MyShirtsApp.Models.Shirts
 {
+    using MyShirtsApp.Services.Shirts;
     using System.ComponentModel.DataAnnotations;
 
     public class AllShirtsQueryModel
@@ -17,6 +18,6 @@
 
         public IEnumerable<string> Sizes { get; set; }
 
-        public IEnumerable<ShirtListingViewModel> Shirts { get; set; }
+        public IEnumerable<ShirtServiceModel> Shirts { get; set; }
     }
 }

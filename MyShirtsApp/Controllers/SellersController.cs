@@ -2,10 +2,10 @@
 {
     using MyShirtsApp.Data;
     using MyShirtsApp.Models.Sellers;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
     using MyShirtsApp.Infrastructure;
     using MyShirtsApp.Data.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     public class SellersController : Controller
     {
@@ -15,8 +15,21 @@
             => this.data = data;
 
         [Authorize]
-        public IActionResult Become() 
-            => View();
+        public IActionResult Become()
+        {
+            var userId = this.User.GetId();
+
+            var userIsAlreadySeller = this.data
+                .Sellers
+                .Any(s => s.UserId == userId);
+
+            if (userIsAlreadySeller)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
 
         [HttpPost]
         [Authorize]
@@ -30,7 +43,7 @@
 
             if (userIsAlreadySeller)
             {
-                return BadRequest();
+                return RedirectToAction("Index", "Home");
             }
 
             if (!ModelState.IsValid)
