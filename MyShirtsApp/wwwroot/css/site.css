@@ -29,6 +29,10 @@ body {
     background-color: #234465;
 }
 
+.color-blue {
+    color: #234465;
+}
+
 .border-none {
     border-top: 0;
     border-bottom: 0;
@@ -46,4 +50,11 @@ body {
 
 .custom-toggler.navbar-toggler {
     border-color: rgb(255,102,203);
-} 
+}
+
+.carousel-item > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

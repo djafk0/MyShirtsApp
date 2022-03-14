@@ -16,10 +16,6 @@
         [Range((double)MinPrice, (double)MaxPrice)]
         public decimal Price { get; init; }
 
-        [Required]
-        [StringLength(FabricMaxLength, MinimumLength = FabricMinLength)]
-        public string Fabric { get; set; }
-
         [Display(Name = "Image Url")]
         [Required]
         [Url]

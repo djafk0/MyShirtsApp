@@ -21,13 +21,8 @@
         }
 
         [Authorize]
-        public IActionResult Add()
-        {
-            if (!this.UserIsSeller())
-            {
-                return RedirectToAction(nameof(SellersController.Become), "Sellers");
-            }
-
+        public IActionResult Add() 
+        { 
             return View(new AddShirtFormModel
             {
                 Sizes = this.GetShirtSizes()
@@ -38,17 +33,6 @@
         [Authorize]
         public IActionResult Add(AddShirtFormModel shirt)
         {
-            var sellerId = this.data
-                .Sellers
-                .Where(s => s.UserId == this.User.GetId())
-                .Select(s => s.Id)
-                .FirstOrDefault();
-
-            if (sellerId == 0)
-            {
-                return RedirectToAction(nameof(SellersController.Become), "Sellers");
-            }
-
             if (!this.data.Sizes.Any(s => s.Id == shirt.SizeId))
             {
                 this.ModelState.AddModelError(nameof(shirt.SizeId), "Size does not exist.");
@@ -65,10 +49,8 @@
             {
                 Name = shirt.Name,
                 ImageUrl = shirt.ImageUrl,
-                Fabric = shirt.Fabric,
                 Price = shirt.Price,
                 SizeId = shirt.SizeId,
-                SellerId = sellerId
             };
 
             this.data.Shirts.Add(shirtData);
@@ -93,11 +75,6 @@
 
             return View(query);
         }
-
-        private bool UserIsSeller()
-            => this.data
-                .Sellers
-                .Any(s => s.UserId == this.User.GetId());
 
         private IEnumerable<ShirtSizeViewModel> GetShirtSizes()
             => this.data

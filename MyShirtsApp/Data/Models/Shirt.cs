@@ -21,16 +21,8 @@
         public decimal Price { get; set; }
 
         [Required]
-        [MaxLength(FabricMaxLength)]
-        public string Fabric { get; set; }
-
-        [Required]
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
-
-        public int SellerId { get; init; }
-
-        public Seller Seller { get; init; }
 
         public ICollection<Cart> Carts { get; set; } = new List<Cart>();
     }

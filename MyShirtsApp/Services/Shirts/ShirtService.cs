@@ -48,7 +48,6 @@
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    Fabric = s.Fabric,
                     ImageUrl = s.ImageUrl,
                     Price = s.Price,
                     Size = s.Size.Name
