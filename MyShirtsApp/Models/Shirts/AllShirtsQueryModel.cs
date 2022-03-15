@@ -1,7 +1,7 @@
 ﻿namespace MyShirtsApp.Models.Shirts
 {
-    using MyShirtsApp.Services.Shirts;
     using System.ComponentModel.DataAnnotations;
+    using MyShirtsApp.Services.Shirts;
 
     public class AllShirtsQueryModel
     {

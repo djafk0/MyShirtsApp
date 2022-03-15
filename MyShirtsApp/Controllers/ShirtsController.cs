@@ -3,11 +3,10 @@
     using System.Collections.Generic;
     using MyShirtsApp.Data;
     using MyShirtsApp.Data.Models;
-    using MyShirtsApp.Infrastructure;
     using MyShirtsApp.Models.Shirts;
+    using MyShirtsApp.Services.Shirts;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyShirtsApp.Services.Shirts;
 
     public class ShirtsController : Controller
     {
