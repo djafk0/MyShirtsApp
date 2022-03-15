@@ -7,13 +7,15 @@
 <form method="get">
     <div class="row mb-3">
         <div class="offset-3 col-2 text-center">
-            <label asp-for="Size" class="form-label"></label>
-            <select asp-for="Size" class="form-select">
+            <label asp-for="SizeId" class="form-label"></label>
+            <select asp-for="SizeId" class="form-select">
                 <option value="">All</option>
-                @foreach (var size in Model.Sizes)
-                {
-                    <option value="@size">@size</option>
-                }
+                    <option value="1">XS</option>
+                    <option value="2">S</option>
+                    <option value="3">M</option>
+                    <option value="4">L</option>
+                    <option value="5">XL</option>
+                    <option value="6">XXL</option>
             </select>
         </div>
         <div class="col-2 text-center">
@@ -47,7 +49,7 @@
         asp-controller="Shirts"
         asp-action="All" 
         asp-route-currentPage="@(previousPage)"
-        asp-route-size="@Model.Size"
+        asp-route-size="@Model.SizeId"
         asp-route-sorting="@((int)Model.Sorting)"><<</a>
     </div>
 
@@ -61,7 +63,7 @@
         asp-controller="Shirts"
         asp-action="All" 
         asp-route-currentPage="@(Model.CurrentPage + 1)"
-        asp-route-size="@Model.Size"
+        asp-route-size="@Model.SizeId"
         asp-route-sorting="@((int)Model.Sorting)">>></a>
     </div>
 </div>
@@ -71,10 +73,10 @@
     {
         <div class="col-md-4">
             <div class="card mb-4 bgcolor-gray border-none">
-                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name - @shirt.Fabric @shirt.Size">
+                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name - @shirt.Fabric">
                 <div class="card-body">
-                    <h5 class="card-title text-center">@shirt.Name (@shirt.Size)</h5>
-                    <p class="card-text text-center">Only for $@shirt.Price</p>
+                    <h5 class="card-title text-center">@shirt.Name</h5>
+                    <p class="card-text text-center">$@shirt.Price</p>
                     <div class="text-center">
                         <a asp-controller="Shirts" asp-action="Details" asp-route-id="@shirt.Id" class="btn bgcolor-blue text-white">Details</a>
                     </div>

@@ -10,8 +10,8 @@
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; init; }
 
-        [Display(Name = "Size")]
-        public int SizeId { get; init; }
+        //[Display(Name = "Size")]
+        //public int SizeId { get; init; }
 
         [Range((double)MinPrice, (double)MaxPrice)]
         public decimal Price { get; init; }
@@ -21,6 +21,22 @@
         [Url]
         public string ImageUrl { get; init; }
 
-        public IEnumerable<ShirtSizeViewModel> Sizes { get; set; }
+        [Display(Name = "XS")]
+        public int SizeXS { get; init; }
+
+        [Display(Name = "S")]
+        public int SizeS { get; init; }
+
+        [Display(Name = "M")]
+        public int SizeM { get; init; }
+
+        [Display(Name = "L")]
+        public int SizeL { get; init; }
+
+        [Display(Name = "XL")]
+        public int SizeXL { get; init; }
+
+        [Display(Name = "XXL")]
+        public int SizeXXL { get; init; }
     }
 }

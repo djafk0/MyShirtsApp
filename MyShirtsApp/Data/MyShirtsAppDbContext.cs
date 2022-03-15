@@ -17,8 +17,20 @@
 
         public DbSet<Cart> Carts { get; init; }
 
+        public DbSet<ShirtSize> ShirtSizes { get; init; }
+
+        public DbSet<ShirtCart> ShirtCarts { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder
+                .Entity<ShirtSize>()
+                .HasKey(x => new { x.ShirtId, x.SizeId });
+
+            builder
+                .Entity<ShirtCart>()
+                .HasKey(x => new { x.ShirtId, x.CartId });
+
             base.OnModelCreating(builder);
         }
     }

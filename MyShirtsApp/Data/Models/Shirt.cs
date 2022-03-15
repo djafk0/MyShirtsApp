@@ -13,10 +13,6 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        public int SizeId { get; set; }
-
-        public Size Size { get; set; }
-
         [Column(TypeName = "decimal(5,2)")]
         public decimal Price { get; set; }
 
@@ -24,8 +20,8 @@
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
 
+        public ICollection<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
 
-
-        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public IEnumerable<ShirtCart> Carts { get; set; } = new List<ShirtCart>();
     }
 }

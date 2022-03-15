@@ -6,11 +6,9 @@
     public interface IShirtService
     {
         ShirtsQueryServiceModel All(
-            string size,
+            int sizeId,
             ShirtSorting sorting,
             int currentPage,
             int shirtsPerPage);
-
-        IEnumerable<string> AllShirtSizes();
     }
 }

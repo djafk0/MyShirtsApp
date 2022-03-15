@@ -12,6 +12,6 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        public ICollection<Shirt> Shirts { get; init; } = new List<Shirt>();
+        public IEnumerable<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
     }
 }

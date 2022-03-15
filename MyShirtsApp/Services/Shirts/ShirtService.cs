@@ -12,7 +12,7 @@
             => this.data = data;
 
         public ShirtsQueryServiceModel All(
-            string size,
+            int sizeId,
             ShirtSorting sorting,
             int currentPage,
             int shirtsPerPage)
@@ -21,9 +21,9 @@
                    .Shirts
                    .AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(size))
+            if (sizeId != 0)
             {
-                shirtsQuery = shirtsQuery.Where(s => s.Size.Name == size);
+                shirtsQuery = shirtsQuery.Where(ss => ss.ShirtSizes.Any(s => s.SizeId == sizeId && s.Count != 0));
             }
 
             shirtsQuery = sorting switch
@@ -50,7 +50,6 @@
                     Name = s.Name,
                     ImageUrl = s.ImageUrl,
                     Price = s.Price,
-                    Size = s.Size.Name
                 })
                 .ToList();
 

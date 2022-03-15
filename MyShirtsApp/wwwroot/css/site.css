@@ -58,3 +58,7 @@ body {
     flex-direction: column;
     justify-content: center;
 }
+
+.sizes {
+    width: 52px;
+}
