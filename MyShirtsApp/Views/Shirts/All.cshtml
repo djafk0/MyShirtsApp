@@ -86,3 +86,7 @@
     }
 </div>
 
+@if (!Model.Shirts.Any())
+{
+    <h2 class="text-center">There are not available shirts with this criteria!</h2>
+}

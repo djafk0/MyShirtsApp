@@ -1,8 +1,10 @@
 ﻿namespace MyShirtsApp.Services.Shirts
 {
     using MyShirtsApp.Data;
+    using MyShirtsApp.Data.Models;
     using MyShirtsApp.Models.Shirts;
     using MyShirtsApp.Services.Shirts.Models;
+    using System.Collections.Generic;
 
     public class ShirtService : IShirtService
     {
@@ -61,6 +63,37 @@
                 Shirts = shirts,
                 TotalShirts = totalShirts
             };
+        }
+
+        public List<int?> GetSizes(AddShirtFormModel shirt)
+            => new List<int?>
+            {
+                shirt.SizeXS ?? 0,
+                shirt.SizeS ?? 0,
+                shirt.SizeM ?? 0,
+                shirt.SizeL ?? 0,
+                shirt.SizeXL ?? 0,
+                shirt.SizeXXL ?? 0
+            };
+
+        public int Create(string name, string imageUrl, decimal price, List<int?> sizes)
+        {
+            var shirtData = new Shirt
+            {
+                Name = name,
+                ImageUrl = imageUrl,
+                Price = price,
+            };
+
+            for (int i = 1; i <= 6; i++)
+            {
+                shirtData.ShirtSizes.Add(new ShirtSize { SizeId = i, Count = sizes[i - 1] });
+            }
+
+            this.data.Shirts.Add(shirtData);
+            this.data.SaveChanges();
+
+            return shirtData.Id;
         }
     }
 }

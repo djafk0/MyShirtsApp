@@ -16,8 +16,6 @@
         [Display(Name = "Order by")]
         public ShirtSorting Sorting { get; set; }
 
-        public IEnumerable<string> Sizes { get; set; }
-
         public IEnumerable<ShirtServiceModel> Shirts { get; set; }
     }
 }

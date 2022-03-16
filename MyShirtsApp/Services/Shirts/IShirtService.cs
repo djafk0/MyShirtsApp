@@ -10,5 +10,9 @@
             ShirtSorting sorting,
             int currentPage,
             int shirtsPerPage);
+
+        List<int?> GetSizes(AddShirtFormModel shirt);
+
+        int Create(string name, string imageUrl, decimal price, List<int?> sizes);
     }
 }
