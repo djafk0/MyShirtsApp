@@ -20,19 +20,44 @@
         }
 
         [Authorize]
-        public IActionResult Add() => View();
+        public IActionResult Add()
+        {
+            return View(new AddShirtFormModel
+            {
+                IsValidSize = true,
+            });
+        }
 
         [HttpPost]
         [Authorize]
         public IActionResult Add(AddShirtFormModel shirt)
         {
-            //if (!this.data.Sizes.Any(s => s.Id == shirt.SizeId))
-            //{
-            //    this.ModelState.AddModelError(nameof(shirt.SizeId), "Size does not exist.");
-            //}
+            var sizes = new List<int?>
+            {
+                shirt.SizeXS ?? 0,
+                shirt.SizeS ?? 0,
+                shirt.SizeM ?? 0,
+                shirt.SizeL ?? 0,
+                shirt.SizeXL ?? 0,
+                shirt.SizeXXL ?? 0
+            };
+
+            if (sizes.All(x => x == 0))
+            {
+                this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
+                shirt.IsValidSize = false;
+            }
+
+            foreach (var size in sizes)
+            {
+                if (size < 0 || size > 10)
+                {
+                    this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Size counts must be integer between 0 and 10");
+                }
+            }
 
             if (!ModelState.IsValid)
-            { 
+            {
                 return View(shirt);
             }
 
@@ -41,16 +66,6 @@
                 Name = shirt.Name,
                 ImageUrl = shirt.ImageUrl,
                 Price = shirt.Price,
-            };
-
-            List<int> sizes = new List<int>()
-            {
-                shirt.SizeXS,
-                shirt.SizeS,
-                shirt.SizeM,
-                shirt.SizeL,
-                shirt.SizeXL,
-                shirt.SizeXXL
             };
 
             for (int i = 1; i <= 6; i++)
@@ -72,23 +87,10 @@
                 query.CurrentPage,
                 AllShirtsQueryModel.ShirtsPerPage);
 
-            //var shirtSizes = this.shirts.AllShirtSizes();
-
             query.TotalShirts = queryResult.TotalShirts;
             query.Shirts = queryResult.Shirts;
-            //query.Sizes = shirtSizes;
 
             return View(query);
         }
-
-        //private IEnumerable<ShirtSizeViewModel> GetShirtSizes()
-        //    => this.data
-        //        .Sizes
-        //        .Select(s => new ShirtSizeViewModel
-        //        {
-        //            Id = s.Id,
-        //            Name = s.Name
-        //        })
-        //        .ToList();
     }
 }

@@ -5,22 +5,22 @@
 }
 
 <div class="offset-2 col-8 offset-sm-3 col-sm-6 offset-md-3 col-md-6">
-    <form method="post" class="needs-validation" novalidate>
+    <form method="post">
         <div>
             <h2 class="text-center mt-4">@ViewData["Title"]</h2>
         </div>
-        <div class="mb-4 text-center">
+        <div class="mb-4 text-center needs-validation" novalidate>
             <label asp-for="Name" class="form-label"></label>
             <input asp-for="Name" class="form-control ph-center" placeholder="Enter shirt name" required>
             <span asp-validation-for="Name" class="small text-danger"></span>
         </div>
-        <div class="mb-4 text-center">
+        <div class="mb-4 text-center needs-validation" novalidate>
             <label asp-for="ImageUrl" class="form-label">Image Url</label>
             <input asp-for="ImageUrl" class="form-control ph-center" placeholder="Enter image url" required>
             <span asp-validation-for="ImageUrl" class="small text-danger"></span>
         </div>
         <div class="mb-4 text-center">
-            <label>Sizes</label>
+            <label class="mb-2">Count of each size</label>
             <div class="input-group">
                 <label asp-for="SizeXS" class="input-group-text sizes">XS</label>
                 <input asp-for="SizeXS" class="form-control" placeholder="0">
@@ -39,8 +39,12 @@
                 <label asp-for="SizeXXL" class="input-group-text sizes">XXL</label>
                 <input asp-for="SizeXXL" class="form-control" placeholder="0">
             </div>
+            @if (!Model.IsValidSize)
+            {
+                <span class="small text-danger">Please fill one of size fields with integer between 0 and 10</span>
+            }
         </div>
-        <div class="mb-4 text-center">
+        <div class="mb-4 text-center needs-validation" novalidate>
             <label asp-for="Price" class="form-label">Price</label>
             <input asp-for="Price" class="form-control ph-center" placeholder="Enter price" value="" required>
             <span asp-validation-for="Price" class="small text-danger"></span>

@@ -21,9 +21,11 @@
                    .Shirts
                    .AsQueryable();
 
-            if (sizeId != 0)
+            if (sizeId >= 1 && sizeId <= 6)
             {
-                shirtsQuery = shirtsQuery.Where(ss => ss.ShirtSizes.Any(s => s.SizeId == sizeId && s.Count != 0));
+                shirtsQuery = shirtsQuery
+                    .Where(ss => ss.ShirtSizes
+                        .Any(s => s.SizeId == sizeId && (s.Count != 0)));
             }
 
             shirtsQuery = sorting switch
@@ -59,13 +61,5 @@
                 TotalShirts = totalShirts
             };
         }
-
-        public IEnumerable<string> AllShirtSizes()
-            => this.data
-                .Sizes
-                .Select(s => s.Name)
-                .Distinct()
-                .OrderBy(s => s)
-                .ToList();
     }
 }
