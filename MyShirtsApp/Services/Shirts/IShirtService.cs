@@ -6,7 +6,7 @@
     public interface IShirtService
     {
         ShirtsQueryServiceModel All(
-            int sizeId,
+            int size,
             ShirtSorting sorting,
             int currentPage,
             int shirtsPerPage);

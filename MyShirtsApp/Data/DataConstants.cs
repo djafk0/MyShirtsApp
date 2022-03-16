@@ -18,12 +18,10 @@
             public const int NameMaxLength = 3;
         }
 
-        public class Seller
+        public class ShirtSize
         {
-            public const int NameMinLength = 3;
-            public const int NameMaxLength = 30;
-            public const int PhoneNumberMaxLength = 20;
-            public const int PhoneNumberMinLength = 6;
+            public const int MinCount = 0;
+            public const int MaxCount = 10;
         }
     }
 }

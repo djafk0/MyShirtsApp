@@ -48,14 +48,6 @@
                 shirt.IsValidSize = false;
             }
 
-            foreach (var size in sizes)
-            {
-                if (size < 0 || size > 10)
-                {
-                    this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Size counts must be integer between 0 and 10");
-                }
-            }
-
             if (!ModelState.IsValid)
             {
                 return View(shirt);
@@ -82,7 +74,7 @@
         public IActionResult All([FromQuery] AllShirtsQueryModel query)
         {
             var queryResult = this.shirts.All(
-                query.SizeId,
+                query.Size,
                 query.Sorting,
                 query.CurrentPage,
                 AllShirtsQueryModel.ShirtsPerPage);

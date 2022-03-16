@@ -4,6 +4,6 @@
     {
         public int Id { get; init; }
 
-        public IEnumerable<ShirtCart> Carts { get; set; } = new List<ShirtCart>();
+        public IEnumerable<ShirtCart> ShirtCarts { get; set; } = new List<ShirtCart>();
     }
 }

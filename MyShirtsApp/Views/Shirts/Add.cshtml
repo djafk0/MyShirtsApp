@@ -41,7 +41,7 @@
             </div>
             @if (!Model.IsValidSize)
             {
-                <span class="small text-danger">Please fill one of size fields with integer between 0 and 10</span>
+                <label asp-for="IsValidSize" class="small text-danger">Numbers must be integers between 0 and 10</label>
             }
         </div>
         <div class="mb-4 text-center needs-validation" novalidate>

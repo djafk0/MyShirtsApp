@@ -11,8 +11,7 @@
 
         public int TotalShirts { get; set; }
 
-        [Display(Name = "Size")]
-        public int SizeId { get; init; }
+        public int Size { get; set; }
 
         [Display(Name = "Order by")]
         public ShirtSorting Sorting { get; set; }
