@@ -1,0 +1,22 @@
+﻿@model ShirtDetailsServiceModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="col-md-4 text-center rounded mx-auto d-block">
+    <div class="card mb-4 bgcolor-gray border-none">
+        <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Name">
+        <div class="card-body">
+            <h5 class="card-title text-center">@Model.Name</h5>
+            <p class="card-text text-center">$@Model.Price</p>
+        </div>
+    </div>
+</div>
+<row class="text-center rounded mx-auto d-block">
+        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " null" : string.Empty)">XS</a>
+        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " null" : string.Empty)">S</a>
+        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " null" : string.Empty)">M</a>
+        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " null" : string.Empty)">L</a>
+        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " null" : string.Empty)">XL</a>
+        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " null" : string.Empty)">XXL</a>
+</row>

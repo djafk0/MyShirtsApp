@@ -138,5 +138,13 @@
 
             return RedirectToAction(nameof(Mine));
         }
+
+        [Authorize]
+        public IActionResult Details(int id)
+        {
+            var shirt = this.shirts.Details(id);
+
+            return View(shirt);
+        }
     }
 }

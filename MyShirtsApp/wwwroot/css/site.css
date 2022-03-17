@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .submit-button {
@@ -61,4 +61,23 @@ body {
 
 .sizes {
     width: 52px;
+}
+
+.rounded-circle {
+    width: 60px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.null {
+    pointer-events: none;
+    background-color: #62768B;
+}
+
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    text-decoration: none;
+    color: initial;
 }
