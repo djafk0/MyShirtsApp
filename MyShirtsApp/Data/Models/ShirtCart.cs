@@ -1,5 +1,9 @@
 ﻿namespace MyShirtsApp.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using static DataConstants.Size;
+
     public class ShirtCart
     {
         public int ShirtId { get; set; }
@@ -9,5 +13,11 @@
         public int CartId { get; set; }
 
         public Cart Cart { get; set; }
+
+        [Required]
+        [MaxLength(NameMaxLength)]
+        public string Size { get; set; }
+
+        public int Count { get; set; }
     }
 }

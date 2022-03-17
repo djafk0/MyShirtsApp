@@ -1,0 +1,26 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace MyShirtsApp.Data.Migrations
+{
+    public partial class AddTotalColumn : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<decimal>(
+                name: "Total",
+                table: "Carts",
+                type: "decimal(6,2)",
+                nullable: false,
+                defaultValue: 0m);
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "Total",
+                table: "Carts");
+        }
+    }
+}

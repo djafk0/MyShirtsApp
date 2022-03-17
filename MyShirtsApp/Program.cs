@@ -5,6 +5,7 @@ using MyShirtsApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using MyShirtsApp.Services.Carts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,19 +16,10 @@ builder.Services.AddDbContext<MyShirtsAppDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddTransient<IShirtService, ShirtService>();
+builder.Services.AddTransient<ICartService, CartService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
-
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-//{
-//    options.Password.RequireNonAlphanumeric = false;
-//    options.Password.RequireDigit = false;
-//    options.Password.RequireUppercase = false;
-//    options.Password.RequireLowercase = false;
-//})
-//.AddEntityFrameworkStores<MyShirtsAppDbContext>()
-//.AddDefaultTokenProviders();
 
 builder.Services.AddDefaultIdentity<User>(options =>
 {
