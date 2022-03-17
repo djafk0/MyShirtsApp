@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class MyShirtsAppDbContext : IdentityDbContext
+    public class MyShirtsAppDbContext : IdentityDbContext<User>
     {
         public MyShirtsAppDbContext(DbContextOptions<MyShirtsAppDbContext> options)
             : base(options)
@@ -24,8 +24,8 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
-            .Entity<ShirtSize>()
-            .HasKey(x => new { x.ShirtId, x.SizeId });
+                .Entity<ShirtSize>()
+                .HasKey(x => new { x.ShirtId, x.SizeId });
 
             builder.Entity<ShirtSize>()
                 .HasOne(ss => ss.Shirt)
@@ -54,6 +54,13 @@
                .WithMany(s => s.ShirtCarts)
                .HasForeignKey(ss => ss.CartId)
                .OnDelete(DeleteBehavior.Restrict);
+
+            //builder
+            //    .Entity<Shirt>()
+            //    .HasOne<User>()
+            //    .WithOne()
+            //    .HasForeignKey<Shirt>(d => d.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

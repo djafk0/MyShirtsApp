@@ -13,9 +13,9 @@
 
         ShirtDetailsServiceModel Details(int id);
 
-        IEnumerable<ShirtServiceModel> GetShirtsByUser(string userId);
+        IEnumerable<ShirtServiceModel> ShirtsByUser(string userId);
 
-        List<int?> GetSizesFromModel(ShirtFormModel shirt);
+        List<int?> SizesFromModel(ShirtFormModel shirt);
 
         int Create(
             string name,
@@ -29,7 +29,8 @@
             string name,
             string imageUrl, 
             decimal? price, 
-            string userId, 
+            string userId,
+            bool isAdmin,
             List<int?> sizes);
     }
 }

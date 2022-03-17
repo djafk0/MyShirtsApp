@@ -24,6 +24,8 @@
         [Required]
         public string UserId { get; set; }
 
+        public User User { get; set; }
+
         public ICollection<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
 
         public IEnumerable<ShirtCart> ShirtCarts { get; set; } = new List<ShirtCart>();

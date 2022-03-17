@@ -3,25 +3,37 @@
     using MyShirtsApp.Data;
     using MyShirtsApp.Data.Models;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity;
+
+    using static WebConstants;
 
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder PrepareDatabase(
             this IApplicationBuilder app)
         {
-            using var scopedServices = app.ApplicationServices.CreateScope();
+            using var serviceScope = app.ApplicationServices.CreateScope();
 
-            var data = scopedServices.ServiceProvider.GetService<MyShirtsAppDbContext>();
+            var services = serviceScope.ServiceProvider;
 
-            data.Database.Migrate();
-
-            SeedSizes(data);
+            MigrateDatabase(services);
+            SeedSizes(services);
+            SeedAdministrator(services);
 
             return app;
         }
 
-        private static void SeedSizes(MyShirtsAppDbContext data)
+        private static void MigrateDatabase(IServiceProvider services)
         {
+            var data = services.GetRequiredService<MyShirtsAppDbContext>();
+
+            data.Database.Migrate();
+        }
+
+        private static void SeedSizes(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<MyShirtsAppDbContext>();
+
             if (data.Sizes.Any())
             {
                 return;
@@ -38,6 +50,43 @@
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedAdministrator(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task.Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                    {
+                        return;
+                    }
+
+                    var role = new IdentityRole
+                    {
+                        Name = AdministratorRoleName
+                    };
+
+                    await roleManager.CreateAsync(role);
+
+                    const string admin = "admin@msa.bg";
+                    const string adminPassword = "admin123";
+
+                    var user = new User
+                    {
+                        Email = admin,
+                        UserName = admin,
+                        FullName = "Admin"
+                    };
+
+                    await userManager.CreateAsync(user, adminPassword);
+
+                    await userManager.AddToRoleAsync(user, role.Name);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

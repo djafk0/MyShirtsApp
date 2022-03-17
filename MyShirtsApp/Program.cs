@@ -1,9 +1,10 @@
 using MyShirtsApp.Data;
 using MyShirtsApp.Infrastructure;
 using MyShirtsApp.Services.Shirts;
-using Microsoft.AspNetCore.Identity;
+using MyShirtsApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,13 +19,24 @@ builder.Services.AddTransient<IShirtService, ShirtService>();
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+//{
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.Password.RequireDigit = false;
+//    options.Password.RequireUppercase = false;
+//    options.Password.RequireLowercase = false;
+//})
+//.AddEntityFrameworkStores<MyShirtsAppDbContext>()
+//.AddDefaultTokenProviders();
+
+builder.Services.AddDefaultIdentity<User>(options =>
 {
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireDigit = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MyShirtsAppDbContext>();
 builder.Services.AddControllersWithViews(options =>
 {

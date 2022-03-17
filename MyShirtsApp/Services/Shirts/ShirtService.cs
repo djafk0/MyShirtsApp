@@ -68,21 +68,27 @@
                     ImageUrl = s.ImageUrl,
                     Price = s.Price,
                     UserId = s.UserId,
-                    SizeXS = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 1).Count,
-                    SizeS = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 2).Count,
-                    SizeM = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 3).Count,
-                    SizeL = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 4).Count,
-                    SizeXL = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 5).Count,
-                    SizeXXL = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 6).Count
+                    SizeXS = s.ShirtSizes.First(x => x.SizeId == 1).Count == 0 ? null 
+                        : s.ShirtSizes.First(x => x.SizeId == 1).Count,
+                    SizeS = s.ShirtSizes.First(x => x.SizeId == 2).Count == 0 ? null
+                        : s.ShirtSizes.First(x => x.SizeId == 2).Count,
+                    SizeM = s.ShirtSizes.First(x => x.SizeId == 3).Count == 0 ? null
+                        : s.ShirtSizes.First(x => x.SizeId == 3).Count,
+                    SizeL = s.ShirtSizes.First(x => x.SizeId == 4).Count == 0 ? null
+                        : s.ShirtSizes.First(x => x.SizeId == 4).Count,
+                    SizeXL = s.ShirtSizes.First(x => x.SizeId == 5).Count == 0 ? null
+                        : s.ShirtSizes.First(x => x.SizeId == 5).Count,
+                    SizeXXL = s.ShirtSizes.First(x => x.SizeId == 6).Count == 0 ? null 
+                        : s.ShirtSizes.First(x => x.SizeId == 6).Count
                 })
                 .FirstOrDefault();
 
-        public IEnumerable<ShirtServiceModel> GetShirtsByUser(string userId)
+        public IEnumerable<ShirtServiceModel> ShirtsByUser(string userId)
             => this.GetShirts(this.data
                 .Shirts
                 .Where(s => s.UserId == userId));
 
-        public List<int?> GetSizesFromModel(ShirtFormModel shirt)
+        public List<int?> SizesFromModel(ShirtFormModel shirt)
             => new List<int?>
             {
                 shirt.SizeXS ?? 0,
@@ -114,14 +120,14 @@
             return shirtData.Id;
         }
 
-        public bool Edit(int id, string name, string imageUrl, decimal? price, string userId, List<int?> sizes)
+        public bool Edit(int id, string name, string imageUrl, decimal? price, string userId, bool isAdmin, List<int?> sizes)
         {
             var shirtData = this.data
                 .Shirts
                 .Include(i => i.ShirtSizes)
                 .FirstOrDefault(s => s.Id == id);
 
-            if (shirtData.UserId != userId)
+            if (shirtData.UserId != userId && !isAdmin)
             {
                 return false;
             }

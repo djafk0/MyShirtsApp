@@ -1,21 +1,18 @@
 ﻿namespace MyShirtsApp.Controllers
 {
-    using MyShirtsApp.Data;
     using MyShirtsApp.Models.Shirts;
     using MyShirtsApp.Services.Shirts;
+    using MyShirtsApp.Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyShirtsApp.Infrastructure;
 
     public class ShirtsController : Controller
     {
         private readonly IShirtService shirts;
-        private readonly MyShirtsAppDbContext data;
 
-        public ShirtsController(IShirtService shirts, MyShirtsAppDbContext data)
+        public ShirtsController(IShirtService shirts)
         {
             this.shirts = shirts;
-            this.data = data;
         }
 
         [Authorize]
@@ -31,7 +28,7 @@
         [Authorize]
         public IActionResult Add(ShirtFormModel shirt)
         {
-            var sizes = this.shirts.GetSizesFromModel(shirt);
+            var sizes = this.shirts.SizesFromModel(shirt);
             var isSizesValid = false;
 
             if (sizes.All(x => x == 0))
@@ -55,7 +52,7 @@
                 shirt.Name,
                 shirt.ImageUrl,
                 shirt.Price,
-                this.User.GetId(),
+                this.User.Id(),
                 sizes);
 
             return RedirectToAction(nameof(All));
@@ -78,7 +75,7 @@
         [Authorize]
         public IActionResult Mine()
         {
-            var myShirts = this.shirts.GetShirtsByUser(this.User.GetId());
+            var myShirts = this.shirts.ShirtsByUser(this.User.Id());
 
             return View(myShirts);
         }
@@ -88,7 +85,7 @@
         {
             var shirt = this.shirts.Details(id);
 
-            if (shirt.UserId != this.User.GetId())
+            if (shirt.UserId != this.User.Id() && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -112,7 +109,7 @@
         [HttpPost]
         public IActionResult Edit(int id, ShirtFormModel shirt)
         {
-            var sizes = this.shirts.GetSizesFromModel(shirt);
+            var sizes = this.shirts.SizesFromModel(shirt);
 
             if (sizes.All(x => x == 0))
             {
@@ -130,15 +127,16 @@
                 shirt.Name,
                 shirt.ImageUrl,
                 shirt.Price,
-                this.User.GetId(),
+                this.User.Id(),
+                this.User.IsAdmin(),
                 sizes);
 
             if (!isShirtEdited)
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Mine));
         }
     }
 }
