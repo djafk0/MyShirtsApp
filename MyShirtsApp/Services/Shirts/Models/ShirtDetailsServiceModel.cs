@@ -1,6 +1,6 @@
-﻿namespace MyShirtsApp.Services.Shirts
+﻿namespace MyShirtsApp.Services.Shirts.Models
 {
-    public class ShirtServiceModel
+    public class ShirtDetailsServiceModel : SizesServiceModel
     {
         public int Id { get; init; }
 
@@ -9,5 +9,7 @@
         public string ImageUrl { get; init; }
 
         public decimal? Price { get; init; }
+
+        public string UserId { get; init; }
     }
 }

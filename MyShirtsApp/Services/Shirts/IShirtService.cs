@@ -11,8 +11,25 @@
             int currentPage,
             int shirtsPerPage);
 
-        List<int?> GetSizes(AddShirtFormModel shirt);
+        ShirtDetailsServiceModel Details(int id);
 
-        int Create(string name, string imageUrl, decimal price, List<int?> sizes);
+        IEnumerable<ShirtServiceModel> GetShirtsByUser(string userId);
+
+        List<int?> GetSizesFromModel(ShirtFormModel shirt);
+
+        int Create(
+            string name,
+            string imageUrl,
+            decimal? price, 
+            string userId,
+            List<int?> sizes);
+
+        bool Edit(
+            int id,
+            string name,
+            string imageUrl, 
+            decimal? price, 
+            string userId, 
+            List<int?> sizes);
     }
 }

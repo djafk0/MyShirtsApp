@@ -24,8 +24,8 @@
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
-                .Entity<ShirtSize>()
-                .HasKey(x => new { x.ShirtId, x.SizeId });
+            .Entity<ShirtSize>()
+            .HasKey(x => new { x.ShirtId, x.SizeId });
 
             builder.Entity<ShirtSize>()
                 .HasOne(ss => ss.Shirt)

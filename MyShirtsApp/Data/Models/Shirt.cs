@@ -13,12 +13,16 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
+        [Required]
         [Column(TypeName = "decimal(5,2)")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [Required]
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
 
         public ICollection<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
 

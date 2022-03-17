@@ -1,26 +1,11 @@
-﻿namespace MyShirtsApp.Models.Shirts
+﻿namespace MyShirtsApp.Services.Shirts.Models
 {
     using System.ComponentModel.DataAnnotations;
 
-    using static Data.DataConstants.Shirt;
     using static Data.DataConstants.ShirtSize;
 
-    public class AddShirtFormModel
+    public class SizesServiceModel
     {
-        public bool IsValidSize { get; set; }
-
-        [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
-        public string Name { get; init; }
-
-        [Range((double)MinPrice, (double)MaxPrice)]
-        public decimal Price { get; init; }
-
-        [Display(Name = "Image Url")]
-        [Required]
-        [Url]
-        public string ImageUrl { get; init; }
-
         [Range(MinCount, MaxCount)]
         [Display(Name = "XS")]
         public int? SizeXS { get; init; }

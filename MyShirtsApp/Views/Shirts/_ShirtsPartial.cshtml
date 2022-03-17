@@ -1,0 +1,24 @@
+﻿@model IEnumerable<ShirtServiceModel>
+
+<div class="row">
+    @foreach (var shirt in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4 bgcolor-gray border-none">
+                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
+                <div class="card-body">
+                    <h5 class="card-title text-center">@shirt.Name</h5>
+                    <p class="card-text text-center">$@shirt.Price</p>
+                    <div class="text-center">
+                        <a asp-controller="Shirts" asp-action="Details" asp-route-id="@shirt.Id" class="btn bgcolor-blue text-white">Details</a>
+                        @if (ViewBag.AllowShirtEdit == true)
+                        {
+                            <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@shirt.Id" class="btn btn-warning text-white">Edit</a>
+                            <a asp-controller="Shirts" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger text-white">Delete</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,5 +1,6 @@
 ﻿namespace MyShirtsApp.Services.Shirts
 {
+    using Microsoft.EntityFrameworkCore;
     using MyShirtsApp.Data;
     using MyShirtsApp.Data.Models;
     using MyShirtsApp.Models.Shirts;
@@ -45,18 +46,9 @@
                 currentPage = 1;
             }
 
-            var shirts = shirtsQuery
+            var shirts = this.GetShirts(shirtsQuery
                 .Skip((currentPage - 1) * shirtsPerPage)
-                .Take(shirtsPerPage)
-                .Select(s => new ShirtServiceModel
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    ImageUrl = s.ImageUrl,
-                    Price = s.Price,
-                    Size = size
-                })
-                .ToList();
+                .Take(shirtsPerPage));
 
             return new ShirtsQueryServiceModel
             {
@@ -65,7 +57,32 @@
             };
         }
 
-        public List<int?> GetSizes(AddShirtFormModel shirt)
+        public ShirtDetailsServiceModel Details(int id)
+            => this.data
+                .Shirts
+                .Where(s => s.Id == id)
+                .Select(s => new ShirtDetailsServiceModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    ImageUrl = s.ImageUrl,
+                    Price = s.Price,
+                    UserId = s.UserId,
+                    SizeXS = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 1).Count,
+                    SizeS = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 2).Count,
+                    SizeM = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 3).Count,
+                    SizeL = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 4).Count,
+                    SizeXL = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 5).Count,
+                    SizeXXL = s.ShirtSizes.FirstOrDefault(x => x.SizeId == 6).Count
+                })
+                .FirstOrDefault();
+
+        public IEnumerable<ShirtServiceModel> GetShirtsByUser(string userId)
+            => this.GetShirts(this.data
+                .Shirts
+                .Where(s => s.UserId == userId));
+
+        public List<int?> GetSizesFromModel(ShirtFormModel shirt)
             => new List<int?>
             {
                 shirt.SizeXS ?? 0,
@@ -76,13 +93,14 @@
                 shirt.SizeXXL ?? 0
             };
 
-        public int Create(string name, string imageUrl, decimal price, List<int?> sizes)
+        public int Create(string name, string imageUrl, decimal? price, string userId, List<int?> sizes)
         {
             var shirtData = new Shirt
             {
                 Name = name,
                 ImageUrl = imageUrl,
                 Price = price,
+                UserId = userId
             };
 
             for (int i = 1; i <= 6; i++)
@@ -95,5 +113,42 @@
 
             return shirtData.Id;
         }
+
+        public bool Edit(int id, string name, string imageUrl, decimal? price, string userId, List<int?> sizes)
+        {
+            var shirtData = this.data
+                .Shirts
+                .Include(i => i.ShirtSizes)
+                .FirstOrDefault(s => s.Id == id);
+
+            if (shirtData.UserId != userId)
+            {
+                return false;
+            }
+
+            shirtData.Name = name;
+            shirtData.ImageUrl = imageUrl;
+            shirtData.Price = price;
+
+            for (int i = 1; i <= 6; i++)
+            {
+                shirtData.ShirtSizes.FirstOrDefault(ss => ss.SizeId == i).Count = sizes[i - 1];
+            }
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        private IEnumerable<ShirtServiceModel> GetShirts(IQueryable<Shirt> shirtQuery)
+            => shirtQuery
+                .Select(s => new ShirtServiceModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    ImageUrl = s.ImageUrl,
+                    Price = s.Price,
+                })
+                .ToList();
     }
 }

@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ShirtServiceModel>
+
+@{
+    ViewData["Title"] = "My shirts";
+    ViewBag.AllowShirtEdit = true;
+}
+
+<partial name="_ShirtsPartial" model="@Model" />
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have shirts!</h2>
+}

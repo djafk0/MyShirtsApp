@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyShirtsApp.Data;
 
@@ -11,9 +12,10 @@ using MyShirtsApp.Data;
 namespace MyShirtsApp.Data.Migrations
 {
     [DbContext(typeof(MyShirtsAppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220317093749_EditMigration")]
+    partial class EditMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,7 +236,7 @@ namespace MyShirtsApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("MyShirtsApp.Data.Models.Shirt", b =>
@@ -264,7 +266,7 @@ namespace MyShirtsApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shirts", (string)null);
+                    b.ToTable("Shirts");
                 });
 
             modelBuilder.Entity("MyShirtsApp.Data.Models.ShirtCart", b =>
@@ -279,7 +281,7 @@ namespace MyShirtsApp.Data.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("ShirtCarts", (string)null);
+                    b.ToTable("ShirtCarts");
                 });
 
             modelBuilder.Entity("MyShirtsApp.Data.Models.ShirtSize", b =>
@@ -297,7 +299,7 @@ namespace MyShirtsApp.Data.Migrations
 
                     b.HasIndex("SizeId");
 
-                    b.ToTable("ShirtSizes", (string)null);
+                    b.ToTable("ShirtSizes");
                 });
 
             modelBuilder.Entity("MyShirtsApp.Data.Models.Size", b =>
@@ -315,7 +317,7 @@ namespace MyShirtsApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sizes", (string)null);
+                    b.ToTable("Sizes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
