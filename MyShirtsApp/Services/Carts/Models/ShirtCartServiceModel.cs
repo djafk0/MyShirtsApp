@@ -1,6 +1,6 @@
 ﻿namespace MyShirtsApp.Services.Carts.Models
 {
-    public class AddShirtServiceModel
+    public class ShirtCartServiceModel
     {
         public int Id { get; init; }
 

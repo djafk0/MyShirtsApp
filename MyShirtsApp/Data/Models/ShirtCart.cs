@@ -16,7 +16,7 @@
 
         [Required]
         [MaxLength(NameMaxLength)]
-        public string Size { get; set; }
+        public string SizeName { get; set; }
 
         public int Count { get; set; }
     }

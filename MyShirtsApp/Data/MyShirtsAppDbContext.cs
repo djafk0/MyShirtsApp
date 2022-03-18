@@ -41,7 +41,7 @@
 
             builder
                 .Entity<ShirtCart>()
-                .HasKey(x => new { x.ShirtId, x.CartId });
+                .HasKey(x => new { x.ShirtId, x.CartId, x.SizeName });
 
             builder.Entity<ShirtCart>()
                 .HasOne(ss => ss.Shirt)
@@ -54,13 +54,6 @@
                .WithMany(s => s.ShirtCarts)
                .HasForeignKey(ss => ss.CartId)
                .OnDelete(DeleteBehavior.Restrict);
-
-            //builder
-            //    .Entity<Shirt>()
-            //    .HasOne<User>()
-            //    .WithOne()
-            //    .HasForeignKey<Shirt>(d => d.UserId)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

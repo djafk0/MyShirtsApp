@@ -1,8 +1,9 @@
 ﻿namespace MyShirtsApp.Controllers
 {
     using MyShirtsApp.Services.Carts;
-    using Microsoft.AspNetCore.Mvc;
     using MyShirtsApp.Infrastructure;
+    using MyShirtsApp.Models.Carts;
+    using Microsoft.AspNetCore.Mvc;
 
     public class CartsController : Controller
     {
@@ -20,7 +21,23 @@
                 return BadRequest();
             }
 
-            return View();
+            return RedirectToAction(nameof(Mine));
+        }
+
+        public IActionResult Mine()
+        {
+            var cart = this.carts.MyCart(this.User.Id());
+
+            if (!cart.Any())
+            {
+                return BadRequest();
+            }
+
+            return View(new CartResultViewModel
+            {
+                Cart = cart,
+                TotalPrice = cart.Sum(c => c.Price * c.Count)
+            });
         }
     }
 }
