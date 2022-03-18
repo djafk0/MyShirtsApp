@@ -11,6 +11,11 @@
 else
 {
     <h2 class="text-center">Total Price: @Model.TotalPrice</h2>
+    <div class="text-center">
+        <a asp-controller="Carts"
+       asp-action="Clear"
+       class="btn btn-danger text-white mb-1">Clear cart</a>
+    </div>
 }
 
 <div class="row">
@@ -28,13 +33,13 @@ else
                        asp-route-shirtId="@shirt.ShirtId"
                        asp-route-sizeName="@shirt.SizeName"
                        asp-route-flag=@false
-                       class="btn btn-danger text-white mb-1">Remove One</a>
-                       <a asp-controller="Carts"
+                       class="btn btn-warning text-white mb-1">Remove One</a>
+                        <a asp-controller="Carts"
                        asp-action="DeleteShirt"
                        asp-route-shirtId="@shirt.ShirtId"
                        asp-route-sizeName="@shirt.SizeName"
                        asp-route-flag=@true
-                       class="btn btn-danger text-white mb-1">Remove All</a>
+                       class="btn btn-warning text-white mb-1">Remove All</a>
                     </div>
                 </div>
             </div>

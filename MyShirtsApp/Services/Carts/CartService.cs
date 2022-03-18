@@ -109,6 +109,22 @@
             return true;
         }
 
+        public bool ClearCart(string userId)
+        {
+            var cart = this.GetCart(userId);
+
+            var shirtCarts = cart.ShirtCarts.ToList();
+
+            for (int i = 0; i < shirtCarts.Count; i++)
+            {
+                cart.ShirtCarts.Remove(shirtCarts[i]);
+            }
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         private ShirtCart GetShirtCart(
             ShirtCartServiceModel shirt,
             Cart cart,

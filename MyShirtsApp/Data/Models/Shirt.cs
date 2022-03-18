@@ -28,6 +28,6 @@
 
         public ICollection<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
 
-        public IEnumerable<ShirtCart> ShirtCarts { get; set; } = new List<ShirtCart>();
+        public ICollection<ShirtCart> ShirtCarts { get; set; } = new List<ShirtCart>();
     }
 }

@@ -46,5 +46,12 @@
 
             return RedirectToAction(nameof(Mine));
         }
+
+        public IActionResult Clear()
+        {
+            this.carts.ClearCart(this.User.Id());
+
+            return RedirectToAction(nameof(Mine));
+        }
     }
 }

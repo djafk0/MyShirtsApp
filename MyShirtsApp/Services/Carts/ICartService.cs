@@ -14,5 +14,7 @@
            string userId,
            string sizeName,
            bool flag);
+
+        public bool ClearCart(string userId);
     }
 }
