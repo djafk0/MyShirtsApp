@@ -4,7 +4,14 @@
     ViewData["Title"] = "My Cart";
 }
 
-<h2 class="text-center">Total Price: @Model.TotalPrice</h2>
+@if (!Model.Cart.Any())
+{
+    <h2 class="text-center">Your cart is empty!</h2>
+}
+else
+{
+    <h2 class="text-center">Total Price: @Model.TotalPrice</h2>
+}
 
 <div class="row">
     @foreach (var shirt in Model.Cart)
@@ -16,7 +23,18 @@
                     <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName) - @shirt.Count @(shirt.Count == 1 ? "pc" : "pcs")</h5>
                     <h5 class="card-title text-center">@shirt.Price</h5>
                     <div class="text-center">
-                        <a asp-controller="Shirts" asp-action="Delete" asp-route-id="@shirt.ShirtId" class="btn btn-danger text-white mb-1">Delete</a>
+                        <a asp-controller="Carts"
+                       asp-action="DeleteShirt"
+                       asp-route-shirtId="@shirt.ShirtId"
+                       asp-route-sizeName="@shirt.SizeName"
+                       asp-route-flag=@false
+                       class="btn btn-danger text-white mb-1">Remove One</a>
+                       <a asp-controller="Carts"
+                       asp-action="DeleteShirt"
+                       asp-route-shirtId="@shirt.ShirtId"
+                       asp-route-sizeName="@shirt.SizeName"
+                       asp-route-flag=@true
+                       class="btn btn-danger text-white mb-1">Remove All</a>
                     </div>
                 </div>
             </div>

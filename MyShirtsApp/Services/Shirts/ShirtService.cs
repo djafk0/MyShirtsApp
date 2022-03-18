@@ -1,11 +1,11 @@
 ﻿namespace MyShirtsApp.Services.Shirts
 {
-    using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
     using MyShirtsApp.Data;
     using MyShirtsApp.Data.Models;
     using MyShirtsApp.Models.Shirts;
     using MyShirtsApp.Services.Shirts.Models;
-    using System.Collections.Generic;
+    using Microsoft.EntityFrameworkCore;
 
     public class ShirtService : IShirtService
     {

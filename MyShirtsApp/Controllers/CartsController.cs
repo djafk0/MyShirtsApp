@@ -28,16 +28,23 @@
         {
             var cart = this.carts.MyCart(this.User.Id());
 
-            if (!cart.Any())
-            {
-                return BadRequest();
-            }
-
             return View(new CartResultViewModel
             {
                 Cart = cart,
                 TotalPrice = cart.Sum(c => c.Price * c.Count)
             });
+        }
+
+        public IActionResult DeleteShirt([FromQuery] int shirtId, string sizeName, bool flag)
+        {
+            var isDeleted = this.carts.IsDeletedShirt(shirtId, this.User.Id(), sizeName, flag);
+
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(Mine));
         }
     }
 }

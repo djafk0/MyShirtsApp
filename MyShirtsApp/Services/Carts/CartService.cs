@@ -27,7 +27,7 @@
 
             var shirt = this.GetShirt(id);
 
-            if (shirt == null && !this.CheckSize(sizeName))
+            if (shirt == null && this.GetSize(sizeName) != null)
             {
                 return false;
             }
@@ -56,12 +56,14 @@
                 }
             }
 
+            //RemoveAPiece(shirt, sizeName);
+
             this.data.SaveChanges();
 
             return true;
         }
 
-        public IEnumerable<CartShirtViewModel> MyCart(string userId)
+        public ICollection<CartShirtViewModel> MyCart(string userId)
             => this.data
                 .ShirtCarts
                 .Where(c => c.Cart.UserId == userId)
@@ -76,6 +78,36 @@
                     UserId = userId
                 })
                 .ToList();
+
+        public bool IsDeletedShirt(int shirtId,
+            string userId,
+            string sizeName,
+            bool flag)
+        {
+            var cart = this.GetCart(userId);
+
+            var shirt = this.GetShirt(shirtId);
+
+            var shirtCart = GetShirtCart(shirt, cart, sizeName);
+
+            if (cart == null || shirt == null || shirtCart == null)
+            {
+                return false;
+            }
+
+            if (flag || shirtCart.Count == 1)
+            {
+                cart.ShirtCarts.Remove(shirtCart);
+            }
+            else
+            {
+                shirtCart.Count--;
+            }
+
+            this.data.SaveChanges();
+
+            return true;
+        }
 
         private ShirtCart GetShirtCart(
             ShirtCartServiceModel shirt,
@@ -104,9 +136,16 @@
                 .Include(c => c.ShirtCarts)
                 .FirstOrDefault(x => x.UserId == userId);
 
-        private bool CheckSize(string sizeName)
+        private Size GetSize(string sizeName)
             => this.data.
                 Sizes
-                .Any(s => s.Name == sizeName);
+                .FirstOrDefault(s => s.Name == sizeName);
+
+        //private void RemoveAPiece(ShirtCartServiceModel shirt, string sizeName)
+        //    => this.data
+        //        .ShirtSizes
+        //        .FirstOrDefault(ss => ss.ShirtId == shirt.Id
+        //            && ss.SizeId == this.GetSize(sizeName).Id)
+        //        .Count--;
     }
 }
