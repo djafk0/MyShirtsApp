@@ -12,7 +12,7 @@
         public CartsController(ICartService carts)
             => this.carts = carts;
 
-        public IActionResult Add(int id, [FromQuery]string size)
+        public IActionResult Add(int id, [FromQuery] string size)
         {
             var isAdded = this.carts.IsAdded(id, size, this.User.Id());
 
@@ -21,7 +21,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(Mine));
+            return RedirectToAction("All", "Shirts");
         }
 
         public IActionResult Mine()
@@ -52,6 +52,20 @@
             this.carts.ClearCart(this.User.Id());
 
             return RedirectToAction(nameof(Mine));
+        }
+
+        public IActionResult Buy()
+        {
+            var result = this.carts.BuyAll(this.User.Id());
+
+            if (result.Any())
+            {
+                return View(result);
+            }
+
+            this.carts.ClearCart(this.User.Id());
+
+            return RedirectToAction("All", "Shirts");
         }
     }
 }

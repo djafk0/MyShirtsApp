@@ -25,7 +25,7 @@
                 cart = new Cart { UserId = userId };
             }
 
-            var shirt = this.GetShirt(id);
+            var shirt = this.GetShirtAsModel(id);
 
             if (shirt == null && this.GetSize(sizeName) != null)
             {
@@ -56,8 +56,6 @@
                 }
             }
 
-            //RemoveAPiece(shirt, sizeName);
-
             this.data.SaveChanges();
 
             return true;
@@ -79,14 +77,15 @@
                 })
                 .ToList();
 
-        public bool IsDeletedShirt(int shirtId,
+        public bool IsDeletedShirt(
+            int shirtId,
             string userId,
             string sizeName,
             bool flag)
         {
             var cart = this.GetCart(userId);
 
-            var shirt = this.GetShirt(shirtId);
+            var shirt = this.GetShirtAsModel(shirtId);
 
             var shirtCart = GetShirtCart(shirt, cart, sizeName);
 
@@ -109,7 +108,7 @@
             return true;
         }
 
-        public bool ClearCart(string userId)
+        public void ClearCart(string userId)
         {
             var cart = this.GetCart(userId);
 
@@ -121,21 +120,57 @@
             }
 
             this.data.SaveChanges();
+        }
 
-            return true;
+        public ICollection<ProblemBuyServiceModel> BuyAll(string userId)
+        {
+            var result = new List<ProblemBuyServiceModel>();
+
+            var cart = this.GetCart(userId);
+
+            foreach (var shirtCart in cart.ShirtCarts)
+            {
+                var shirt = this.GetShirt(shirtCart.ShirtId);
+
+                var shirtSize = this.GetShirtSize(shirt, shirtCart.SizeName);
+
+                if (shirtSize.Count < shirtCart.Count)
+                {
+                    var problem = new ProblemBuyServiceModel
+                    {
+                        Id = shirt.Id,
+                        Name = shirt.Name,
+                        ImageUrl = shirt.ImageUrl,
+                        SizeName = shirtCart.SizeName,
+                        ShirtSizeCount = (int)shirtSize.Count,
+                        ShirtCartCount = shirtCart.Count
+                    };
+
+                    result.Add(problem);
+                }
+                else
+                {
+                    shirtSize.Count -= shirtCart.Count;
+                }
+            }
+
+            this.data.SaveChanges();
+
+            return result;
         }
 
         private ShirtCart GetShirtCart(
             ShirtCartServiceModel shirt,
             Cart cart,
             string sizeName)
-            => this.data.
-                ShirtCarts
-                .FirstOrDefault(s => s.ShirtId == shirt.Id
+            => this.data
+                .ShirtCarts
+                .FirstOrDefault(s =>
+                    s.ShirtId == shirt.Id
                     && s.CartId == cart.Id
                     && s.SizeName == sizeName);
 
-        private ShirtCartServiceModel GetShirt(int id)
+        private ShirtCartServiceModel GetShirtAsModel(int id)
             => this.data
                 .Shirts
                 .Where(s => s.Id == id)
@@ -153,15 +188,20 @@
                 .FirstOrDefault(x => x.UserId == userId);
 
         private Size GetSize(string sizeName)
-            => this.data.
-                Sizes
+            => this.data
+                .Sizes
                 .FirstOrDefault(s => s.Name == sizeName);
 
-        //private void RemoveAPiece(ShirtCartServiceModel shirt, string sizeName)
-        //    => this.data
-        //        .ShirtSizes
-        //        .FirstOrDefault(ss => ss.ShirtId == shirt.Id
-        //            && ss.SizeId == this.GetSize(sizeName).Id)
-        //        .Count--;
+        private Shirt GetShirt(int id)
+            => this.data
+                .Shirts
+                .FirstOrDefault(s => s.Id == id);
+
+        private ShirtSize GetShirtSize(Shirt shirt, string sizeName)
+            => this.data
+                .ShirtSizes
+                .FirstOrDefault(ss => 
+                ss.Shirt == shirt 
+                && ss.Size.Name == sizeName);
     }
 }

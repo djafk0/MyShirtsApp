@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ProblemBuyServiceModel>
+
+@{
+    ViewData["Title"] = "Problem";
+}
+
+<div class="row">
+    @foreach (var shirt in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4 bgcolor-gray border-none">
+                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
+                <div class="card-body">
+                    <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName)</h5>
+                    <h5 class="card-title text-center">
+                        Available @shirt.ShirtSizeCount @(shirt.ShirtSizeCount <= 1 ? "pc" : "pcs") -
+                        Your purchase @shirt.ShirtCartCount @(shirt.ShirtCartCount <= 1 ? "pc" : "pcs")
+                    </h5>
+                    <div class="text-center">
+                        <a asp-controller="Carts" asp-action="Mine" class="btn btn-warning text-dark mb-1">To Cart</a>
+                        <a asp-controller="Carts"
+                       asp-action="DeleteShirt"
+                       asp-route-shirtId="@shirt.Id"
+                       asp-route-sizeName="@shirt.SizeName"
+                       asp-route-flag=@true
+                       class="btn btn-warning text-dark mb-1">Remove</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

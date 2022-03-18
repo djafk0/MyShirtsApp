@@ -4,6 +4,15 @@
     @foreach (var shirt in Model)
     {
         <div class="col-md-4">
+            @if (!shirt.Available)
+            {
+                <h2 class="text-danger text-center">Not Available</h2>
+            }
+            else
+            {
+                <br />
+                <br />
+            }
             <div class="card mb-4 bgcolor-gray border-none">
                 <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
                 <div class="card-body">
@@ -13,7 +22,6 @@
                         <a asp-controller="Shirts" asp-action="Details" asp-route-id="@shirt.Id" class="btn bgcolor-blue text-white mb-1">Details</a>
                         @if (ViewBag.AllowShirtEdit == true || User.IsAdmin())
                         {
-                            <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@shirt.Id" class="btn btn-warning text-white mb-1">Edit</a>
                             <a asp-controller="Shirts" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger text-white mb-1">Delete</a>
                         }
                     </div>

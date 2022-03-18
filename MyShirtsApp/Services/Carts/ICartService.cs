@@ -15,6 +15,8 @@
            string sizeName,
            bool flag);
 
-        public bool ClearCart(string userId);
+        public void ClearCart(string userId);
+
+        public ICollection<ProblemBuyServiceModel> BuyAll(string userId);
     }
 }

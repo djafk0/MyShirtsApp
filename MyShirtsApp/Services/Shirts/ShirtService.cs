@@ -99,7 +99,12 @@
                 shirt.SizeXXL ?? 0
             };
 
-        public int Create(string name, string imageUrl, decimal? price, string userId, List<int?> sizes)
+        public int Create(
+            string name, 
+            string imageUrl,
+            decimal? price, 
+            string userId,
+            List<int?> sizes)
         {
             var shirtData = new Shirt
             {
@@ -111,7 +116,10 @@
 
             for (int i = 1; i <= 6; i++)
             {
-                shirtData.ShirtSizes.Add(new ShirtSize { SizeId = i, Count = sizes[i - 1] });
+                shirtData.ShirtSizes.Add(new ShirtSize
+                {
+                    SizeId = i, Count = sizes[i - 1] 
+                });
             }
 
             this.data.Shirts.Add(shirtData);
@@ -120,7 +128,14 @@
             return shirtData.Id;
         }
 
-        public bool Edit(int id, string name, string imageUrl, decimal? price, string userId, bool isAdmin, List<int?> sizes)
+        public bool Edit(
+            int id, 
+            string name,
+            string imageUrl,
+            decimal? price,
+            string userId,
+            bool isAdmin, 
+            List<int?> sizes)
         {
             var shirtData = this.data
                 .Shirts
@@ -154,6 +169,7 @@
                     Name = s.Name,
                     ImageUrl = s.ImageUrl,
                     Price = s.Price,
+                    Available = !s.ShirtSizes.All(ss => ss.Count == 0)
                 })
                 .ToList();
     }
