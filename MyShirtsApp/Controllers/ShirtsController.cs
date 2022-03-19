@@ -20,6 +20,7 @@
         {
             return View(new ShirtFormModel
             {
+                Sizes = this.shirts.GetSizesAsModel().ToList(),
                 IsValidSize = true,
             });
         }
@@ -29,12 +30,15 @@
         public IActionResult Add(ShirtFormModel shirt)
         {
             var sizes = this.shirts.SizesFromModel(shirt);
+
             var isSizesValid = false;
 
             if (sizes.All(x => x == 0))
             {
                 isSizesValid = true;
+
                 this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
+
                 shirt.IsValidSize = false;
             }
 
@@ -43,6 +47,7 @@
                 if (!isSizesValid)
                 {
                     shirt.IsValidSize = true;
+                    shirt.Sizes = this.shirts.GetSizesAsModel().ToList();
                 }
 
                 return View(shirt);
@@ -95,17 +100,14 @@
                 return Unauthorized();
             }
 
+            var sizes = shirt.Sizes.ToList();
+
             return View(new ShirtFormModel
             {
                 Name = shirt.Name,
                 ImageUrl = shirt.ImageUrl,
                 Price = shirt.Price,
-                SizeXS = shirt.SizeXS,
-                SizeS = shirt.SizeS,
-                SizeM = shirt.SizeM,
-                SizeL = shirt.SizeL,
-                SizeXL = shirt.SizeXL,
-                SizeXXL = shirt.SizeXXL,
+                Sizes = sizes,
                 IsValidSize = true
             });
         }
