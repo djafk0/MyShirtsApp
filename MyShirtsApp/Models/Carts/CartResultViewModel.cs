@@ -4,6 +4,6 @@
     {
         public decimal TotalPrice { get; set; }
 
-        public IEnumerable<CartShirtViewModel> Cart { get; set; }
+        public IEnumerable<CartShirtServiceModel> Cart { get; set; }
     }
 }

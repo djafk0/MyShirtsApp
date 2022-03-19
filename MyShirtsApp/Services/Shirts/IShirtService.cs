@@ -32,5 +32,7 @@
             string userId,
             bool isAdmin,
             List<int?> sizes);
+
+        bool Delete(int id, string userId, bool isAdmin);
     }
 }

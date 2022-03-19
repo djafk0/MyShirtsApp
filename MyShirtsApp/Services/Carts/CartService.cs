@@ -61,11 +61,11 @@
             return true;
         }
 
-        public ICollection<CartShirtViewModel> MyCart(string userId)
+        public ICollection<CartShirtServiceModel> MyCart(string userId)
             => this.data
                 .ShirtCarts
                 .Where(c => c.Cart.UserId == userId)
-                .Select(c => new CartShirtViewModel
+                .Select(c => new CartShirtServiceModel
                 {
                     ShirtId = c.ShirtId,
                     Name = c.Shirt.Name,

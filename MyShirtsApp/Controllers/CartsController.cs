@@ -45,9 +45,9 @@
             });
         }
 
-        public IActionResult DeleteShirt([FromQuery] int shirtId, string sizeName, bool flag)
+        public IActionResult DeleteShirt([FromQuery] CartQueryViewModel query)
         {
-            var isDeleted = this.carts.IsDeletedShirt(shirtId, this.User.Id(), sizeName, flag);
+            var isDeleted = this.carts.IsDeletedShirt(query.ShirtId, this.User.Id(), query.SizeName, query.Flag);
 
             if (!isDeleted)
             {

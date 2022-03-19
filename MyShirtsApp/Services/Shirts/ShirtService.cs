@@ -68,18 +68,18 @@
                     ImageUrl = s.ImageUrl,
                     Price = s.Price,
                     UserId = s.UserId,
-                    SizeXS = s.ShirtSizes.First(x => x.SizeId == 1).Count == 0 ? null 
-                        : s.ShirtSizes.First(x => x.SizeId == 1).Count,
-                    SizeS = s.ShirtSizes.First(x => x.SizeId == 2).Count == 0 ? null
-                        : s.ShirtSizes.First(x => x.SizeId == 2).Count,
-                    SizeM = s.ShirtSizes.First(x => x.SizeId == 3).Count == 0 ? null
-                        : s.ShirtSizes.First(x => x.SizeId == 3).Count,
-                    SizeL = s.ShirtSizes.First(x => x.SizeId == 4).Count == 0 ? null
-                        : s.ShirtSizes.First(x => x.SizeId == 4).Count,
-                    SizeXL = s.ShirtSizes.First(x => x.SizeId == 5).Count == 0 ? null
-                        : s.ShirtSizes.First(x => x.SizeId == 5).Count,
-                    SizeXXL = s.ShirtSizes.First(x => x.SizeId == 6).Count == 0 ? null 
-                        : s.ShirtSizes.First(x => x.SizeId == 6).Count
+                    SizeXS = s.ShirtSizes.First(x => x.SizeId == 1).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 1).Count,
+                    SizeS = s.ShirtSizes.First(x => x.SizeId == 2).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 2).Count,
+                    SizeM = s.ShirtSizes.First(x => x.SizeId == 3).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 3).Count,
+                    SizeL = s.ShirtSizes.First(x => x.SizeId == 4).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 4).Count,
+                    SizeXL = s.ShirtSizes.First(x => x.SizeId == 5).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 5).Count,
+                    SizeXXL = s.ShirtSizes.First(x => x.SizeId == 6).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 6).Count
                 })
                 .FirstOrDefault();
 
@@ -100,9 +100,9 @@
             };
 
         public int Create(
-            string name, 
+            string name,
             string imageUrl,
-            decimal? price, 
+            decimal? price,
             string userId,
             List<int?> sizes)
         {
@@ -118,7 +118,8 @@
             {
                 shirtData.ShirtSizes.Add(new ShirtSize
                 {
-                    SizeId = i, Count = sizes[i - 1] 
+                    SizeId = i,
+                    Count = sizes[i - 1]
                 });
             }
 
@@ -129,12 +130,12 @@
         }
 
         public bool Edit(
-            int id, 
+            int id,
             string name,
             string imageUrl,
             decimal? price,
             string userId,
-            bool isAdmin, 
+            bool isAdmin,
             List<int?> sizes)
         {
             var shirtData = this.data
@@ -153,8 +154,50 @@
 
             for (int i = 1; i <= 6; i++)
             {
-                shirtData.ShirtSizes.FirstOrDefault(ss => ss.SizeId == i).Count = sizes[i - 1];
+                shirtData.ShirtSizes
+                    .FirstOrDefault(ss =>
+                        ss.SizeId == i)
+                    .Count = sizes[i - 1];
             }
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool Delete(int id, string userId, bool isAdmin)
+        {
+            var shirt = this.GetShirt(id);
+
+            if (shirt == null)
+            {
+                return false;
+            }
+
+            if (shirt.UserId != userId && !isAdmin)
+            {
+                return false;
+            }
+
+            var sizes = this.GetSizes();
+
+            foreach (var size in sizes)
+            {
+                var shirtSize = this.GetShirtSize(id, size.Id);
+
+                shirt.ShirtSizes.Remove(shirtSize);
+            }
+
+            var shirtCarts = this.GetShirtCarts(id);
+
+            foreach (var shirtCart in shirtCarts)
+            {
+                shirt.ShirtCarts.Remove(shirtCart);
+            }
+
+            this.data.SaveChanges();
+
+            this.data.Shirts.Remove(shirt);
 
             this.data.SaveChanges();
 
@@ -171,6 +214,33 @@
                     Price = s.Price,
                     Available = !s.ShirtSizes.All(ss => ss.Count == 0)
                 })
+                .ToList();
+
+        private Shirt GetShirt(int id)
+            => this.data
+                .Shirts
+                .Include(s => s.ShirtSizes)
+                .Include(s => s.ShirtCarts)
+                .FirstOrDefault(s => s.Id == id);
+
+        private IEnumerable<Size> GetSizes()
+            => this.data
+                    .Sizes
+                    .ToList();
+
+        private ShirtSize GetShirtSize(int shirtId, int sizeId)
+            => this
+                .data
+                .ShirtSizes
+                .FirstOrDefault(s =>
+                    s.Shirt.Id == shirtId &&
+                    s.Size.Id == sizeId);
+
+        private IEnumerable<ShirtCart> GetShirtCarts(int id)
+            => this.data
+                .ShirtCarts
+                .Where(x =>
+                    x.ShirtId == id)
                 .ToList();
     }
 }

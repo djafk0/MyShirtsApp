@@ -150,5 +150,24 @@
 
             return View(shirt);
         }
+
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.Id();
+            var isAdmin = this.User.IsAdmin();
+
+            var isDeleted = this.shirts
+                .Delete(
+                    id,
+                    this.User.Id(),
+                    this.User.IsAdmin());
+
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(Mine));
+        }
     }
 }

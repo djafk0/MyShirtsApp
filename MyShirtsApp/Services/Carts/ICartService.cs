@@ -7,7 +7,7 @@
     {
         bool IsAdded(int id, string size, string userId);
 
-        ICollection<CartShirtViewModel> MyCart(string userId);
+        ICollection<CartShirtServiceModel> MyCart(string userId);
 
         public bool IsDeletedShirt(
            int shirtId,
