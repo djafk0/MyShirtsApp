@@ -7,13 +7,13 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-white" asp-area="" asp-controller="Carts" asp-action="Mine">
-                <img style="width: 40px;height: 30px;" src="https://gcdnb.pbrd.co/images/rZzVLgFESRry.png" />
-            </a>
-        </li>
         if (!User.IsAdmin())
         {
+            <li class="nav-item">
+                <a class="nav-link text-white" asp-area="" asp-controller="Carts" asp-action="Mine">
+                    <img style="width: 40px;height: 30px;" src="https://gcdnb.pbrd.co/images/rZzVLgFESRry.png" />
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white" asp-area="" asp-controller="Shirts" asp-action="Mine">My shirts</a>
             </li>

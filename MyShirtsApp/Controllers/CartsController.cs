@@ -14,6 +14,11 @@
 
         public IActionResult Add(int id, [FromQuery] string size)
         {
+            if (this.User.IsAdmin())
+            {
+                return RedirectToAction("All", "Shirts");
+            }
+
             var isAdded = this.carts.IsAdded(id, size, this.User.Id());
 
             if (!isAdded)
@@ -26,6 +31,11 @@
 
         public IActionResult Mine()
         {
+            if (this.User.IsAdmin())
+            {
+                return RedirectToAction("All", "Shirts");
+            }
+
             var cart = this.carts.MyCart(this.User.Id());
 
             return View(new CartResultViewModel

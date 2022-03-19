@@ -23,10 +23,10 @@
     <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " null" : string.Empty)">XL</a>
     <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " null" : string.Empty)">XXL</a>
 </row>
-@if (User.Id() == Model.UserId)
+@if (User.Id() == Model.UserId || User.IsAdmin())
 {
     <div class="text-center">
-        <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark mb-1">Edit</a>
+        <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark mb-2">Edit</a>
     </div>
 }
 <div class="text-center">

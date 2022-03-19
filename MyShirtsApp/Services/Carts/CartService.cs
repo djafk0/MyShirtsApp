@@ -124,7 +124,7 @@
 
         public ICollection<ProblemBuyServiceModel> BuyAll(string userId)
         {
-            var result = new List<ProblemBuyServiceModel>();
+            var problems = new List<ProblemBuyServiceModel>();
 
             var cart = this.GetCart(userId);
 
@@ -146,7 +146,7 @@
                         ShirtCartCount = shirtCart.Count
                     };
 
-                    result.Add(problem);
+                    problems.Add(problem);
                 }
                 else
                 {
@@ -154,9 +154,12 @@
                 }
             }
 
-            this.data.SaveChanges();
+            if (!problems.Any())
+            {
+                this.data.SaveChanges();
+            }
 
-            return result;
+            return problems;
         }
 
         private ShirtCart GetShirtCart(
@@ -200,8 +203,8 @@
         private ShirtSize GetShirtSize(Shirt shirt, string sizeName)
             => this.data
                 .ShirtSizes
-                .FirstOrDefault(ss => 
-                ss.Shirt == shirt 
+                .FirstOrDefault(ss =>
+                ss.Shirt == shirt
                 && ss.Size.Name == sizeName);
     }
 }

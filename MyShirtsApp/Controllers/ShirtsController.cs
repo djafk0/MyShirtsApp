@@ -75,6 +75,11 @@
         [Authorize]
         public IActionResult Mine()
         {
+            if (this.User.IsAdmin())
+            {
+                return RedirectToAction(nameof(All));
+            }
+
             var myShirts = this.shirts.ShirtsByUser(this.User.Id());
 
             return View(myShirts);
