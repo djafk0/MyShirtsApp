@@ -23,27 +23,18 @@
         <div class="mb-4 text-center">
             <label class="mb-2">Count of each size</label>
             <div class="input-group">
-                <label asp-for="SizeXS" class="input-group-text sizes">XS</label>
-                <input asp-for="SizeXS" class="form-control" placeholder="0">
-                <label asp-for="SizeL" class="input-group-text sizes">L</label>
-                <input asp-for="SizeL" class="form-control" placeholder="0">
-            </div>
-            <div class="input-group">
-                <label asp-for="SizeS" class="input-group-text sizes">S</label>
-                <input asp-for="SizeS" class="form-control" placeholder="0">
-                <label asp-for="SizeXL" class="input-group-text sizes">XL</label>
-                <input asp-for="SizeXL" class="form-control" placeholder="0">
-            </div>
-            <div class="input-group">
-                <label asp-for="SizeM" class="input-group-text sizes">M</label>
-                <input asp-for="SizeM" class="form-control" placeholder="0">
-                <label asp-for="SizeXXL" class="input-group-text sizes">XXL</label>
-                <input asp-for="SizeXXL" class="form-control" placeholder="0">
+                @foreach (var size in Model.Sizes)
+                {
+                    <label asp-for="@size.SizeName" class="input-group-text sizes">@size.SizeName</label>
+                    <input asp-for="@size.SizeName" class="form-control" placeholder="0">
+                }
             </div>
             @if (!Model.IsValidSize)
             {
-                <label asp-for="IsValidSize" class="small text-danger">Numbers must be integers between 0 and 10.<br />
-                    Please fill at least one field.</label>
+                <label asp-for="IsValidSize" class="small text-danger">
+                    Numbers must be integers between 0 and 10.<br />
+                    Please fill at least one field.
+                </label>
             }
         </div>
         <div class="submit-button col-12 text-center">

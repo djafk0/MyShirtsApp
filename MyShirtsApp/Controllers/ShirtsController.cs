@@ -20,6 +20,7 @@
         {
             return View(new ShirtFormModel
             {
+                Sizes = this.shirts.GetSizesAsModel().ToList(),
                 IsValidSize = true,
             });
         }
@@ -30,10 +31,21 @@
         {
             var sizes = this.shirts.SizesFromModel(shirt);
 
+<<<<<<< HEAD
             shirt.IsValidSize = true;
 
             if (sizes.All(x => x == 0))
             {
+=======
+            var isSizesValid = false;
+
+            if (sizes.All(x => x == 0))
+            {
+                isSizesValid = true;
+
+                this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
+
+>>>>>>> 5a5a3411f73db63a68a3c3d17448d4ee1ae7200b
                 shirt.IsValidSize = false;
 
                 this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
@@ -41,6 +53,15 @@
 
             if (!ModelState.IsValid)
             {
+<<<<<<< HEAD
+=======
+                if (!isSizesValid)
+                {
+                    shirt.IsValidSize = true;
+                    shirt.Sizes = this.shirts.GetSizesAsModel().ToList();
+                }
+
+>>>>>>> 5a5a3411f73db63a68a3c3d17448d4ee1ae7200b
                 return View(shirt);
             }
 
@@ -91,17 +112,14 @@
                 return Unauthorized();
             }
 
+            var sizes = shirt.Sizes.ToList();
+
             return View(new ShirtFormModel
             {
                 Name = shirt.Name,
                 ImageUrl = shirt.ImageUrl,
                 Price = shirt.Price,
-                SizeXS = shirt.SizeXS,
-                SizeS = shirt.SizeS,
-                SizeM = shirt.SizeM,
-                SizeL = shirt.SizeL,
-                SizeXL = shirt.SizeXL,
-                SizeXXL = shirt.SizeXXL,
+                Sizes = sizes,
                 IsValidSize = true
             });
         }
