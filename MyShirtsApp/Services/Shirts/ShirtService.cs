@@ -58,51 +58,30 @@
         }
 
         public ShirtDetailsServiceModel Details(int id)
-        {
-            var shirtSizes = this.data
-                .ShirtSizes
-                .Where(ss => ss.ShirtId == id)
-                .Select(ss => new
-                {
-                    Name = ss.Size.Name,
-                    Count = ss.Count
-                })
-                .ToList();
-
-            var sizes = new List<SizesServiceModel>();
-
-            if (shirtSizes != null)
-            {
-                for (int i = 0; i < 6; i++)
-                {
-                    var size = new SizesServiceModel
-                    {
-                        SizeName = shirtSizes[i].Name,
-                        Count = shirtSizes[i].Count == 0 
-                            ? null 
-                            : shirtSizes[i].Count
-                    };
-
-                    sizes.Add(size);
-                }
-            }
-
-            var model = this.data
+            => this.data
                 .Shirts
                 .Where(s => s.Id == id)
-                 .Select(s => new ShirtDetailsServiceModel
-                 {
-                     Id = s.Id,
-                     Name = s.Name,
-                     ImageUrl = s.ImageUrl,
-                     Price = s.Price,
-                     UserId = s.UserId,
-                     Sizes = sizes
-                 })
+                .Select(s => new ShirtDetailsServiceModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    ImageUrl = s.ImageUrl,
+                    Price = s.Price,
+                    UserId = s.UserId,
+                    SizeXS = s.ShirtSizes.First(x => x.SizeId == 1).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 1).Count,
+                    SizeS = s.ShirtSizes.First(x => x.SizeId == 2).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 2).Count,
+                    SizeM = s.ShirtSizes.First(x => x.SizeId == 3).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 3).Count,
+                    SizeL = s.ShirtSizes.First(x => x.SizeId == 4).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 4).Count,
+                    SizeXL = s.ShirtSizes.First(x => x.SizeId == 5).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 5).Count,
+                    SizeXXL = s.ShirtSizes.First(x => x.SizeId == 6).Count == 0
+                        ? null : s.ShirtSizes.First(x => x.SizeId == 6).Count
+                })
                 .FirstOrDefault();
-
-            return model;
-        }
 
         public IEnumerable<ShirtServiceModel> ShirtsByUser(string userId)
             => this.GetShirts(this.data
@@ -112,12 +91,12 @@
         public List<int?> SizesFromModel(ShirtFormModel shirt)
             => new List<int?>
             {
-                shirt.Sizes[0].Count ?? 0,
-                shirt.Sizes[1].Count ?? 0,
-                shirt.Sizes[2].Count ?? 0,
-                shirt.Sizes[3].Count ?? 0,
-                shirt.Sizes[4].Count ?? 0,
-                shirt.Sizes[5].Count ?? 0
+                shirt.SizeXS ?? 0,
+                shirt.SizeS ?? 0,
+                shirt.SizeM ?? 0,
+                shirt.SizeL ?? 0,
+                shirt.SizeXL ?? 0,
+                shirt.SizeXXL ?? 0
             };
 
         public int Create(
@@ -145,7 +124,6 @@
             }
 
             this.data.Shirts.Add(shirtData);
-
             this.data.SaveChanges();
 
             return shirtData.Id;
@@ -201,10 +179,12 @@
                 return false;
             }
 
-            var shirtSizes = this.GetShirtSizes(id);
+            var sizes = this.GetSizes();
 
-            foreach (var shirtSize in shirtSizes)
+            foreach (var size in sizes)
             {
+                var shirtSize = this.GetShirtSize(id, size.Id);
+
                 shirt.ShirtSizes.Remove(shirtSize);
             }
 
@@ -215,22 +195,14 @@
                 shirt.ShirtCarts.Remove(shirtCart);
             }
 
+            this.data.SaveChanges();
+
             this.data.Shirts.Remove(shirt);
 
             this.data.SaveChanges();
 
             return true;
         }
-
-        public IEnumerable<SizesServiceModel> GetSizesAsModel()
-            => this.data
-                .Sizes
-                .Select(s => new SizesServiceModel
-                {
-                    SizeId = s.Id,
-                    SizeName = s.Name
-                })
-                .ToList();
 
         private IEnumerable<ShirtServiceModel> GetShirts(IQueryable<Shirt> shirtQuery)
             => shirtQuery
@@ -240,8 +212,7 @@
                     Name = s.Name,
                     ImageUrl = s.ImageUrl,
                     Price = s.Price,
-                    Available = !s.ShirtSizes
-                        .All(ss => ss.Count == 0)
+                    Available = !s.ShirtSizes.All(ss => ss.Count == 0)
                 })
                 .ToList();
 
@@ -252,13 +223,18 @@
                 .Include(s => s.ShirtCarts)
                 .FirstOrDefault(s => s.Id == id);
 
-        private IEnumerable<ShirtSize> GetShirtSizes(int shirtId)
+        private IEnumerable<Size> GetSizes()
+            => this.data
+                    .Sizes
+                    .ToList();
+
+        private ShirtSize GetShirtSize(int shirtId, int sizeId)
             => this
                 .data
                 .ShirtSizes
-                .Where(s =>
-                    s.Shirt.Id == shirtId)
-                .ToList();
+                .FirstOrDefault(s =>
+                    s.Shirt.Id == shirtId &&
+                    s.Size.Id == sizeId);
 
         private IEnumerable<ShirtCart> GetShirtCarts(int id)
             => this.data

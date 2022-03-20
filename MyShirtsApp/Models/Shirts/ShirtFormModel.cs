@@ -1,11 +1,12 @@
 ﻿namespace MyShirtsApp.Models.Shirts
 {
-    using System.ComponentModel.DataAnnotations;
     using MyShirtsApp.Services.Shirts.Models;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Shirt;
 
-    public class ShirtFormModel
+    public class ShirtFormModel : SizesServiceModel
     {
         public bool IsValidSize { get; set; }
 
@@ -21,7 +22,5 @@
         [Required]
         [Url]
         public string ImageUrl { get; init; }
-
-        public List<SizesServiceModel> Sizes { get; set; }
     }
 }

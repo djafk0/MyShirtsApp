@@ -34,7 +34,5 @@
             List<int?> sizes);
 
         bool Delete(int id, string userId, bool isAdmin);
-
-        IEnumerable<SizesServiceModel> GetSizesAsModel();
     }
 }

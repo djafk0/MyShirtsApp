@@ -11,7 +11,5 @@
         public decimal? Price { get; init; }
 
         public string UserId { get; init; }
-
-        public IEnumerable<SizesServiceModel> Sizes { get; init; }
     }
 }
