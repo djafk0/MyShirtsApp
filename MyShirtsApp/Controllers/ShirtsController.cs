@@ -29,22 +29,18 @@
         public IActionResult Add(ShirtFormModel shirt)
         {
             var sizes = this.shirts.SizesFromModel(shirt);
-            var isSizesValid = false;
+
+            shirt.IsValidSize = true;
 
             if (sizes.All(x => x == 0))
             {
-                isSizesValid = true;
-                this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
                 shirt.IsValidSize = false;
+
+                this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
             }
 
             if (!ModelState.IsValid)
             {
-                if (!isSizesValid)
-                {
-                    shirt.IsValidSize = true;
-                }
-
                 return View(shirt);
             }
 
@@ -157,10 +153,7 @@
             var isAdmin = this.User.IsAdmin();
 
             var isDeleted = this.shirts
-                .Delete(
-                    id,
-                    this.User.Id(),
-                    this.User.IsAdmin());
+                .Delete(id, userId, isAdmin);
 
             if (!isDeleted)
             {
