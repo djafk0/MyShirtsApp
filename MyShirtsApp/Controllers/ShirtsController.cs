@@ -29,22 +29,18 @@
         public IActionResult Add(ShirtFormModel shirt)
         {
             var sizes = this.shirts.SizesFromModel(shirt);
-            var isSizesValid = false;
+
+            shirt.IsValidSize = true;
 
             if (sizes.All(x => x == 0))
             {
-                isSizesValid = true;
-                this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
                 shirt.IsValidSize = false;
+
+                this.ModelState.AddModelError(string.Empty, string.Empty);
             }
 
             if (!ModelState.IsValid)
             {
-                if (!isSizesValid)
-                {
-                    shirt.IsValidSize = true;
-                }
-
                 return View(shirt);
             }
 

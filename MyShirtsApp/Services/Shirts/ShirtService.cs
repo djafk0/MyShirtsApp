@@ -179,12 +179,10 @@
                 return false;
             }
 
-            var sizes = this.GetSizes();
+            var shirtSizes = this.GetShirtSizes(id);
 
-            foreach (var size in sizes)
+            foreach (var shirtSize in shirtSizes)
             {
-                var shirtSize = this.GetShirtSize(id, size.Id);
-
                 shirt.ShirtSizes.Remove(shirtSize);
             }
 
@@ -194,8 +192,6 @@
             {
                 shirt.ShirtCarts.Remove(shirtCart);
             }
-
-            this.data.SaveChanges();
 
             this.data.Shirts.Remove(shirt);
 
@@ -223,18 +219,13 @@
                 .Include(s => s.ShirtCarts)
                 .FirstOrDefault(s => s.Id == id);
 
-        private IEnumerable<Size> GetSizes()
-            => this.data
-                    .Sizes
-                    .ToList();
-
-        private ShirtSize GetShirtSize(int shirtId, int sizeId)
+        private IEnumerable<ShirtSize> GetShirtSizes(int shirtId)
             => this
                 .data
                 .ShirtSizes
-                .FirstOrDefault(s =>
-                    s.Shirt.Id == shirtId &&
-                    s.Size.Id == sizeId);
+                .Where(s =>
+                    s.Shirt.Id == shirtId)
+                .ToList();
 
         private IEnumerable<ShirtCart> GetShirtCarts(int id)
             => this.data
