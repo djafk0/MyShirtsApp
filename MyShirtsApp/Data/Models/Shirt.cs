@@ -26,7 +26,7 @@
 
         public User User { get; set; }
 
-        public ICollection<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
+        public List<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
 
         public ICollection<ShirtCart> ShirtCarts { get; set; } = new List<ShirtCart>();
     }

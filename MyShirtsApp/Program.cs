@@ -30,6 +30,9 @@ builder.Services.AddDefaultIdentity<User>(options =>
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MyShirtsAppDbContext>();
+
+builder.Services.AddMemoryCache();
+
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();

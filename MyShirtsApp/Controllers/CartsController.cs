@@ -47,7 +47,11 @@
 
         public IActionResult DeleteShirt([FromQuery] CartQueryViewModel query)
         {
-            var isDeleted = this.carts.IsDeletedShirt(query.ShirtId, this.User.Id(), query.SizeName, query.Flag);
+            var isDeleted = this.carts.IsDeletedShirt(
+                query.ShirtId, 
+                this.User.Id(),
+                query.SizeName,
+                query.Flag);
 
             if (!isDeleted)
             {
@@ -66,11 +70,11 @@
 
         public IActionResult Buy()
         {
-            var result = this.carts.BuyAll(this.User.Id());
+            var problems = this.carts.BuyAll(this.User.Id());
 
-            if (result.Any())
+            if (problems.Any())
             {
-                return View(result);
+                return View(problems);
             }
 
             this.carts.ClearCart(this.User.Id());

@@ -22,17 +22,24 @@
             if (cart == null)
             {
                 cartExists = false;
+
                 cart = new Cart { UserId = userId };
             }
 
-            var shirt = this.GetShirtAsModel(id);
+            var isValidShirtId = this.data
+                .Shirts
+                .Any(s => s.Id == id);
 
-            if (shirt == null && this.GetSize(sizeName) != null)
+            if (!isValidShirtId || this.Size(sizeName) == null)
             {
                 return false;
             }
 
-            var shirtCart = this.GetShirtCart(shirt, cart, sizeName);
+            var shirtCart = cart.ShirtCarts
+                .FirstOrDefault(sc =>
+                    sc.ShirtId == id &&
+                    sc.Cart == cart &&
+                    sc.SizeName == sizeName);
 
             if (shirtCart != null)
             {
@@ -42,7 +49,7 @@
             {
                 shirtCart = new ShirtCart
                 {
-                    ShirtId = shirt.Id,
+                    ShirtId = id,
                     Cart = cart,
                     Count = 1,
                     SizeName = sizeName
@@ -83,20 +90,24 @@
             string sizeName,
             bool flag)
         {
-            var cart = this.GetCart(userId);
+            var shirtCart = this.data
+                .ShirtCarts
+                .Where(sc => 
+                    sc.ShirtId == shirtId && 
+                    sc.Cart.UserId == userId &&
+                    sc.SizeName == sizeName)
+                .Include(sc => sc.Cart)
+                .Include(sc => sc.Shirt)
+                .FirstOrDefault();
 
-            var shirt = this.GetShirtAsModel(shirtId);
-
-            var shirtCart = GetShirtCart(shirt, cart, sizeName);
-
-            if (cart == null || shirt == null || shirtCart == null)
+            if (shirtCart == null)
             {
                 return false;
             }
 
             if (flag || shirtCart.Count == 1)
             {
-                cart.ShirtCarts.Remove(shirtCart);
+                this.data.ShirtCarts.Remove(shirtCart);
             }
             else
             {
@@ -112,6 +123,11 @@
         {
             var cart = this.GetCart(userId);
 
+            if (cart == null)
+            {
+                return;
+            }
+
             var shirtCarts = cart.ShirtCarts.ToList();
 
             for (int i = 0; i < shirtCarts.Count; i++)
@@ -126,13 +142,30 @@
         {
             var problems = new List<ProblemBuyServiceModel>();
 
-            var cart = this.GetCart(userId);
+            var cart = this.data
+                .Carts
+                .Where(c => c.UserId == userId)
+                .Include(c => c.ShirtCarts)
+                .ThenInclude(sc => sc.Shirt)
+                .ThenInclude(s => s.ShirtSizes)
+                .ThenInclude(ss => ss.Size)
+                .FirstOrDefault();
+
+            if (cart == null)
+            {
+                return problems;
+            }
 
             foreach (var shirtCart in cart.ShirtCarts)
             {
-                var shirt = this.GetShirt(shirtCart.ShirtId);
+                var shirt = shirtCart.Shirt;
 
-                var shirtSize = this.GetShirtSize(shirt, shirtCart.SizeName);
+                var sizeName = shirtCart.SizeName;
+
+                var shirtSize = shirt.ShirtSizes
+                    .FirstOrDefault(sc => 
+                        sc.Shirt == shirt &&
+                        sc.Size.Name == sizeName);
 
                 if (shirtSize.Count < shirtCart.Count)
                 {
@@ -162,49 +195,16 @@
             return problems;
         }
 
-        private ShirtCart GetShirtCart(
-            ShirtCartServiceModel shirt,
-            Cart cart,
-            string sizeName)
-            => this.data
-                .ShirtCarts
-                .FirstOrDefault(s =>
-                    s.ShirtId == shirt.Id
-                    && s.CartId == cart.Id
-                    && s.SizeName == sizeName);
-
-        private ShirtCartServiceModel GetShirtAsModel(int id)
-            => this.data
-                .Shirts
-                .Where(s => s.Id == id)
-                .Select(s => new ShirtCartServiceModel
-                {
-                    Id = s.Id,
-                    Price = (decimal)s.Price
-                })
-                .FirstOrDefault();
-
         private Cart GetCart(string userId)
             => this.data
                 .Carts
+                .Where(c => c.UserId == userId)
                 .Include(c => c.ShirtCarts)
-                .FirstOrDefault(x => x.UserId == userId);
+                .FirstOrDefault();
 
-        private Size GetSize(string sizeName)
+        private Size Size(string sizeName)
             => this.data
                 .Sizes
                 .FirstOrDefault(s => s.Name == sizeName);
-
-        private Shirt GetShirt(int id)
-            => this.data
-                .Shirts
-                .FirstOrDefault(s => s.Id == id);
-
-        private ShirtSize GetShirtSize(Shirt shirt, string sizeName)
-            => this.data
-                .ShirtSizes
-                .FirstOrDefault(ss =>
-                ss.Shirt == shirt
-                && ss.Size.Name == sizeName);
     }
 }

@@ -10,10 +10,8 @@
     {
         private readonly IShirtService shirts;
 
-        public ShirtsController(IShirtService shirts)
-        {
-            this.shirts = shirts;
-        }
+        public ShirtsController(IShirtService shirts) 
+            => this.shirts = shirts;
 
         [Authorize]
         public IActionResult Add()
@@ -34,9 +32,9 @@
 
             if (sizes.All(x => x == 0))
             {
-                shirt.IsValidSize = false;
-
                 this.ModelState.AddModelError(string.Empty, string.Empty);
+
+                shirt.IsValidSize = false;
             }
 
             if (!ModelState.IsValid)
@@ -114,7 +112,8 @@
 
             if (sizes.All(x => x == 0))
             {
-                this.ModelState.AddModelError(nameof(shirt.IsValidSize), "Please fill at least one field");
+                this.ModelState.AddModelError(string.Empty, string.Empty);
+
                 shirt.IsValidSize = false;
             }
 
@@ -144,14 +143,16 @@
         {
             var shirt = this.shirts.Details(id);
 
+            if (shirt == null)
+            {
+                return BadRequest();
+            }
+
             return View(shirt);
         }
 
         public IActionResult Delete(int id)
         {
-            var userId = this.User.Id();
-            var isAdmin = this.User.IsAdmin();
-
             var isDeleted = this.shirts
                 .Delete(
                     id,

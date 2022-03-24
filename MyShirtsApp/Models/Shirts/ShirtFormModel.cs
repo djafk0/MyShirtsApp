@@ -1,8 +1,7 @@
 ﻿namespace MyShirtsApp.Models.Shirts
 {
-    using MyShirtsApp.Services.Shirts.Models;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using MyShirtsApp.Services.Shirts.Models;
 
     using static Data.DataConstants.Shirt;
 
