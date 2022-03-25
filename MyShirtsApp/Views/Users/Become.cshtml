@@ -1,0 +1,16 @@
+﻿@model BecomeSellerFormModel
+
+@{
+    ViewData["Title"] = "Become Seller";
+}
+
+<form method="post">
+    <div class="offset-1 col-10 offset-sm-2 col-sm-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4 mb-4 text-center needs-validation" novalidate>
+        <label asp-for="CompanyName" class="form-label"></label>
+        <input asp-for="CompanyName" class="form-control ph-center" placeholder="Cool name" required>
+        <span asp-validation-for="CompanyName" class="small text-danger"></span>
+        <div class="submit-button col-12 text-center">
+            <button class="btn bgcolor-blue text-white" type="submit">Submit</button>
+        </div>
+    </div>
+</form>

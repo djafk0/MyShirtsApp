@@ -4,7 +4,9 @@
     using MyShirtsApp.Infrastructure;
     using MyShirtsApp.Models.Carts;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
 
+    [Authorize]
     public class CartsController : Controller
     {
         private readonly ICartService carts;
@@ -48,7 +50,7 @@
         public IActionResult DeleteShirt([FromQuery] CartQueryViewModel query)
         {
             var isDeleted = this.carts.IsDeletedShirt(
-                query.ShirtId, 
+                query.ShirtId,
                 this.User.Id(),
                 query.SizeName,
                 query.Flag);

@@ -2,7 +2,19 @@
 
 @{
     ViewData["Title"] = "Details";
+
+    var userId = string.Empty;
+
+    var isAdmin = false;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        userId = User.Id();
+
+        isAdmin = User.IsAdmin();
+    }
 }
+
 <div class="col-md-4 text-center rounded mx-auto d-block">
     <div class="card mb-4 bgcolor-gray border-none">
         <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Name">
@@ -23,7 +35,7 @@
     <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " null" : string.Empty)">XL</a>
     <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " null" : string.Empty)">XXL</a>
 </row>
-@if (User.Id() == Model.UserId || User.IsAdmin())
+@if (userId == Model.UserId || isAdmin)
 {
     <div class="text-center">
         <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark mb-2">Edit</a>

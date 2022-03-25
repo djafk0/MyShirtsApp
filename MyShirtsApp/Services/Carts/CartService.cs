@@ -30,7 +30,11 @@
                 .Shirts
                 .Any(s => s.Id == id);
 
-            if (!isValidShirtId || this.Size(sizeName) == null)
+            var isValidSizeName = this.data
+                .Sizes
+                .Any(s => s.Name == sizeName);
+
+            if (!isValidShirtId || !isValidSizeName)
             {
                 return false;
             }
@@ -128,12 +132,7 @@
                 return;
             }
 
-            var shirtCarts = cart.ShirtCarts.ToList();
-
-            for (int i = 0; i < shirtCarts.Count; i++)
-            {
-                cart.ShirtCarts.Remove(shirtCarts[i]);
-            }
+            cart.ShirtCarts.Clear();
 
             this.data.SaveChanges();
         }
@@ -201,10 +200,5 @@
                 .Where(c => c.UserId == userId)
                 .Include(c => c.ShirtCarts)
                 .FirstOrDefault();
-
-        private Size Size(string sizeName)
-            => this.data
-                .Sizes
-                .FirstOrDefault(s => s.Name == sizeName);
     }
 }

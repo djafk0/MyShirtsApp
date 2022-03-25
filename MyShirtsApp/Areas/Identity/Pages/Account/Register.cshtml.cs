@@ -62,7 +62,7 @@
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    FullName = Input.FullName
+                    CompanyName = Input.FullName
                 };
 
                 var result = await this.userManager.CreateAsync(user, Input.Password);

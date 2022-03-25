@@ -78,7 +78,7 @@
                     {
                         Email = admin,
                         UserName = admin,
-                        FullName = "Admin"
+                        CompanyName = "Admin"
                     };
 
                     await userManager.CreateAsync(user, adminPassword);

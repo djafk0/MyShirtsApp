@@ -111,7 +111,7 @@
                 Name = name,
                 ImageUrl = imageUrl,
                 Price = price,
-                UserId = userId
+                UserId = userId,
             };
 
             for (int i = 1; i <= 6; i++)

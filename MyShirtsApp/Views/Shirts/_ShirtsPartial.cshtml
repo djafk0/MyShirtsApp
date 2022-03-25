@@ -4,17 +4,16 @@
     @foreach (var shirt in Model)
     {
         <div class="col-md-4">
-            @if (!shirt.Available)
-            {
-                <h2 class="text-danger text-center">Not Available</h2>
-            }
-            else
-            {
-                <br />
-                <br />
-            }
+
             <div class="card mb-4 bgcolor-gray border-none">
-                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
+                @if (shirt.Available)
+                {
+                    <img src="@shirt.ImageUrl" class="cart-img-top" alt="@shirt.Name" />
+                }
+                else
+                {
+                    <img src="https://way-ve.com/SOLD.gif" style="background: url(@shirt.ImageUrl) no-repeat; background-size: calc(100% + 1px);" class="card-img-top" alt="@shirt.Name">
+                }
                 <div class="card-body">
                     <h5 class="card-title text-center">@shirt.Name</h5>
                     <p class="card-text text-center">$@shirt.Price</p>

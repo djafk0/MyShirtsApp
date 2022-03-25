@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using MyShirtsApp.Services.Carts;
+using MyShirtsApp.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddTransient<IShirtService, ShirtService>();
 builder.Services.AddTransient<ICartService, CartService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();

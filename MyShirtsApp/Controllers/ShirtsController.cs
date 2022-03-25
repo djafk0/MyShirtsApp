@@ -3,19 +3,31 @@
     using MyShirtsApp.Models.Shirts;
     using MyShirtsApp.Services.Shirts;
     using MyShirtsApp.Infrastructure;
+    using MyShirtsApp.Services.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class ShirtsController : Controller
     {
         private readonly IShirtService shirts;
+        private readonly IUserService users;
 
-        public ShirtsController(IShirtService shirts) 
-            => this.shirts = shirts;
+        public ShirtsController(IShirtService shirts, IUserService users)
+        {
+            this.shirts = shirts;
+            this.users = users;
+        }
 
         [Authorize]
         public IActionResult Add()
         {
+            var isSeller = this.users.IsSeller(this.User.Id());
+
+            if (this.User.IsAdmin() || !isSeller)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
             return View(new ShirtFormModel
             {
                 IsValidSize = true,
@@ -26,6 +38,13 @@
         [Authorize]
         public IActionResult Add(ShirtFormModel shirt)
         {
+            var isSeller = this.users.IsSeller(this.User.Id());
+
+            if (this.User.IsAdmin() || !isSeller)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
             var sizes = this.shirts.SizesFromModel(shirt);
 
             shirt.IsValidSize = true;
@@ -69,7 +88,9 @@
         [Authorize]
         public IActionResult Mine()
         {
-            if (this.User.IsAdmin())
+            var isSeller = this.users.IsSeller(this.User.Id());
+
+            if (this.User.IsAdmin() || !isSeller)
             {
                 return RedirectToAction(nameof(All));
             }
@@ -84,7 +105,7 @@
         {
             var shirt = this.shirts.Details(id);
 
-            if (shirt.UserId != this.User.Id() && !this.User.IsAdmin())
+            if (shirt.UserId != this.User.Id())
             {
                 return Unauthorized();
             }
@@ -108,6 +129,13 @@
         [HttpPost]
         public IActionResult Edit(int id, ShirtFormModel shirt)
         {
+            var shirtDetails = this.shirts.Details(id);
+
+            if (shirtDetails.UserId != this.User.Id())
+            {
+                return Unauthorized();
+            }
+
             var sizes = this.shirts.SizesFromModel(shirt);
 
             if (sizes.All(x => x == 0))
@@ -151,6 +179,7 @@
             return View(shirt);
         }
 
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var isDeleted = this.shirts
