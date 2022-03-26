@@ -8,6 +8,9 @@
     using Microsoft.AspNetCore.Mvc;
     using AutoMapper;
 
+    using static WebConstants;
+
+    [Authorize]
     public class ShirtsController : Controller
     {
         private readonly IShirtService shirts;
@@ -24,7 +27,6 @@
             this.mapper = mapper;
         }
 
-        [Authorize]
         public IActionResult Add()
         {
             var isSeller = this.users.IsSeller(this.User.Id());
@@ -46,7 +48,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Add(ShirtFormModel shirt)
         {
             var isSeller = this.users.IsSeller(this.User.Id());
@@ -84,9 +85,12 @@
                 this.User.Id(),
                 sizes);
 
+            TempData[GlobalSuccessMessageKey] = "Your shirt was added succesfully and it is waiting to be approved.";
+
             return RedirectToAction(nameof(All));
         }
 
+        [AllowAnonymous]
         public IActionResult All([FromQuery] AllShirtsQueryModel query)
         {
             var queryResult = this.shirts.All(
@@ -101,7 +105,6 @@
             return View(query);
         }
 
-        [Authorize]
         public IActionResult Mine()
         {
             var isSeller = this.users.IsSeller(this.User.Id());
@@ -121,10 +124,14 @@
             return View(myShirts);
         }
 
-        [Authorize]
         public IActionResult Edit(int id)
         {
             var shirt = this.shirts.Details(id);
+
+            if (shirt == null)
+            {
+                return BadRequest();
+            }
 
             if (shirt.UserId != this.User.Id())
             {
@@ -139,15 +146,19 @@
             return View(shirtForm);
         }
 
-        [Authorize]
         [HttpPost]
         public IActionResult Edit(int id, ShirtFormModel shirt)
         {
             var shirtDetails = this.shirts.Details(id);
 
+            if (shirtDetails == null)
+            {
+                return RedirectToAction(nameof(All));
+            }
+
             if (shirtDetails.UserId != this.User.Id())
             {
-                return Unauthorized();
+                return RedirectToAction(nameof(All));
             }
 
             var sizes = this.shirts.SizesFromModel(shirt);
@@ -175,12 +186,15 @@
 
             if (!isShirtEdited)
             {
-                return Unauthorized();
+                return RedirectToAction(nameof(All));
             }
+
+            TempData[GlobalSuccessMessageKey] = "Your shirt was edited succesfully and it is waiting to be approved.";
 
             return RedirectToAction(nameof(Mine));
         }
 
+        [AllowAnonymous]
         public IActionResult Details(int id)
         {
             var shirt = this.shirts.Details(id);
@@ -193,7 +207,6 @@
             return View(shirt);
         }
 
-        [Authorize]
         public IActionResult Delete(int id)
         {
             var isDeleted = this.shirts

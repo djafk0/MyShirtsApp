@@ -130,6 +130,11 @@
                 .Include(i => i.ShirtSizes)
                 .FirstOrDefault(s => s.Id == id);
 
+            if (shirtData == null)
+            {
+                return false;
+            }
+
             if (shirtData.UserId != userId && !isAdmin)
             {
                 return false;

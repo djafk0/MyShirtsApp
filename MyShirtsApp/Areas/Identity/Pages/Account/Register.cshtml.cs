@@ -33,7 +33,7 @@
             public string Email { get; set; }
 
             [Display(Name = "Full Name")]
-            [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
+            [StringLength(CompanyNameMaxLength, MinimumLength = CompanyNameMinLength)]
             public string FullName { get; set; }
 
             [Required]

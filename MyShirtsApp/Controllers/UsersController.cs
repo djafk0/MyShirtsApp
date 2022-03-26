@@ -6,6 +6,9 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    using static WebConstants;
+
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly IUserService users;
@@ -13,7 +16,6 @@
         public UsersController(IUserService users)
             => this.users = users;
 
-        [Authorize]
         public IActionResult Become()
         {
             if (this.users.IsSeller(this.User.Id()) || this.User.IsAdmin())
@@ -25,7 +27,6 @@
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Become(BecomeSellerFormModel user)
         {
             if (this.users.IsSeller(this.User.Id()) || this.User.IsAdmin())
@@ -33,14 +34,14 @@
                 return RedirectToAction("All", "Shirts");
             }
 
-            this.users.BecomeSeller(this.User.Id(), user.CompanyName);
-
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            //TempData[GlobalMessageKey] = "Thank you for becomming a seller!";
+            this.users.BecomeSeller(this.User.Id(), user.CompanyName);
+
+            TempData[GlobalSuccessMessageKey] = "Thank you for becomming a seller!";
 
             return RedirectToAction("All", "Shirts");
         }

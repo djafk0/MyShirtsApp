@@ -4,8 +4,8 @@
     {
         public class User
         {
-            public const int FullNameMinLength = 3;
-            public const int FullNameMaxLength = 30;
+            public const int CompanyNameMinLength = 3;
+            public const int CompanyNameMaxLength = 30;
             public const int PasswordMinLength = 6;
             public const int PasswordMaxLength = 100;
         }
