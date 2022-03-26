@@ -7,7 +7,7 @@
     {
         bool IsAdded(int id, string size, string userId);
 
-        ICollection<CartShirtServiceModel> MyCart(string userId);
+        IEnumerable<CartShirtServiceModel> MyCart(string userId);
 
         public bool IsDeletedShirt(
            int shirtId,
@@ -17,6 +17,6 @@
 
         public void ClearCart(string userId);
 
-        public ICollection<ProblemBuyServiceModel> BuyAll(string userId);
+        public IEnumerable<ProblemBuyServiceModel> BuyAll(string userId);
     }
 }

@@ -2,7 +2,7 @@
 {
     public interface IUserService
     {
-        bool BecomeSeller(string userId, string companyName);
+        void BecomeSeller(string userId, string companyName);
 
         public bool IsSeller(string userId);
     }

@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using MyShirtsApp.Data.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IUserService Users
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,11 +29,37 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Shirts" asp-action="All">All Shirts</a>
                         </li>
-                        <li class="d-none d-sm-block mx-auto">
-                            <a asp-controller="Home" asp-action="Index">
-                                <img style="width: 150px;height: 40px; margin-left: 37px;" src="https://gcdnb.pbrd.co/images/i44RPA4kXsS3.gif" />
-                            </a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            var userId = User.Id();
+                            var userIsSeller = Users.IsSeller(userId);
+                            var userIsAdmin = User.IsAdmin();
+
+                            @if (userIsSeller || userIsAdmin)
+                            {
+                                <li class="d-none d-md-block mx-auto">
+                                    <a asp-controller="Home" asp-action="Index">
+                                        <img style="width: 150px;height: 40px; margin-left: 52px;" src="https://gcdnb.pbrd.co/images/i44RPA4kXsS3.gif" />
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="d-none d-md-block mx-auto">
+                                    <a asp-controller="Home" asp-action="Index" style="background-size: cover;">
+                                        <img style="width: 150px;height: 40px; margin-left: 90px;" src="https://gcdnb.pbrd.co/images/i44RPA4kXsS3.gif" />
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="d-none d-md-block mx-auto">
+                                <a asp-controller="Home" asp-action="Index">
+                                    <img style="width: 150px;height: 40px; margin-left: -17px;" src="https://gcdnb.pbrd.co/images/i44RPA4kXsS3.gif" />
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

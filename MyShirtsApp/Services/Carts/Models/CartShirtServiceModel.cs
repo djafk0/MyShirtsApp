@@ -4,8 +4,6 @@
     {
         public int ShirtId { get; set; }
 
-        public string UserId { get; set; }
-
         public string SizeName { get; set; }
 
         public decimal Price { get; set; }

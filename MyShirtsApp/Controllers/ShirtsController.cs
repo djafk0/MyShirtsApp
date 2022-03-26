@@ -6,16 +6,22 @@
     using MyShirtsApp.Services.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using AutoMapper;
 
     public class ShirtsController : Controller
     {
         private readonly IShirtService shirts;
         private readonly IUserService users;
+        private readonly IMapper mapper;
 
-        public ShirtsController(IShirtService shirts, IUserService users)
+        public ShirtsController(
+            IShirtService shirts,
+            IUserService users,
+            IMapper mapper)
         {
             this.shirts = shirts;
             this.users = users;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -23,7 +29,12 @@
         {
             var isSeller = this.users.IsSeller(this.User.Id());
 
-            if (this.User.IsAdmin() || !isSeller)
+            if (!isSeller)
+            {
+                return RedirectToAction("Become", "Users");
+            }
+
+            if (this.User.IsAdmin())
             {
                 return RedirectToAction(nameof(All));
             }
@@ -40,7 +51,12 @@
         {
             var isSeller = this.users.IsSeller(this.User.Id());
 
-            if (this.User.IsAdmin() || !isSeller)
+            if (!isSeller)
+            {
+                return RedirectToAction("Become", "Users");
+            }
+
+            if (this.User.IsAdmin())
             {
                 return RedirectToAction(nameof(All));
             }
@@ -90,7 +106,12 @@
         {
             var isSeller = this.users.IsSeller(this.User.Id());
 
-            if (this.User.IsAdmin() || !isSeller)
+            if (!isSeller)
+            {
+                return RedirectToAction("Become", "Users");
+            }
+
+            if (this.User.IsAdmin())
             {
                 return RedirectToAction(nameof(All));
             }
@@ -110,19 +131,12 @@
                 return Unauthorized();
             }
 
-            return View(new ShirtFormModel
-            {
-                Name = shirt.Name,
-                ImageUrl = shirt.ImageUrl,
-                Price = shirt.Price,
-                SizeXS = shirt.SizeXS,
-                SizeS = shirt.SizeS,
-                SizeM = shirt.SizeM,
-                SizeL = shirt.SizeL,
-                SizeXL = shirt.SizeXL,
-                SizeXXL = shirt.SizeXXL,
-                IsValidSize = true
-            });
+            var shirtForm = this.mapper
+                .Map<ShirtFormModel>(shirt);
+
+            shirtForm.IsValidSize = true;
+
+            return View(shirtForm);
         }
 
         [Authorize]

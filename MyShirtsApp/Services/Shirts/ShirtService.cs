@@ -6,13 +6,19 @@
     using MyShirtsApp.Models.Shirts;
     using MyShirtsApp.Services.Shirts.Models;
     using Microsoft.EntityFrameworkCore;
+    using AutoMapper.QueryableExtensions;
+    using AutoMapper;
 
     public class ShirtService : IShirtService
     {
+        private readonly IMapper mapper;
         private readonly MyShirtsAppDbContext data;
 
-        public ShirtService(MyShirtsAppDbContext data)
-            => this.data = data;
+        public ShirtService(IMapper mapper, MyShirtsAppDbContext data)
+        {
+            this.mapper = mapper;
+            this.data = data;
+        }
 
         public ShirtsQueryServiceModel All(
             int size,
@@ -61,27 +67,7 @@
             => this.data
                   .Shirts
                   .Where(s => s.Id == id)
-                  .Select(s => new ShirtDetailsServiceModel
-                  {
-                      Id = s.Id,
-                      Name = s.Name,
-                      ImageUrl = s.ImageUrl,
-                      Price = s.Price,
-                      UserId = s.UserId,
-                      IsAvailable = s.ShirtSizes.Any(ss => ss.Count > 0),
-                      SizeXS = s.ShirtSizes.First(x => x.SizeId == 1).Count == 0
-                          ? null : s.ShirtSizes.First(x => x.SizeId == 1).Count,
-                      SizeS = s.ShirtSizes.First(x => x.SizeId == 2).Count == 0
-                          ? null : s.ShirtSizes.First(x => x.SizeId == 2).Count,
-                      SizeM = s.ShirtSizes.First(x => x.SizeId == 3).Count == 0
-                          ? null : s.ShirtSizes.First(x => x.SizeId == 3).Count,
-                      SizeL = s.ShirtSizes.First(x => x.SizeId == 4).Count == 0
-                          ? null : s.ShirtSizes.First(x => x.SizeId == 4).Count,
-                      SizeXL = s.ShirtSizes.First(x => x.SizeId == 5).Count == 0
-                          ? null : s.ShirtSizes.First(x => x.SizeId == 5).Count,
-                      SizeXXL = s.ShirtSizes.First(x => x.SizeId == 6).Count == 0
-                          ? null : s.ShirtSizes.First(x => x.SizeId == 6).Count
-                  })
+                  .ProjectTo<ShirtDetailsServiceModel>(this.mapper.ConfigurationProvider)
                   .FirstOrDefault();
 
         public IEnumerable<ShirtServiceModel> ShirtsByUser(string userId)
@@ -90,7 +76,7 @@
                 .Where(s => s.UserId == userId));
 
         public List<int?> SizesFromModel(ShirtFormModel shirt)
-            => new List<int?>
+            => new()
             {
                 shirt.SizeXS ?? 0,
                 shirt.SizeS ?? 0,
@@ -195,14 +181,7 @@
 
         private IEnumerable<ShirtServiceModel> GetShirts(IQueryable<Shirt> shirtQuery)
             => shirtQuery
-                .Select(s => new ShirtServiceModel
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    ImageUrl = s.ImageUrl,
-                    Price = s.Price,
-                    Available = !s.ShirtSizes.All(ss => ss.Count == 0)
-                })
+                .ProjectTo<ShirtServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
     }
 }

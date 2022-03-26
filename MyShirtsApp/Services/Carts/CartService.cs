@@ -5,13 +5,19 @@
     using MyShirtsApp.Models.Carts;
     using MyShirtsApp.Services.Carts.Models;
     using Microsoft.EntityFrameworkCore;
+    using AutoMapper.QueryableExtensions;
+    using AutoMapper;
 
     public class CartService : ICartService
     {
+        private readonly IMapper mapper;
         private readonly MyShirtsAppDbContext data;
 
-        public CartService(MyShirtsAppDbContext data)
-            => this.data = data;
+        public CartService(IMapper mapper, MyShirtsAppDbContext data)
+        {
+            this.mapper = mapper;
+            this.data = data;
+        }
 
         public bool IsAdded(int id, string sizeName, string userId)
         {
@@ -72,20 +78,11 @@
             return true;
         }
 
-        public ICollection<CartShirtServiceModel> MyCart(string userId)
+        public IEnumerable<CartShirtServiceModel> MyCart(string userId) 
             => this.data
                 .ShirtCarts
                 .Where(c => c.Cart.UserId == userId)
-                .Select(c => new CartShirtServiceModel
-                {
-                    ShirtId = c.ShirtId,
-                    Name = c.Shirt.Name,
-                    ImageUrl = c.Shirt.ImageUrl,
-                    Price = (decimal)c.Shirt.Price,
-                    Count = c.Count,
-                    SizeName = c.SizeName,
-                    UserId = userId
-                })
+                .ProjectTo<CartShirtServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
         public bool IsDeletedShirt(
@@ -137,7 +134,7 @@
             this.data.SaveChanges();
         }
 
-        public ICollection<ProblemBuyServiceModel> BuyAll(string userId)
+        public IEnumerable<ProblemBuyServiceModel> BuyAll(string userId)
         {
             var problems = new List<ProblemBuyServiceModel>();
 

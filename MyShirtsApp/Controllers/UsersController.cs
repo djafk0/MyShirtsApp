@@ -14,21 +14,33 @@
             => this.users = users;
 
         [Authorize]
-        public IActionResult Become() => View();
+        public IActionResult Become()
+        {
+            if (this.users.IsSeller(this.User.Id()) || this.User.IsAdmin())
+            {
+                return RedirectToAction("All", "Shirts");
+            }
+
+            return View();
+        }
 
         [HttpPost]
         [Authorize]
         public IActionResult Become(BecomeSellerFormModel user)
         {
-            this.users
-                .BecomeSeller(this.User.Id(), user.CompanyName);
+            if (this.users.IsSeller(this.User.Id()) || this.User.IsAdmin())
+            {
+                return RedirectToAction("All", "Shirts");
+            }
+
+            this.users.BecomeSeller(this.User.Id(), user.CompanyName);
 
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            //TempData[GlobalMessageKey] = "Thank you for becomming a dealer!";
+            //TempData[GlobalMessageKey] = "Thank you for becomming a seller!";
 
             return RedirectToAction("All", "Shirts");
         }
