@@ -13,7 +13,7 @@
 
         public int Size { get; set; }
 
-        [Display(Name = "Order by")]
+        [Display(Name = "Order")]
         public ShirtSorting Sorting { get; set; }
 
         public IEnumerable<ShirtServiceModel> Shirts { get; set; }

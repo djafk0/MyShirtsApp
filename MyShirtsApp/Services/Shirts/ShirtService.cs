@@ -68,6 +68,7 @@
                       ImageUrl = s.ImageUrl,
                       Price = s.Price,
                       UserId = s.UserId,
+                      IsAvailable = s.ShirtSizes.Any(ss => ss.Count > 0),
                       SizeXS = s.ShirtSizes.First(x => x.SizeId == 1).Count == 0
                           ? null : s.ShirtSizes.First(x => x.SizeId == 1).Count,
                       SizeS = s.ShirtSizes.First(x => x.SizeId == 2).Count == 0

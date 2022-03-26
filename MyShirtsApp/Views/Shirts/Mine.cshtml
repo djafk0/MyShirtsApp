@@ -5,6 +5,11 @@
     ViewBag.AllowShirtEdit = true;
 }
 
+
+<div class="text-center">
+    <a class="btn bgcolor-blue text-white" asp-area="" asp-controller="Shirts" asp-action="Add">Add New Shirt</a>
+</div>
+
 <partial name="_ShirtsPartial" model="@Model" />
 
 @if (!Model.Any())
