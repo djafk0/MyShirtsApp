@@ -44,13 +44,20 @@
         <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " null" : string.Empty)">XXL</a>
     </row>
 </div>
-@if (userId == Model.UserId || isAdmin)
+@if (userId == Model.UserId)
 {
     <div class="text-center">
         <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark mb-2">Edit</a>
         <a asp-controller="Shirts" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger text-white mb-2">Delete</a>
     </div>
 }
+else if (isAdmin)
+{
+    <div class="text-center">
+        <a asp-area="Admin" asp-controller="Shirts" asp-action="All" class="btn bgcolor-blue text-white mb-2">To Administration</a>
+    </div>
+}
+
 <div class="text-center">
     <h3 class="mb-3">Dimensional info</h3>
 </div>
@@ -85,12 +92,12 @@
         </tr>
         <tr>
             <td>XL</td>
-            <td>57</td>
+            <td>61</td>
             <td>77</td>
         </tr>
         <tr>
             <td>XXL</td>
-            <td>59</td>
+            <td>64</td>
             <td>79</td>
         </tr>
     </tbody>

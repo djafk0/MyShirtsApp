@@ -78,16 +78,16 @@
                 return View(shirt);
             }
 
-            this.shirts.Create(
+            var shirtId = this.shirts.Create(
                 shirt.Name,
                 shirt.ImageUrl,
                 shirt.Price,
                 this.User.Id(),
                 sizes);
 
-            TempData[GlobalSuccessMessageKey] = "Your shirt was added succesfully and it is waiting to be approved.";
+            TempData[GlobalSuccessMessageKey] = "Your shirt was added successfully and it is awaiting to be approved.";
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = shirtId, name = shirt.Name });
         }
 
         [AllowAnonymous]
@@ -189,17 +189,24 @@
                 return RedirectToAction(nameof(All));
             }
 
-            TempData[GlobalSuccessMessageKey] = "Your shirt was edited succesfully and it is waiting to be approved.";
+            TempData[GlobalSuccessMessageKey] = "Your shirt was edited successfully and it is awaiting to be approved.";
 
-            return RedirectToAction(nameof(Mine));
+            return RedirectToAction(nameof(Details), new { id, name = shirt.Name });
         }
 
         [AllowAnonymous]
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, string name)
         {
             var shirt = this.shirts.Details(id);
 
             if (shirt == null)
+            {
+                return BadRequest();
+            }
+
+            name = name.Replace("-", " ");
+
+            if (shirt.Name != name)
             {
                 return BadRequest();
             }

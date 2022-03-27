@@ -21,12 +21,12 @@
         [MaxLength(ImageUrlMaxLength)]
         public string ImageUrl { get; set; }
 
+        public bool IsPublic { get; set; }
+
         [Required]
         public string UserId { get; set; }
 
-        public User User { get; set; }
-
-        public List<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
+        public ICollection<ShirtSize> ShirtSizes { get; set; } = new List<ShirtSize>();
 
         public ICollection<ShirtCart> ShirtCarts { get; set; } = new List<ShirtCart>();
     }

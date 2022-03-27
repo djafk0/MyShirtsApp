@@ -1,1 +1,35 @@
-﻿<h2>hello</h2>
+﻿@model IEnumerable<ShirtServiceModel>
+
+@{
+    ViewData["Title"] = "Administration";
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">Id</th>
+            <th scope="col" class="text-center">Name</th>
+            <th scope="col" class="text-center">Price</th>
+            <th scope="col" class="text-center">IsAvailabe</th>
+            <th scope="col" class="text-center">IsPublic</th>
+            <th scope="col" class="text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shirt in Model)
+        {
+            <tr>
+                <td scope="col" class="text-center">@shirt.Id</td>
+                <td scope="col" class="text-center">@shirt.Name</td>
+                <td scope="col" class="text-center">@shirt.Price</td>
+                <td scope="col" class="text-center">@shirt.IsAvailable</td>
+                <td scope="col" class="text-center">@shirt.IsPublic</td>
+                <td scope="col" >
+                    <a asp-area="" asp-controller="Shirts" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger text-white float-end mb-1 mt-1">Delete</a>
+                    <a asp-area="Admin" asp-controller="Shirts" asp-action="ChangeVisibility" asp-route-id="@shirt.Id" class="btn @(shirt.IsPublic ? "bgcolor-orange" : "btn-success") text-white float-end mb-1 mt-1 m-3">@(shirt.IsPublic ? "Hide" : "Show")</a>
+                    <a asp-area="" asp-controller="Shirts" asp-action="Details" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")" class="btn bgcolor-blue text-white float-end mb-1 mt-1 ml-3">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

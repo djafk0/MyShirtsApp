@@ -14,20 +14,24 @@
         private readonly IMapper mapper;
         private readonly MyShirtsAppDbContext data;
 
-        public ShirtService(IMapper mapper, MyShirtsAppDbContext data)
+        public ShirtService(
+            IMapper mapper,
+            MyShirtsAppDbContext data)
         {
             this.mapper = mapper;
             this.data = data;
         }
 
         public ShirtsQueryServiceModel All(
-            int size,
-            ShirtSorting sorting,
-            int currentPage,
-            int shirtsPerPage)
+            int size = 0,
+            ShirtSorting sorting = ShirtSorting.Newest,
+            int currentPage = 1,
+            int shirtsPerPage = int.MaxValue,
+            bool publicOnly = true)
         {
             var shirtsQuery = this.data
                    .Shirts
+                   .Where(s => !publicOnly || s.IsPublic)
                    .AsQueryable();
 
             if (size >= 1 && size <= 6)
@@ -39,10 +43,10 @@
 
             shirtsQuery = sorting switch
             {
-                ShirtSorting.Newest => shirtsQuery.OrderByDescending(s => s.Id),
-                ShirtSorting.Oldest => shirtsQuery.OrderBy(s => s.Id),
                 ShirtSorting.PriceAsc => shirtsQuery.OrderBy(s => s.Price),
-                ShirtSorting.PriceDesc or _ => shirtsQuery.OrderByDescending(s => s.Price)
+                ShirtSorting.PriceDesc => shirtsQuery.OrderByDescending(s => s.Price),
+                ShirtSorting.Oldest => shirtsQuery.OrderBy(s => s.Id),
+                ShirtSorting.Newest or _ => shirtsQuery.OrderByDescending(s => s.Id)
             };
 
             var totalShirts = shirtsQuery.Count();
@@ -86,6 +90,20 @@
                 shirt.SizeXXL ?? 0
             };
 
+        public void ChangeVisibility(int id)
+        {
+            var shirt = this.data.Shirts.Find(id);
+
+            if (shirt == null)
+            {
+                return;
+            }
+
+            shirt.IsPublic = !shirt.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
         public int Create(
             string name,
             string imageUrl,
@@ -99,6 +117,7 @@
                 ImageUrl = imageUrl,
                 Price = price,
                 UserId = userId,
+                IsPublic = false
             };
 
             for (int i = 1; i <= 6; i++)
@@ -143,6 +162,7 @@
             shirtData.Name = name;
             shirtData.ImageUrl = imageUrl;
             shirtData.Price = price;
+            shirtData.IsPublic = false;
 
             var i = 0;
 

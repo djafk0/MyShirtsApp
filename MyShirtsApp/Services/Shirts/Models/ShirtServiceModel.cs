@@ -10,6 +10,8 @@
 
         public decimal? Price { get; init; }
 
-        public bool IsAvailable { get; set; }
+        public bool IsAvailable { get; init; }
+
+        public bool IsPublic { get; init; }
     }
 }

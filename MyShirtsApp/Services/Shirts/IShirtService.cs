@@ -6,16 +6,19 @@
     public interface IShirtService
     {
         ShirtsQueryServiceModel All(
-            int size,
-            ShirtSorting sorting,
-            int currentPage,
-            int shirtsPerPage);
+            int size = 0,
+            ShirtSorting sorting = ShirtSorting.Newest,
+            int currentPage = 1,
+            int shirtsPerPage = int.MaxValue,
+            bool publicOnly = true);
 
         ShirtDetailsServiceModel Details(int id);
 
         IEnumerable<ShirtServiceModel> ShirtsByUser(string userId);
 
         List<int?> SizesFromModel(ShirtFormModel shirt);
+
+        void ChangeVisibility(int id);
 
         int Create(
             string name,
