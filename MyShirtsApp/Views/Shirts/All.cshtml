@@ -2,6 +2,15 @@
 
 @{
     ViewData["Title"] = "All shirts";
+    ViewBag.ShowHearts = true;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsAdmin())
+        {
+            ViewBag.ShowHearts = false;
+        }
+    }
 }
 
 <form method="get">

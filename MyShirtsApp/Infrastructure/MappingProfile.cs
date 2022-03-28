@@ -13,8 +13,9 @@
         {
             this.CreateMap<ShirtDetailsServiceModel, ShirtFormModel>();
 
-            this.CreateMap<Shirt, ShirtServiceModel>(MemberList.Source)
-                .ForMember(s => s.IsAvailable, cfg => cfg.MapFrom(m => !m.ShirtSizes.All(ss => ss.Count == 0)));
+            this.CreateMap<Shirt, ShirtServiceModel>()
+                .ForMember(s => s.IsAvailable, cfg => cfg.MapFrom(m => !m.ShirtSizes.All(ss => ss.Count == 0)))
+                .ForMember(s => s.IsFavorite, cfg => cfg.MapFrom(m => true));
 
             this.CreateMap<ShirtCart, CartShirtServiceModel>()
                 .ForMember(sc => sc.Name, cfg => cfg.MapFrom(m => m.Shirt.Name))

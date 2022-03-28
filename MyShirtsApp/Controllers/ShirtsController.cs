@@ -85,7 +85,7 @@
                 this.User.Id(),
                 sizes);
 
-            TempData[GlobalSuccessMessageKey] = "Your shirt was added successfully and it is awaiting to be approved.";
+            TempData[GlobalMessageKey] = "Your shirt was added successfully and it is awaiting to be approved.";
 
             return RedirectToAction(nameof(Details), new { id = shirtId, name = shirt.Name });
         }
@@ -197,7 +197,7 @@
                 return RedirectToAction(nameof(All));
             }
 
-            TempData[GlobalSuccessMessageKey] = "Your shirt was edited successfully and it is awaiting to be approved.";
+            TempData[GlobalMessageKey] = "Your shirt was edited successfully and it is awaiting to be approved.";
 
             return RedirectToAction(nameof(Details), new { id, name = shirt.Name });
         }

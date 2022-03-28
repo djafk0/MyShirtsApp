@@ -32,9 +32,12 @@
     </div>
 </div>
 <div class="@(Model.IsAvailable == false ? " d-none" : string.Empty)">
-    <div class="text-center mb-3">
-        <span class="text-small text-dark">Select size to add in cart</span>
-    </div>
+    @if (!isAdmin)
+    {
+        <div class="text-center mb-3">
+            <span class="text-small text-dark">Select size to add in cart</span>
+        </div>
+    }
     <row class="text-center rounded mx-auto d-block mb-3">
         <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " null" : string.Empty)">XS</a>
         <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " null" : string.Empty)">S</a>

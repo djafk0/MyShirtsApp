@@ -41,7 +41,7 @@
 
             this.users.BecomeSeller(this.User.Id(), user.CompanyName);
 
-            TempData[GlobalSuccessMessageKey] = "Thank you for becomming a seller!";
+            TempData[GlobalMessageKey] = "Thank you for becomming a seller!";
 
             return RedirectToAction("All", "Shirts");
         }

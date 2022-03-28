@@ -6,17 +6,31 @@
         <div class="col-md-4">
             <div class="card mb-4 bgcolor-gray border-none">
                 <div style="text-align: center">
-                    @if (shirt.IsFavorite)
+                    @if (ViewBag.ShowHearts == true)
                     {
-                        <a asp-controller="Favorites" asp-action="Action" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")">
-                            <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/Q8tYceFHl7R5.png" />
-                        </a>
+                        @if (shirt.IsFavorite)
+                        {
+                            <a asp-controller="Favorites" asp-action="Action" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")">
+                                <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/Q8tYceFHl7R5.png" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Favorites" asp-action="Action" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")">
+                                <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/hIaZf8kd5BFp.png" />
+                            </a>
+                        }
                     }
-                    else
+                    else if (ViewBag.ShowChecks == true)
                     {
-                        <a asp-controller="Favorites" asp-action="Action" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")">
-                            <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/hIaZf8kd5BFp.png" />
-                        </a>
+                        @if (shirt.IsPublic)
+                        {
+                            <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/8Ars08cQ3S2Z.png" />
+                        }
+                        else
+                        {
+                            <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/kXk3R3cUcszc.png" />
+                        }
                     }
                 </div>
                 @if (shirt.IsAvailable)

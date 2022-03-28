@@ -4,28 +4,25 @@
     using MyShirtsApp.Data.Models;
     using MyShirtsApp.Services.Shirts;
     using Microsoft.EntityFrameworkCore;
+    using AutoMapper.QueryableExtensions;
+    using AutoMapper;
 
     public class FavoriteService : IFavoriteService
     {
         private readonly MyShirtsAppDbContext data;
+        private readonly IMapper mapper;
 
-        public FavoriteService(MyShirtsAppDbContext data)
-            => this.data = data;
+        public FavoriteService(MyShirtsAppDbContext data, IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper;
+        }
 
         public IEnumerable<ShirtServiceModel> All(string userId)
             => this.data
-                .ShirtFavorites
-                .Where(x => x.Favorite.UserId == userId)
-                .Select(f => new ShirtServiceModel
-                {
-                    Id = f.ShirtId,
-                    Name = f.Shirt.Name,
-                    ImageUrl = f.Shirt.ImageUrl,
-                    Price = f.Shirt.Price,
-                    IsAvailable = !f.Shirt.ShirtSizes.All(ss => ss.Count == 0),
-                    IsPublic = f.Shirt.IsPublic,
-                    IsFavorite = true
-                })
+                .Shirts
+                .Where(s => s.ShirtFavorites.Any(sf => sf.Favorite.UserId == userId))
+                .ProjectTo<ShirtServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
         public bool IsAdded(int shirtId, string shirtName, string userId)

@@ -2,6 +2,6 @@
 {
     public class WebConstants
     {
-        public const string GlobalSuccessMessageKey = "GlobalSuccessMessage";
+        public const string GlobalMessageKey = "GlobalMessage";
     }
 }
