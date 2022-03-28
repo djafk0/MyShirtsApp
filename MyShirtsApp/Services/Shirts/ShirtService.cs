@@ -27,6 +27,7 @@
             ShirtSorting sorting = ShirtSorting.Newest,
             int currentPage = 1,
             int shirtsPerPage = int.MaxValue,
+            string userId = null,
             bool publicOnly = true)
         {
             var shirtsQuery = this.data
@@ -59,6 +60,17 @@
             var shirts = this.GetShirts(shirtsQuery
                 .Skip((currentPage - 1) * shirtsPerPage)
                 .Take(shirtsPerPage));
+
+            var userFavorites = this.data
+                .ShirtFavorites
+                .Where(sf => sf.Favorite.UserId == userId)
+                .Select(sf => sf.ShirtId)
+                .ToList();
+
+            foreach (var shirt in shirts)
+            {
+                shirt.IsFavorite = userFavorites.Any(uf => uf == shirt.Id);
+            }
 
             return new ShirtsQueryServiceModel
             {
@@ -183,6 +195,7 @@
                 .Where(s => s.Id == id)
                 .Include(s => s.ShirtSizes)
                 .Include(s => s.ShirtCarts)
+                .Include(s => s.ShirtFavorites)
                 .FirstOrDefault();
 
             if (shirt == null)
@@ -197,6 +210,7 @@
 
             shirt.ShirtCarts.Clear();
             shirt.ShirtSizes.Clear();
+            shirt.ShirtFavorites.Clear();
 
             this.data.Shirts.Remove(shirt);
             this.data.SaveChanges();

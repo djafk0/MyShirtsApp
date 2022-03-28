@@ -6,6 +6,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
 
+    using static WebConstants;
+
     [Authorize]
     public class CartsController : Controller
     {
@@ -28,7 +30,13 @@
                 return BadRequest();
             }
 
-            return RedirectToAction("All", "Shirts");
+            var url = Request.Headers["Referer"].ToString();
+
+            var name = url[(url.LastIndexOf("/") + 1)..];
+
+            TempData[GlobalSuccessMessageKey] = $"Successfully added {name}({size}) to your cart.";
+
+            return Redirect(url);
         }
 
         public IActionResult Mine()

@@ -13,5 +13,7 @@
         public bool IsAvailable { get; init; }
 
         public bool IsPublic { get; init; }
+
+        public bool IsFavorite { get; set; }
     }
 }

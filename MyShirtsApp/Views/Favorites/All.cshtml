@@ -1,0 +1,12 @@
+﻿@model IEnumerable<ShirtServiceModel>
+
+@{
+    ViewData["Title"] = "Favorites";
+}
+
+<partial name="_ShirtsPartial" model="@Model" />
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You dont have favorite shirts.</h2>
+}

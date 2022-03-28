@@ -13,7 +13,7 @@
         {
             this.CreateMap<ShirtDetailsServiceModel, ShirtFormModel>();
 
-            this.CreateMap<Shirt, ShirtServiceModel>()
+            this.CreateMap<Shirt, ShirtServiceModel>(MemberList.Source)
                 .ForMember(s => s.IsAvailable, cfg => cfg.MapFrom(m => !m.ShirtSizes.All(ss => ss.Count == 0)));
 
             this.CreateMap<ShirtCart, CartShirtServiceModel>()

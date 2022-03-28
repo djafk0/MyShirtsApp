@@ -21,6 +21,10 @@
 
         public DbSet<ShirtCart> ShirtCarts { get; init; }
 
+        public DbSet<Favorite> Favorites { get; init; }
+
+        public DbSet<ShirtFavorite> ShirtFavorites { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -53,6 +57,22 @@
                .HasOne(ss => ss.Cart)
                .WithMany(s => s.ShirtCarts)
                .HasForeignKey(ss => ss.CartId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<ShirtFavorite>()
+                .HasKey(x => new { x.ShirtId, x.FavoriteId });
+
+            builder.Entity<ShirtFavorite>()
+                .HasOne(ss => ss.Shirt)
+                .WithMany(s => s.ShirtFavorites)
+                .HasForeignKey(ss => ss.ShirtId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ShirtFavorite>()
+               .HasOne(ss => ss.Favorite)
+               .WithMany(s => s.ShirtFavorites)
+               .HasForeignKey(ss => ss.FavoriteId)
                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

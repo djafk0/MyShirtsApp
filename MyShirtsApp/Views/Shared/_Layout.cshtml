@@ -27,7 +27,9 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Shirts" asp-action="All">All Shirts</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Shirts" asp-action="All">
+                                <img style="width: 80px;height: 33px;" src="https://gcdnb.pbrd.co/images/CbyESv1DqjUc.png" />
+                            </a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
@@ -35,11 +37,19 @@
                             var userIsSeller = Users.IsSeller(userId);
                             var userIsAdmin = User.IsAdmin();
 
-                            @if (userIsSeller || userIsAdmin)
+                            @if (userIsSeller)
                             {
                                 <li class="d-none d-md-block mx-auto">
                                     <a asp-controller="Home" asp-action="Index">
-                                        <img style="width: 200px;height: 40px; margin-left: 52px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
+                                        <img class="img-center" style="width: 200px;height: 40px; margin-left: 130px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
+                                    </a>
+                                </li>
+                            }
+                            else if (userIsAdmin)
+                            {
+                                <li class="d-none d-md-block mx-auto">
+                                    <a asp-controller="Home" asp-action="Index">
+                                        <img class="img-center" style="width: 200px;height: 40px; margin-left: 25px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
                                     </a>
                                 </li>
                             }
@@ -56,7 +66,7 @@
                         {
                             <li class="d-none d-md-block mx-auto">
                                 <a asp-controller="Home" asp-action="Index">
-                                    <img style="width: 200px;height: 40px; margin-left: -17px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
+                                    <img style="width: 200px;height: 40px; margin-right: 40px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
                                 </a>
                             </li>
                         }

@@ -4,8 +4,21 @@
     @foreach (var shirt in Model)
     {
         <div class="col-md-4">
-
             <div class="card mb-4 bgcolor-gray border-none">
+                <div style="text-align: center">
+                    @if (shirt.IsFavorite)
+                    {
+                        <a asp-controller="Favorites" asp-action="Action" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")">
+                            <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/Q8tYceFHl7R5.png" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Favorites" asp-action="Action" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")">
+                            <img style="width: 40px;height: 33px;" src="https://gcdnb.pbrd.co/images/hIaZf8kd5BFp.png" />
+                        </a>
+                    }
+                </div>
                 @if (shirt.IsAvailable)
                 {
                     <img src="@shirt.ImageUrl" class="cart-img-top" alt="@shirt.Name" />

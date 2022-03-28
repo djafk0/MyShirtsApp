@@ -10,6 +10,7 @@
             ShirtSorting sorting = ShirtSorting.Newest,
             int currentPage = 1,
             int shirtsPerPage = int.MaxValue,
+            string userId = null,
             bool publicOnly = true);
 
         ShirtDetailsServiceModel Details(int id);

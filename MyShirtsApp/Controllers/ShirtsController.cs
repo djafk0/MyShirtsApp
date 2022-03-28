@@ -93,11 +93,19 @@
         [AllowAnonymous]
         public IActionResult All([FromQuery] AllShirtsQueryModel query)
         {
+            string userId = null;
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                userId = this.User.Id();
+            }
+
             var queryResult = this.shirts.All(
                 query.Size,
                 query.Sorting,
                 query.CurrentPage,
-                AllShirtsQueryModel.ShirtsPerPage);
+                AllShirtsQueryModel.ShirtsPerPage,
+                userId);
 
             query.TotalShirts = queryResult.TotalShirts;
             query.Shirts = queryResult.Shirts;

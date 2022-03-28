@@ -4,6 +4,7 @@ using MyShirtsApp.Services.Shirts;
 using MyShirtsApp.Data.Models;
 using MyShirtsApp.Services.Carts;
 using MyShirtsApp.Services.Users;
+using MyShirtsApp.Services.Favorites;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +21,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter()
     .AddTransient<IShirtService, ShirtService>()
     .AddTransient<ICartService, CartService>()
     .AddTransient<IUserService, UserService>()
+    .AddTransient<IFavoriteService, FavoriteService>()
     .AddRazorPages()
     .AddRazorRuntimeCompilation();
 
@@ -69,9 +71,13 @@ app.MapControllerRoute(
     defaults: new { controller = "Shirts", action = "Details"});
 
 app.MapControllerRoute(
+    name: "favorite",
+    pattern: "/Favorites/Action/{id}/{name}",
+    defaults: new { controller = "Favorites", action = "Action" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-
 app.Run();
