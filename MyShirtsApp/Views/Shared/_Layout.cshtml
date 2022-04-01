@@ -19,7 +19,9 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3 bgcolor-blue navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img class="img-center" style="width: 150px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,45 +33,6 @@
                                 <img style="width: 80px;height: 33px;" src="https://gcdnb.pbrd.co/images/CbyESv1DqjUc.png" />
                             </a>
                         </li>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            var userId = User.Id();
-                            var userIsSeller = Users.IsSeller(userId);
-                            var userIsAdmin = User.IsAdmin();
-
-                            @if (userIsSeller)
-                            {
-                                <li class="d-none d-md-block mx-auto">
-                                    <a asp-controller="Home" asp-action="Index">
-                                        <img class="img-center" style="width: 200px;height: 40px; margin-left: 130px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
-                                    </a>
-                                </li>
-                            }
-                            else if (userIsAdmin)
-                            {
-                                <li class="d-none d-md-block mx-auto">
-                                    <a asp-controller="Home" asp-action="Index">
-                                        <img class="img-center" style="width: 200px;height: 40px; margin-left: 25px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
-                                    </a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="d-none d-md-block mx-auto">
-                                    <a asp-controller="Home" asp-action="Index">
-                                        <img style="width: 200px;height: 40px; margin-left: 90px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
-                                    </a>
-                                </li>
-                            }
-                        }
-                        else
-                        {
-                            <li class="d-none d-md-block mx-auto">
-                                <a asp-controller="Home" asp-action="Index">
-                                    <img style="width: 200px;height: 40px; margin-right: 40px;" src="https://gcdnb.pbrd.co/images/68gksx3dxJ0C.gif" />
-                                </a>
-                            </li>
-                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

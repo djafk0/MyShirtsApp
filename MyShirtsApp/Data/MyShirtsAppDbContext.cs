@@ -29,7 +29,7 @@
         {
             builder
                 .Entity<ShirtSize>()
-                .HasKey(x => new { x.ShirtId, x.SizeId });
+                .HasKey(ss => new { ss.ShirtId, ss.SizeId });
 
             builder.Entity<ShirtSize>()
                 .HasOne(ss => ss.Shirt)
@@ -45,34 +45,34 @@
 
             builder
                 .Entity<ShirtCart>()
-                .HasKey(x => new { x.ShirtId, x.CartId, x.SizeName });
+                .HasKey(sc => new { sc.ShirtId, sc.CartId, sc.SizeName });
 
             builder.Entity<ShirtCart>()
-                .HasOne(ss => ss.Shirt)
+                .HasOne(sc => sc.Shirt)
                 .WithMany(s => s.ShirtCarts)
-                .HasForeignKey(ss => ss.ShirtId)
+                .HasForeignKey(sc => sc.ShirtId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ShirtCart>()
-               .HasOne(ss => ss.Cart)
+               .HasOne(sc => sc.Cart)
                .WithMany(s => s.ShirtCarts)
-               .HasForeignKey(ss => ss.CartId)
+               .HasForeignKey(sc => sc.CartId)
                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<ShirtFavorite>()
-                .HasKey(x => new { x.ShirtId, x.FavoriteId });
+                .HasKey(sf => new { sf.ShirtId, sf.FavoriteId });
 
             builder.Entity<ShirtFavorite>()
-                .HasOne(ss => ss.Shirt)
+                .HasOne(sf => sf.Shirt)
                 .WithMany(s => s.ShirtFavorites)
-                .HasForeignKey(ss => ss.ShirtId)
+                .HasForeignKey(sf => sf.ShirtId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ShirtFavorite>()
-               .HasOne(ss => ss.Favorite)
+               .HasOne(sf => sf.Favorite)
                .WithMany(s => s.ShirtFavorites)
-               .HasForeignKey(ss => ss.FavoriteId)
+               .HasForeignKey(sf => sf.FavoriteId)
                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

@@ -11,6 +11,10 @@
     {
         public MappingProfile()
         {
+            this.CreateMap<ImportShirtModel, Shirt>();
+
+            this.CreateMap<ImportShirtSizeModel, ShirtSize>();
+
             this.CreateMap<ShirtDetailsServiceModel, ShirtFormModel>();
 
             this.CreateMap<Shirt, ShirtServiceModel>()
