@@ -157,6 +157,10 @@
         [HttpPost]
         public IActionResult Edit(int id, ShirtFormModel shirt)
         {
+            var userId = this.User.Id();
+
+            var isAdmin = this.User.IsAdmin();
+
             var shirtDetails = this.shirts.Details(id);
 
             if (shirtDetails == null)
@@ -164,7 +168,7 @@
                 return RedirectToAction(nameof(All));
             }
 
-            if (shirtDetails.UserId != this.User.Id())
+            if (shirtDetails.UserId != userId)
             {
                 return RedirectToAction(nameof(All));
             }
@@ -188,8 +192,8 @@
                 shirt.Name,
                 shirt.ImageUrl,
                 shirt.Price,
-                this.User.Id(),
-                this.User.IsAdmin(),
+                userId,
+                isAdmin,
                 sizes);
 
             if (!isShirtEdited)

@@ -42,7 +42,12 @@
 
             var url = Request.Headers["Referer"].ToString();
 
-            return Redirect(url);
+            if (url != string.Empty)
+            {
+                return Redirect(url);
+            }
+
+            return RedirectToAction("All", "Shirts");
         }
     }
 }

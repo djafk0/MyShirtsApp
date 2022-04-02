@@ -147,8 +147,8 @@
                     return;
                 }
 
-                const string userEmail = "user@msa.bg";
                 const string sellerEmail = "seller@msa.bg";
+                const string userEmail = "user@msa.bg";
                 const string password = "msa123";
 
                 var seller = new User
