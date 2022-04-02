@@ -1,6 +1,6 @@
 # MyShirtsApp
 
-EVERYONE SHIRT IS STOLEN FROM <a href="https://way-ve.com/">https://way-ve.com/</a>
+EVERY SHIRT IS STOLEN FROM <a href="https://way-ve.com/">https://way-ve.com/</a>
 
 Password for everyone: msa123
 
