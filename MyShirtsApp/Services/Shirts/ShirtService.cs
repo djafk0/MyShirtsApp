@@ -60,6 +60,8 @@
             if(shirtsPerPage < 1)
             {
                 shirtsPerPage = int.MaxValue;
+
+                currentPage = 1;
             }
 
             var shirts = this.GetShirts(shirtsQuery
