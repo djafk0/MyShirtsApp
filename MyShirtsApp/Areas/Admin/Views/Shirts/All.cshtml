@@ -14,18 +14,18 @@
             <th scope="col" class="text-center text-white h2" style="background-color: #234465;">Price</th>
             <th scope="col" class="text-center text-white h2" style="background-color: #234465;">Availabe</th>
             <th scope="col" class="text-center text-white h2" style="background-color: #234465;">Public</th>
-            <th scope="col" class="text-center text-white h2" style="background-color: #234465;"></th>
+            <th scope="col" style="background-color: #234465;"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var shirt in Model)
         {
             <tr>
-                <td scope="col" class="text-center h3 border-4 text-white" style="background-color: #234465;">@shirt.Id</td>
-                <td scope="col" class="text-center h3 border-4">@shirt.Name</td>
-                <td scope="col" class="text-center h3 border-4">$@shirt.Price</td>
-                <td scope="col" class="text-center h3 border-4@(shirt.IsAvailable ? " text-success" : " text-danger")">@(shirt.IsAvailable ? "Yes" : "No")</td>
-                <td scope="col" class="text-center h3 border-4@(shirt.IsPublic ? " text-success" : " text-danger")">@(shirt.IsPublic ? "Yes" : "No")</td>
+                <td scope="col" class="text-center h4 border-4 text-white" style="background-color: #234465;">@shirt.Id</td>
+                <td scope="col" class="text-center h4 border-4">@shirt.Name</td>
+                <td scope="col" class="text-center h4 border-4">$@shirt.Price</td>
+                <td scope="col" class="text-center h4 border-4@(shirt.IsAvailable ? " text-success" : " text-danger")">@(shirt.IsAvailable ? "Yes" : "No")</td>
+                <td scope="col" class="text-center h4 border-4@(shirt.IsPublic ? " text-success" : " text-danger")">@(shirt.IsPublic ? "Yes" : "No")</td>
                 <td scope="col" class=" border-4">
                     <a asp-area="" asp-controller="Shirts" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger text-white float-end mb-1 mt-1">Delete</a>
                     <a asp-area="Admin" asp-controller="Shirts" asp-action="ChangeVisibility" asp-route-id="@shirt.Id" class="btn @(shirt.IsPublic ? "bgcolor-orange" : "btn-success") text-white float-end mb-1 mt-1 m-3">@(shirt.IsPublic ? "Hide" : "Show")</a>

@@ -5,7 +5,8 @@
 
     public class AllShirtsQueryModel
     {
-        public const int ShirtsPerPage = 3;
+        [Display(Name = "Per Page")]
+        public int ShirtsPerPage { get; set; } = int.MaxValue;
 
         public int CurrentPage { get; set; } = 1;
 

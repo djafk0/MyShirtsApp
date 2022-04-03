@@ -6,6 +6,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
 
+    using static WebConstants;
+
     [Authorize]
     public class CartsController : Controller
     {
@@ -26,6 +28,15 @@
             if (!isAdded)
             {
                 return BadRequest();
+            }
+
+            var url = Request.Headers["Referer"].ToString();
+
+            if (url != string.Empty)
+            {
+                TempData[GlobalMessageKey] = "Successfully added to cart.";
+
+                return Redirect(url);
             }
 
             return RedirectToAction("All", "Shirts");

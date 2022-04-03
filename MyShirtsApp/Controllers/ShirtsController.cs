@@ -104,7 +104,7 @@
                 query.Size,
                 query.Sorting,
                 query.CurrentPage,
-                AllShirtsQueryModel.ShirtsPerPage,
+                query.ShirtsPerPage,
                 userId);
 
             query.TotalShirts = queryResult.TotalShirts;

@@ -31,33 +31,28 @@
         </div>
     </div>
 </div>
-<div class="@(Model.IsAvailable == false ? " d-none" : string.Empty)">
-    @if (!isAdmin)
-    {
-        <div class="text-center mb-3">
-            <span class="text-small text-dark">Select size to add in cart</span>
-        </div>
-    }
-    <row class="text-center rounded mx-auto d-block mb-3">
-        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " null" : string.Empty)">XS</a>
-        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " null" : string.Empty)">S</a>
-        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " null" : string.Empty)">M</a>
-        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " null" : string.Empty)">L</a>
-        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " null" : string.Empty)">XL</a>
-        <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " null" : string.Empty)">XXL</a>
-    </row>
-</div>
+
+@if (!isAdmin)
+{
+    <div class="text-center mb-3">
+        <span class="text-small text-dark">Select size to add in cart</span>
+    </div>
+}
+
+<row class="text-center rounded mx-auto d-block mb-3">
+    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XS</a>
+    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">S</a>
+    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">M</a>
+    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">L</a>
+    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
+    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
+</row>
+
 @if (userId == Model.UserId)
 {
     <div class="text-center">
         <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark mb-2">Edit</a>
         <a asp-controller="Shirts" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger text-white mb-2">Delete</a>
-    </div>
-}
-else if (isAdmin)
-{
-    <div class="text-center">
-        <a asp-area="Admin" asp-controller="Shirts" asp-action="All" class="btn bgcolor-blue text-white mb-2">To Administration</a>
     </div>
 }
 

@@ -57,6 +57,11 @@
                 currentPage = 1;
             }
 
+            if(shirtsPerPage < 1)
+            {
+                shirtsPerPage = int.MaxValue;
+            }
+
             var shirts = this.GetShirts(shirtsQuery
                 .Skip((currentPage - 1) * shirtsPerPage)
                 .Take(shirtsPerPage));

@@ -65,7 +65,6 @@ body {
     padding-bottom: 15px;
 }
 
-.null {
+.custom-disabled {
     pointer-events: none;
-    background-color: #62768B;
 }
