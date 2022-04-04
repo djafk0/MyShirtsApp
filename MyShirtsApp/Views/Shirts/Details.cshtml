@@ -3,23 +3,23 @@
 @{
     ViewData["Title"] = "Details";
 
+    var returnUrl = ViewBag.ReturnUrl;
+
     var userId = string.Empty;
 
     var isAdmin = false;
+
+    var isAuthenticated = false;
 
     if (User.Identity.IsAuthenticated)
     {
         userId = User.Id();
 
         isAdmin = User.IsAdmin();
+
+        isAuthenticated = true;
     }
 }
-
-<div class="text-center">
-    <div class="alert-success" style="display:none;">
-        <h3 id="message">Successfully added !</h3>
-    </div>
-</div>
 
 <div class="col-md-6 col-lg-5 text-center rounded mx-auto d-block">
     <div class="card mb-4 bgcolor-gray border-none">
@@ -38,7 +38,13 @@
     </div>
 </div>
 
-@if (!isAdmin)
+<div class="text-center mb-3">
+    <div class="alert-success" style="display:none;">
+        <h3 id="message">Successfully added to cart.</h3>
+    </div>
+</div>
+
+@if (!isAdmin && isAuthenticated)
 {
     <div class="text-center mb-3">
         <span class="text-small text-dark">Select size to add in cart</span>
@@ -65,6 +71,7 @@
 <div class="text-center">
     <h3 class="mb-3">Dimensional info</h3>
 </div>
+
 <table class="text-center table-sm" style="margin-left:auto;margin-right:auto;">
     <thead>
         <tr>
@@ -109,22 +116,34 @@
 
 <script type="text/javascript">
     function buy(event){
-        let params = event.id;
-        let id = params.slice(0, params.indexOf("-"));
-        let size = params.slice(params.indexOf("-") + 1);
-        let buttons = document.querySelectorAll("a.rounded-circle");
-        buttons.forEach(x => x.classList += " custom-disabled");
+    @if (!isAuthenticated)
+    {
+        <text>
+            let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString())";
+            window.location.href = url;
+        </text>
+    }
+    else
+    {
+        <text>
+                        let params = event.id;
+                            let id = params.slice(0, params.indexOf("-"));
+                            let size = params.slice(params.indexOf("-") + 1);
+                            let buttons = document.querySelectorAll("a.rounded-circle");
+                            buttons.forEach(x => x.classList += " custom-disabled");
 
-        $.ajax({
-            type: "GET",
-            url: `/Carts/Add/${id}?size=${size}`,
-        })
-        let message = document.getElementById("message");
-        message.parentElement.style.display = "inline-block";
+                            $.ajax({
+                                type: "GET",
+                                url: `/Carts/Add/${id}?size=${size}`,
+                            })
+                            let message = document.getElementById("message");
+                            message.parentElement.style.display = "inline-block";
 
-        setTimeout(function(){
-            message.parentElement.style.display = "none";
-            buttons.forEach(x => x.classList.remove("custom-disabled"));
-        }, 3000);
+                            setTimeout(function(){
+                                message.parentElement.style.display = "none";
+                                buttons.forEach(x => x.classList.remove("custom-disabled"));
+                            }, 3000);
+        </text>
     };
+    }
 </script>

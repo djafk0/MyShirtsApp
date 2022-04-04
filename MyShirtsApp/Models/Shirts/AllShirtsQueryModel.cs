@@ -6,7 +6,7 @@
     public class AllShirtsQueryModel
     {
         [Display(Name = "Per Page")]
-        public int ShirtsPerPage { get; set; } = int.MaxValue;
+        public int ShirtsPerPage { get; set; } = 3;
 
         public int CurrentPage { get; set; } = 1;
 

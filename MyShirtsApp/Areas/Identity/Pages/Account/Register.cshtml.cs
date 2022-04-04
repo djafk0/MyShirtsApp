@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
 
     using static Data.DataConstants.User;
+    using static WebConstants;
 
     public class RegisterModel : PageModel
     {
@@ -69,6 +70,8 @@
 
                 if (result.Succeeded)
                 {
+                    await this.userManager.AddToRoleAsync(user, UserRole);
+
                     await this.signInManager.SignInAsync(user, isPersistent: false);
 
                     return LocalRedirect(returnUrl);

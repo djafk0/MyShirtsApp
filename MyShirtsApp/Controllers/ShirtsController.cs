@@ -10,7 +10,7 @@
 
     using static WebConstants;
 
-    [Authorize]
+    [Authorize(Roles = UserRole)]
     public class ShirtsController : Controller
     {
         private readonly IShirtService shirts;
@@ -36,11 +36,6 @@
                 return RedirectToAction("Become", "Users");
             }
 
-            if (this.User.IsAdmin())
-            {
-                return RedirectToAction(nameof(All));
-            }
-
             return View(new ShirtFormModel
             {
                 IsValidSize = true,
@@ -55,11 +50,6 @@
             if (!isSeller)
             {
                 return RedirectToAction("Become", "Users");
-            }
-
-            if (this.User.IsAdmin())
-            {
-                return RedirectToAction(nameof(All));
             }
 
             var sizes = this.shirts.SizesFromModel(shirt);
@@ -120,11 +110,6 @@
             if (!isSeller)
             {
                 return RedirectToAction("Become", "Users");
-            }
-
-            if (this.User.IsAdmin())
-            {
-                return RedirectToAction(nameof(All));
             }
 
             var myShirts = this.shirts.ShirtsByUser(this.User.Id());
@@ -222,6 +207,8 @@
             {
                 return BadRequest();
             }
+
+            ViewBag.ReturnUrl = Request.Headers["Referer"].ToString();
 
             return View(shirt);
         }

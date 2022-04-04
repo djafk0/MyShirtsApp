@@ -8,7 +8,7 @@
 
     using static WebConstants;
 
-    [Authorize]
+    [Authorize(Roles = UserRole)]
     public class CartsController : Controller
     {
         private readonly ICartService carts;
@@ -18,11 +18,6 @@
 
         public IActionResult Add(int id, [FromQuery] string size)
         {
-            if (this.User.IsAdmin())
-            {
-                return RedirectToAction("All", "Shirts");
-            }
-
             var isAdded = this.carts.IsAdded(id, size, this.User.Id());
 
             if (!isAdded)
@@ -30,25 +25,11 @@
                 return BadRequest();
             }
 
-            var url = Request.Headers["Referer"].ToString();
-
-            if (url != string.Empty)
-            {
-                TempData[GlobalMessageKey] = "Successfully added to cart.";
-
-                return Redirect(url);
-            }
-
-            return RedirectToAction("All", "Shirts");
+            return Ok();
         }
 
         public IActionResult Mine()
         {
-            if (this.User.IsAdmin())
-            {
-                return RedirectToAction("All", "Shirts");
-            }
-
             var cart = this.carts.MyCart(this.User.Id());
 
             return View(new CartResultViewModel
@@ -70,6 +51,8 @@
             {
                 return BadRequest();
             }
+
+            TempData[GlobalMessageKey] = "Successfully deleted !";
 
             return RedirectToAction(nameof(Mine));
         }

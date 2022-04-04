@@ -8,6 +8,7 @@
     using AutoMapper;
 
     using static Areas.Admin.AdminConstants;
+    using static WebConstants;
 
     public static class ApplicationBuilderExtensions
     {
@@ -140,12 +141,21 @@
 
             var userManager = services.GetRequiredService<UserManager<User>>();
 
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
             Task.Run(async () =>
             {
                 if (userManager.Users.Count() > 1)
                 {
                     return;
                 }
+
+                var role = new IdentityRole
+                {
+                    Name = UserRole
+                };
+
+                await roleManager.CreateAsync(role);
 
                 const string sellerEmail = "seller@msa.bg";
                 const string userEmail = "user@msa.bg";
@@ -158,9 +168,11 @@
                     IsSeller = true
                 };
 
-                mappedShirts.ForEach(s => s.UserId = seller.Id);
-
                 await userManager.CreateAsync(seller, password);
+
+                await userManager.AddToRoleAsync(seller, UserRole);
+
+                mappedShirts.ForEach(s => s.UserId = seller.Id);
 
                 data.Shirts.AddRange(mappedShirts);
 
@@ -173,6 +185,8 @@
                 };
 
                 await userManager.CreateAsync(user, password);
+
+                await userManager.AddToRoleAsync(user, UserRole);
             })
                 .GetAwaiter()
                 .GetResult();
