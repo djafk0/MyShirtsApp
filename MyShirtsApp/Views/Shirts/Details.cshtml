@@ -15,6 +15,12 @@
     }
 }
 
+<div class="text-center">
+    <div class="alert-success" style="display:none;">
+        <h3 id="message">Successfully added !</h3>
+    </div>
+</div>
+
 <div class="col-md-6 col-lg-5 text-center rounded mx-auto d-block">
     <div class="card mb-4 bgcolor-gray border-none">
         @if (Model.IsAvailable)
@@ -40,12 +46,12 @@
 }
 
 <row class="text-center rounded mx-auto d-block mb-3">
-    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XS</a>
-    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">S</a>
-    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">M</a>
-    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">L</a>
-    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
-    <a asp-controller="Carts" asp-action="Add" asp-route-id="@Model.Id" asp-route-size="XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
+    <a onclick="buy(this)" id="@Model.Id-XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XS</a>
+    <a onclick="buy(this)" id="@Model.Id-S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">S</a>
+    <a onclick="buy(this)" id="@Model.Id-M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">M</a>
+    <a onclick="buy(this)" id="@Model.Id-L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">L</a>
+    <a onclick="buy(this)" id="@Model.Id-XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
+    <a onclick="buy(this)" id="@Model.Id-XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
 </row>
 
 @if (userId == Model.UserId)
@@ -100,3 +106,25 @@
         </tr>
     </tbody>
 </table>
+
+<script type="text/javascript">
+    function buy(event){
+        let params = event.id;
+        let id = params.slice(0, params.indexOf("-"));
+        let size = params.slice(params.indexOf("-") + 1);
+        let buttons = document.querySelectorAll("a.rounded-circle");
+        buttons.forEach(x => x.classList += " custom-disabled");
+
+        $.ajax({
+            type: "GET",
+            url: `/Carts/Add/${id}?size=${size}`,
+        })
+        let message = document.getElementById("message");
+        message.parentElement.style.display = "inline-block";
+
+        setTimeout(function(){
+            message.parentElement.style.display = "none";
+            buttons.forEach(x => x.classList.remove("custom-disabled"));
+        }, 3000);
+    };
+</script>

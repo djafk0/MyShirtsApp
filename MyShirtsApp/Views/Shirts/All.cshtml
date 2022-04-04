@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "All shirts";
     ViewBag.ShowHearts = true;
+    ViewBag.IsFavorites = false;
 
     var previous = "<<";
     var next = ">>";
@@ -117,6 +118,5 @@
 <script>
     function callChangePagination(shirtsPerPage){
         window.location.href = "/Shirts/All?currentPage=1&size=" + @Model.Size + "&sorting=" + @((int)Model.Sorting) + "&shirtsPerPage=" + shirtsPerPage;
-
     }
 </script>

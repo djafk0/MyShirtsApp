@@ -68,3 +68,13 @@ body {
 .custom-disabled {
     pointer-events: none;
 }
+
+.fav {
+    display: none;
+    cursor: pointer;
+}
+
+.unfav {
+    display: inline-block;
+    cursor: pointer;
+}
