@@ -2,13 +2,11 @@
 
 EVERY SHIRT IS STOLEN FROM <a href="https://way-ve.com/">https://way-ve.com/</a>
 
-Password for everyone: msa123
-
-Admin email: admin@msa.bg
-
-Seller email: seller@msa.bg
-  
-User email: user@msa.bg
+| **Roles** |   **Email**   | **Password** |
+|:---------:|:-------------:|--------------|
+|   Admin   |  admin@msa.bg |    msa123    |
+|   Seller  | seller@msa.bg |    msa123    |
+|    User   |  user@msa.bg  |    msa123    |
 
 Guest (not logged in) users can access Home page.
 
