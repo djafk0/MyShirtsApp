@@ -64,7 +64,7 @@
 {
     <div class="text-center">
         <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark mb-2">Edit</a>
-        <a asp-controller="Shirts" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger text-white mb-2">Delete</a>
+        <a onclick="onDelete(@Model.Id)" class="btn btn-danger text-white text-center mb-2">Delete</a>
     </div>
 }
 
@@ -116,34 +116,51 @@
 
 <script type="text/javascript">
     function buy(event){
-    @if (!isAuthenticated)
-    {
-        <text>
-            let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString())";
-            window.location.href = url;
-        </text>
+        @if (!isAuthenticated)
+        {
+            <text>
+                let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString())";
+                window.location.href = url;
+            </text>
+        }
+        else
+        {
+            <text>
+                let params = event.id;
+                let id = params.slice(0, params.indexOf("-"));
+                let size = params.slice(params.indexOf("-") + 1);
+                let buttons = document.querySelectorAll("a.rounded-circle");
+                buttons.forEach(x => x.classList += " custom-disabled");
+
+                $.ajax({
+                    type: "GET",
+                    url: `/Carts/Add/${id}?size=${size}`,
+                })
+                let message = document.getElementById("message");
+                message.parentElement.style.display = "inline-block";
+
+                setTimeout(function(){
+                    message.parentElement.style.display = "none";
+                    buttons.forEach(x => x.classList.remove("custom-disabled"));
+                }, 3000);
+            </text>
+        };
     }
-    else
-    {
-        <text>
-                        let params = event.id;
-                            let id = params.slice(0, params.indexOf("-"));
-                            let size = params.slice(params.indexOf("-") + 1);
-                            let buttons = document.querySelectorAll("a.rounded-circle");
-                            buttons.forEach(x => x.classList += " custom-disabled");
 
-                            $.ajax({
-                                type: "GET",
-                                url: `/Carts/Add/${id}?size=${size}`,
-                            })
-                            let message = document.getElementById("message");
-                            message.parentElement.style.display = "inline-block";
+    function onDelete(event){
+        let choice = confirm("Are you sure ?");
 
-                            setTimeout(function(){
-                                message.parentElement.style.display = "none";
-                                buttons.forEach(x => x.classList.remove("custom-disabled"));
-                            }, 3000);
-        </text>
-    };
+        if(choice){
+            $.ajax({
+                type: "GET",
+                url: `/Shirts/Delete/${event}`
+            })
+
+            document.querySelector("main").innerHTML = `<h2 class="alert-success text-center">Successfully deleted !</h2>`;
+
+            setTimeout(function(){
+                window.location.href = "/Shirts/Mine";
+            }, 1000);
+        }
     }
 </script>

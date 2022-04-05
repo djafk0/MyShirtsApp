@@ -68,12 +68,10 @@
 
             if (problems.Any())
             {
-                return View(problems);
+                return View("Problems", problems);
             }
 
-            this.carts.ClearCart(this.User.Id());
-
-            return RedirectToAction("All", "Shirts");
+            return View();
         }
     }
 }

@@ -78,7 +78,7 @@
             return true;
         }
 
-        public IEnumerable<CartShirtServiceModel> MyCart(string userId) 
+        public IEnumerable<CartShirtServiceModel> MyCart(string userId)
             => this.data
                 .ShirtCarts
                 .Where(c => c.Cart.UserId == userId)
@@ -93,13 +93,14 @@
         {
             var shirtCart = this.data
                 .ShirtCarts
-                .Where(sc => 
-                    sc.ShirtId == shirtId && 
+                .Where(sc =>
+                    sc.ShirtId == shirtId &&
                     sc.Cart.UserId == userId &&
                     sc.SizeName == sizeName)
                 .Include(sc => sc.Cart)
                 .Include(sc => sc.Shirt)
                 .ThenInclude(s => s.ShirtSizes)
+                .ThenInclude(ss => ss.Size)
                 .FirstOrDefault();
 
             if (shirtCart == null)
@@ -113,7 +114,22 @@
             }
             else
             {
-                shirtCart.Count -= (shirtCart.Count - shirtCart.Shirt.ShirtSizes.Count);
+                var sizeId = shirtCart.Shirt
+                    .ShirtSizes
+                    .FirstOrDefault(x => 
+                        x.Size.Name == sizeName)
+                    .SizeId;
+
+                var shirtSize = shirtCart.Shirt
+                    .ShirtSizes
+                    .FirstOrDefault(s =>
+                        s.ShirtId == shirtId &&
+                        s.SizeId == sizeId);
+
+                if (shirtCart.Count > shirtSize.Count)
+                {
+                    shirtCart.Count = (int)shirtSize.Count;
+                }
             }
 
             this.data.SaveChanges();
@@ -160,7 +176,7 @@
                 var sizeName = shirtCart.SizeName;
 
                 var shirtSize = shirt.ShirtSizes
-                    .FirstOrDefault(sc => 
+                    .FirstOrDefault(sc =>
                         sc.Shirt == shirt &&
                         sc.Size.Name == sizeName);
 

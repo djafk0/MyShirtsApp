@@ -10,7 +10,7 @@
 
     using static WebConstants;
 
-    [Authorize(Roles = UserRole)]
+    [Authorize(Roles = "User, Admin")]
     public class ShirtsController : Controller
     {
         private readonly IShirtService shirts;
@@ -27,6 +27,7 @@
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = UserRole)]
         public IActionResult Add()
         {
             var isSeller = this.users.IsSeller(this.User.Id());
@@ -42,6 +43,7 @@
             });
         }
 
+        [Authorize(Roles = UserRole)]
         [HttpPost]
         public IActionResult Add(ShirtFormModel shirt)
         {
@@ -103,6 +105,7 @@
             return View(query);
         }
 
+        [Authorize(Roles = UserRole)]
         public IActionResult Mine()
         {
             var isSeller = this.users.IsSeller(this.User.Id());
@@ -117,6 +120,7 @@
             return View(myShirts);
         }
 
+        [Authorize(Roles = UserRole)]
         public IActionResult Edit(int id)
         {
             var shirt = this.shirts.Details(id);
@@ -139,6 +143,7 @@
             return View(shirtForm);
         }
 
+        [Authorize(Roles = UserRole)]
         [HttpPost]
         public IActionResult Edit(int id, ShirtFormModel shirt)
         {
@@ -215,18 +220,19 @@
 
         public IActionResult Delete(int id)
         {
+            var isAdmin = this.User.IsAdmin();
+
+            var userId = this.User.Id();
+
             var isDeleted = this.shirts
-                .Delete(
-                    id,
-                    this.User.Id(),
-                    this.User.IsAdmin());
+                .Delete(id, userId, isAdmin);
 
             if (!isDeleted)
             {
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(Mine));
+            return Ok();
         }
     }
 }

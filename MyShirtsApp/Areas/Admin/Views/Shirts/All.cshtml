@@ -20,18 +20,54 @@
     <tbody>
         @foreach (var shirt in Model)
         {
-            <tr>
+            <tr id="@shirt.Id">
                 <td scope="col" class="text-center h4 border-4 text-white" style="background-color: #234465;">@shirt.Id</td>
                 <td scope="col" class="text-center h4 border-4">@shirt.Name</td>
                 <td scope="col" class="text-center h4 border-4">$@shirt.Price</td>
-                <td scope="col" class="text-center h4 border-4@(shirt.IsAvailable ? " text-success" : " text-danger")">@(shirt.IsAvailable ? "Yes" : "No")</td>
-                <td scope="col" class="text-center h4 border-4@(shirt.IsPublic ? " text-success" : " text-danger")">@(shirt.IsPublic ? "Yes" : "No")</td>
+                <td scope="col" class="text-center h4 border-4 shirt-available@(shirt.IsAvailable ? " text-success" : " text-danger")">@(shirt.IsAvailable ? "Yes" : "No")</td>
+                <td scope="col" class="text-center h4 border-4 shirt-public@(shirt.IsPublic ? " text-success" : " text-danger")">@(shirt.IsPublic ? "Yes" : "No")</td>
                 <td scope="col" class=" border-4">
-                    <a asp-area="" asp-controller="Shirts" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger text-white float-end mb-1 mt-1">Delete</a>
-                    <a asp-area="Admin" asp-controller="Shirts" asp-action="ChangeVisibility" asp-route-id="@shirt.Id" class="btn @(shirt.IsPublic ? "bgcolor-orange" : "btn-success") text-white float-end mb-1 mt-1 m-3">@(shirt.IsPublic ? "Hide" : "Show")</a>
+                    <a onclick="onDelete(@shirt.Id)" class="btn btn-danger text-white float-end mb-1 mt-1">Delete</a>
+                    <a onclick="changeVisibility(@shirt.Id)" class="btn change-visibility @(shirt.IsPublic ? "bgcolor-orange" : "btn-success") text-white float-end mb-1 mt-1 m-3">@(shirt.IsPublic ? "Hide" : "Show")</a>
                     <a asp-area="" asp-controller="Shirts" asp-action="Details" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")" class="btn bgcolor-blue text-white float-end mb-1 mt-1 ml-3">Details</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<script type="text/javascript">
+    function changeVisibility(event){
+        let tr = document.getElementById(event);
+        let changeVisibilityButton = tr.querySelector("a.change-visibility");
+        let isPublic = tr.querySelector("td.shirt-public");
+        isPublic.textContent = isPublic.textContent == "Yes" ? "No" : "Yes"
+        if(isPublic.classList.contains("text-success")){
+            isPublic.classList.replace("text-success", "text-danger");
+            changeVisibilityButton.textContent = "Show";
+            changeVisibilityButton.classList.replace("bgcolor-orange", "btn-success");
+        } else {
+            isPublic.classList.replace("text-danger", "text-success");
+            changeVisibilityButton.textContent = "Hide";
+            changeVisibilityButton.classList.replace("btn-success", "bgcolor-orange");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: `/Admin/Shirts/ChangeVisibility/${event}`
+        })
+    }
+
+    function onDelete(event){
+        let choice = confirm("Are you sure ?");
+
+        if(choice){
+            $.ajax({
+                type: "GET",
+                url: `/Shirts/Delete/${event}`
+            })
+
+            document.getElementById(event).remove();
+        }
+    }
+</script>
