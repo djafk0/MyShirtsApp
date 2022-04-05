@@ -4,9 +4,9 @@ EVERY SHIRT IS STOLEN FROM <a href="https://way-ve.com/">https://way-ve.com/</a>
 
 | **Roles** |   **Email**   | **Password** |
 |:---------:|:-------------:|--------------|
-|   Admin   |  admin@msa.bg |    msa123    |
+|   Admin   |  admin@msa.bg |              |
 |   Seller  | seller@msa.bg |    msa123    |
-|    User   |  user@msa.bg  |    msa123    |
+|    User   |  user@msa.bg  |              |
 
 Guest (not logged in) users can access Home page.
 
