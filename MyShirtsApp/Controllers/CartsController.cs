@@ -52,8 +52,6 @@
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = "Successfully deleted !";
-
             return RedirectToAction(nameof(Mine));
         }
 

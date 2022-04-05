@@ -5,11 +5,6 @@
     ViewBag.IsFavorites = false;
     ViewBag.ShowHearts = true;
 
-    if (!User.Identity.IsAuthenticated)
-    {
-        ViewBag.ShowHearts = false;
-    }
-
     var previous = "<<";
     var next = ">>";
 
@@ -74,7 +69,7 @@
     var maxPage = Math.Ceiling((double)Model.TotalShirts / @Model.ShirtsPerPage);
 }
 
-@if (maxPage != 1 && !double.IsInfinity(maxPage))
+@if (maxPage != 1 && !double.IsInfinity(maxPage) && Model.Shirts.Any())
 {
     <div class="row mb-4">
         <div class="col-6">

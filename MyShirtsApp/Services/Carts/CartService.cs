@@ -99,6 +99,7 @@
                     sc.SizeName == sizeName)
                 .Include(sc => sc.Cart)
                 .Include(sc => sc.Shirt)
+                .ThenInclude(s => s.ShirtSizes)
                 .FirstOrDefault();
 
             if (shirtCart == null)
@@ -112,7 +113,7 @@
             }
             else
             {
-                shirtCart.Count--;
+                shirtCart.Count -= (shirtCart.Count - shirtCart.Shirt.ShirtSizes.Count);
             }
 
             this.data.SaveChanges();

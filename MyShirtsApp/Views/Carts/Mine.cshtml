@@ -2,52 +2,62 @@
 
 @{
     ViewData["Title"] = "My Cart";
+
+    var isCartEmpty = !Model.Cart.Any();
 }
 
-@if (!Model.Cart.Any())
+<h2 class="text-center" id="empty-cart-message" style="@(isCartEmpty ? string.Empty : "display: none;")">Your cart is empty!</h2>
+
+@if (!isCartEmpty)
 {
-    <h2 class="text-center">Your cart is empty!</h2>
-}
-else
-{
-    <h2 class="text-center">Total Price: @Model.TotalPrice</h2>
-    <div class="text-center">
-        <a asp-controller="Carts"
-       asp-action="Buy"
-       class="btn bgcolor-blue text-white mb-2">Buy All</a>
-    </div>
-    <div class="text-center">
-        <a asp-controller="Carts"
-       asp-action="Clear"
-       class="btn btn-danger text-white mb-2">Clear Cart</a>
+    <div id="non-empty-cart-info">
+        <h2 class="text-center">Total Price: @Model.TotalPrice</h2>
+        <div class="text-center">
+            <a asp-controller="Carts"
+           asp-action="Buy"
+           class="btn bgcolor-blue text-white mb-2">Buy All</a>
+        </div>
+        <div class="text-center">
+            <a onclick="clearCart(this)" class="unfav mb-4 btn btn-danger text-white">Clear Cart</a>
+        </div>
     </div>
 }
 
 <div class="row">
     @foreach (var shirt in Model.Cart)
     {
-        <div class="col-md-4">
+        <div class="col-md-4 shirt-element">
             <div class="card mb-4 bgcolor-gray border-none">
                 <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
                 <div class="card-body">
-                    <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName) - @shirt.Count @(shirt.Count == 1 ? "pc" : "pcs")</h5>
+                    <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName) - @shirt.Count @(shirt.Count == 1 ? "Piece" : "Pcs")</h5>
                     <h5 class="card-title text-center">@shirt.Price</h5>
                     <div class="text-center">
-                       <a asp-controller="Carts"
-                       asp-action="DeleteShirt"
-                       asp-route-shirtId="@shirt.ShirtId"
-                       asp-route-sizeName="@shirt.SizeName"
-                       asp-route-flag=@false
-                       class="btn btn-warning text-dark mb-1">Remove One</a>
-                       <a asp-controller="Carts"
+                        <a asp-controller="Carts"
                        asp-action="DeleteShirt"
                        asp-route-shirtId="@shirt.ShirtId"
                        asp-route-sizeName="@shirt.SizeName"
                        asp-route-flag=@true
-                       class="btn btn-warning text-dark mb-1">Remove All</a>
+                       class="btn btn-warning bgcolor-orange text-white mb-1">Remove All Pieces</a>
                     </div>
                 </div>
             </div>
         </div>
     }
 </div>
+
+<script type="text/javascript">
+    function clearCart(){
+        let choice = confirm("Are you sure ?")
+        if(choice){
+            document.querySelectorAll(".shirt-element").forEach(x => x.remove())
+            document.getElementById("empty-cart-message").style.display = "block";
+            document.getElementById("non-empty-cart-info").style.display = "none";
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/Carts/Clear",
+        })
+    }
+</script>

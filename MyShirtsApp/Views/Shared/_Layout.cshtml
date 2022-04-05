@@ -30,7 +30,7 @@
 </head>
 <body class="bgcolor-gray">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3 bgcolor-blue navbar-dark">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3 bgcolor-blue navbar-dark fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
@@ -93,7 +93,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="padding-top: 80px;">
         @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
         {
             <div class="alert alert-info text-center" role="alert">

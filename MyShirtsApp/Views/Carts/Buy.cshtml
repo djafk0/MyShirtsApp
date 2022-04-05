@@ -17,13 +17,18 @@
                         Your purchase @shirt.ShirtCartCount @(shirt.ShirtCartCount <= 1 ? "pc" : "pcs")
                     </h5>
                     <div class="text-center">
-                        <a asp-controller="Carts" asp-action="Mine" class="btn btn-warning text-dark mb-1">To Cart</a>
+                        <a asp-controller="Carts"
+                       asp-action="DeleteShirt"
+                       asp-route-shirtId="@shirt.Id"
+                       asp-route-sizeName="@shirt.SizeName"
+                       asp-route-flag=@false
+                       class="btn btn-success text-white mb-2">Remove Unnecessary</a>
                         <a asp-controller="Carts"
                        asp-action="DeleteShirt"
                        asp-route-shirtId="@shirt.Id"
                        asp-route-sizeName="@shirt.SizeName"
                        asp-route-flag=@true
-                       class="btn btn-warning text-dark mb-1">Remove</a>
+                       class="btn bgcolor-orange text-white mb-2">Remove All</a>
                     </div>
                 </div>
             </div>

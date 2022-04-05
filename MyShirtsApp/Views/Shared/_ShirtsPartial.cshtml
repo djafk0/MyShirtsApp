@@ -3,7 +3,7 @@
 <div class="row">
     @foreach (var shirt in Model)
     {
-        <div class="col-md-4">
+        <div class="col-md-4 shirt-element" id="@shirt.Id">
             <div class="card mb-4 bgcolor-gray border-none">
                 <div style="text-align: center">
                     @if (ViewBag.ShowHearts == true)
@@ -11,12 +11,12 @@
                         var shirtName = shirt.Name.Replace(" ", "-");
                         @if (shirt.IsFavorite)
                         {
-                            <a onclick="action(this)" class="unfav" id="@shirt.Id-@shirtName">
+                            <a onclick="action(this)" class="unfav mb-4" id="@shirt.Id-@shirtName">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                                 </svg>
                             </a>
-                            <a onclick="action(this)" class="fav" id="@shirt.Id-@shirtName">
+                            <a onclick="action(this)" class="fav mb-4" id="@shirt.Id-@shirtName">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="black" class="bi bi-heart" viewBox="0 0 16 16">
                                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                                 </svg>
@@ -24,12 +24,12 @@
                         }
                         else
                         {
-                            <a onclick="action(this)" class="fav" id="@shirt.Id-@shirtName">
+                            <a onclick="action(this)" class="fav mb-4" id="@shirt.Id-@shirtName">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="red" class="bi bi-heart-fill" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                                 </svg>
                             </a>
-                            <a onclick="action(this)" class="unfav" id="@shirt.Id-@shirtName">
+                            <a onclick="action(this)" class="unfav mb-4" id="@shirt.Id-@shirtName">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="33" fill="black" class="bi bi-heart" viewBox="0 0 16 16">
                                     <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                                 </svg>
@@ -50,22 +50,15 @@
                 </div>
                 @if (shirt.IsAvailable)
                 {
-                    <img src="@shirt.ImageUrl" class="cart-img-top" alt="@shirt.Name" />
+                    <img onclick="details(this)" src="@shirt.ImageUrl" class="cart-img-top zoom mt-4" alt="@shirt.Name" id="@shirt.Id" style="cursor: pointer" />
                 }
                 else
                 {
-                    <img src="https://way-ve.com/SOLD.gif" style="background: url(@shirt.ImageUrl) no-repeat; background-size: 100%;" class="card-img-top" alt="@shirt.Name">
+                    <img onclick="details(this)" src="https://way-ve.com/SOLD.gif" style="background: url(@shirt.ImageUrl) no-repeat; background-size: 100%; cursor: pointer;" class="card-img-top zoom mt-4" alt="@shirt.Name">
                 }
                 <div class="card-body">
                     <h5 class="card-title text-center">@shirt.Name</h5>
                     <p class="card-text text-center">$@shirt.Price</p>
-                    <div class="text-center">
-                        <a asp-controller="Shirts" asp-action="Details" asp-route-id="@shirt.Id" asp-route-name="@shirt.Name.Replace(" ", "-")" class="btn bgcolor-blue text-white mb-1">Details</a>
-                        @if (ViewBag.AllowShirtEdit == true)
-                        {
-                            <a asp-controller="Shirts" asp-action="Delete" asp-route-id="@shirt.Id" class="btn btn-danger text-white mb-1">Delete</a>
-                        }
-                    </div>
                 </div>
             </div>
         </div>
@@ -74,29 +67,57 @@
 
 <script type="text/javascript">
     function action(event){
-        let anchors = event.parentElement.querySelectorAll("a");
-        let params = event.id;
-        let id = params.slice(0, params.indexOf("-"));
-        let name = params.slice(params.indexOf("-") + 1);
-
-        if(anchors[0].classList == "unfav"){
-            anchors[0].classList = "fav";
-            anchors[1].classList = "unfav";
-        } else {
-            anchors[0].classList = "unfav";
-            anchors[1].classList = "fav";
-        }
-
-        let isMine = @ViewBag.IsFavorites.ToString().ToLower();
-
-        if (isMine == true)
+        @if (!User.Identity.IsAuthenticated)
         {
-            event.parentElement.parentElement.style.display = "none";
+            <text>
+                let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString() + Context.Request.QueryString.Value.Replace("&", "%26"))";
+                window.location.href = url;
+            </text>
         }
+        else
+        {
+            <text>
+                let anchors = event.parentElement.querySelectorAll("a");
+                let params = event.id;
+                let id = params.slice(0, params.indexOf("-"));
+                let name = params.slice(params.indexOf("-") + 1);
 
-        $.ajax({
-            type: "GET",
-            url: `/Favorites/Action/${id}/${name}`,
-        })
+                if(anchors[0].classList.contains("unfav")){
+                    anchors[0].classList.remove("unfav");
+                    anchors[0].classList.add("fav");
+                    anchors[1].classList.remove("fav");
+                    anchors[1].classList.add("unfav");
+                } else {
+                    anchors[0].classList.remove("fav");
+                    anchors[0].classList.add("unfav");
+                    anchors[1].classList.remove("unfav");
+                    anchors[1].classList.add("fav");
+                }
+
+                let isMine = @ViewBag.IsFavorites.ToString().ToLower();
+
+                if (isMine == true)
+                {
+                    let target = document.getElementById(id);
+                    target.animate({opacity: '0'}, 500);
+                    setTimeout(function () {
+                        target.remove();
+                        let divs = document.querySelectorAll("div.shirt-element");
+                        if(divs.length == 0){
+                            document.getElementById("no-shirts-message").style.display = "block";
+                        }
+                    }, 400)
+                }
+
+                $.ajax({
+                    type: "GET",
+                    url: `/Favorites/Action/${id}/${name}`,
+                })
+            </text>
+        }
     };
+
+    function details(event){
+        window.location.href = `/Shirts/Details/${event.id}/${event.alt.replace(" ", "-")}`
+    }
 </script>
