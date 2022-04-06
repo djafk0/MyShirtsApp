@@ -8,7 +8,7 @@
 
     using static WebConstants;
 
-    [Authorize]
+    [Authorize(Roles = UserRole)]
     public class UsersController : Controller
     {
         private readonly IUserService users;
@@ -18,9 +18,9 @@
 
         public IActionResult Become()
         {
-            if (this.users.IsSeller(this.User.Id()) || this.User.IsAdmin())
+            if (this.users.IsSeller(this.User.Id()))
             {
-                return RedirectToAction("All", "Shirts");
+                return RedirectToAction("Mine", "Shirts");
             }
 
             return View();
@@ -29,9 +29,9 @@
         [HttpPost]
         public IActionResult Become(BecomeSellerFormModel user)
         {
-            if (this.users.IsSeller(this.User.Id()) || this.User.IsAdmin())
+            if (this.users.IsSeller(this.User.Id()))
             {
-                return RedirectToAction("All", "Shirts");
+                return RedirectToAction("Mine", "Shirts");
             }
 
             if (!ModelState.IsValid)
@@ -41,9 +41,11 @@
 
             this.users.BecomeSeller(this.User.Id(), user.CompanyName);
 
-            TempData[GlobalMessageKey] = "Thank you for becomming a seller!";
 
-            return RedirectToAction("All", "Shirts");
+
+            TempData[GlobalMessageKey] = "Thank you for becomming a seller !";
+
+            return RedirectToAction("Mine", "Shirts");
         }
     }
 }

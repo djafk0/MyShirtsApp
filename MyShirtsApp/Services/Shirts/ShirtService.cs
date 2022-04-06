@@ -109,18 +109,20 @@
                 shirt.SizeXXL ?? 0
             };
 
-        public void ChangeVisibility(int id)
+        public bool ChangeVisibility(int id)
         {
             var shirt = this.data.Shirts.Find(id);
 
             if (shirt == null)
             {
-                return;
+                return false;
             }
 
             shirt.IsPublic = !shirt.IsPublic;
 
             this.data.SaveChanges();
+
+            return true;
         }
 
         public int Create(
@@ -154,29 +156,18 @@
             return shirtData.Id;
         }
 
-        public bool Edit(
+        public void Edit(
             int id,
             string name,
             string imageUrl,
             decimal? price,
             string userId,
-            bool isAdmin,
             List<int?> sizes)
         {
             var shirtData = this.data
                 .Shirts
                 .Include(i => i.ShirtSizes)
                 .FirstOrDefault(s => s.Id == id);
-
-            if (shirtData == null)
-            {
-                return false;
-            }
-
-            if (shirtData.UserId != userId && !isAdmin)
-            {
-                return false;
-            }
 
             shirtData.Name = name;
             shirtData.ImageUrl = imageUrl;
@@ -191,8 +182,6 @@
             }
 
             this.data.SaveChanges();
-
-            return true;
         }
 
         public bool Delete(int id, string userId, bool isAdmin)

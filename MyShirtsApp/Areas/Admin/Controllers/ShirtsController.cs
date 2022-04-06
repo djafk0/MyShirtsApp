@@ -21,9 +21,14 @@
 
         public IActionResult ChangeVisibility(int id)
         {
-            this.shirts.ChangeVisibility(id);
+            var isChanged = this.shirts.ChangeVisibility(id);
 
-            return RedirectToAction(nameof(All));
+            if(!isChanged)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
     }
 }

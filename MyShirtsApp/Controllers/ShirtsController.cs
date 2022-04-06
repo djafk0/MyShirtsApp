@@ -149,18 +149,16 @@
         {
             var userId = this.User.Id();
 
-            var isAdmin = this.User.IsAdmin();
-
             var shirtDetails = this.shirts.Details(id);
 
             if (shirtDetails == null)
             {
-                return RedirectToAction(nameof(All));
+                return BadRequest();
             }
 
             if (shirtDetails.UserId != userId)
             {
-                return RedirectToAction(nameof(All));
+                return BadRequest();
             }
 
             var sizes = this.shirts.SizesFromModel(shirt);
@@ -177,19 +175,13 @@
                 return View(shirt);
             }
 
-            var isShirtEdited = this.shirts.Edit(
+            this.shirts.Edit(
                 id,
                 shirt.Name,
                 shirt.ImageUrl,
                 shirt.Price,
                 userId,
-                isAdmin,
                 sizes);
-
-            if (!isShirtEdited)
-            {
-                return RedirectToAction(nameof(All));
-            }
 
             TempData[GlobalMessageKey] = "Your shirt was edited successfully and it is awaiting to be approved.";
 
@@ -212,8 +204,6 @@
             {
                 return BadRequest();
             }
-
-            ViewBag.ReturnUrl = Request.Headers["Referer"].ToString();
 
             return View(shirt);
         }

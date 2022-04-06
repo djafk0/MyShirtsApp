@@ -19,7 +19,7 @@
 
         List<int?> SizesFromModel(ShirtFormModel shirt);
 
-        void ChangeVisibility(int id);
+        bool ChangeVisibility(int id);
 
         int Create(
             string name,
@@ -28,13 +28,12 @@
             string userId,
             List<int?> sizes);
 
-        bool Edit(
+        void Edit(
             int id,
             string name,
             string imageUrl, 
             decimal? price, 
             string userId,
-            bool isAdmin,
             List<int?> sizes);
 
         bool Delete(int id, string userId, bool isAdmin);

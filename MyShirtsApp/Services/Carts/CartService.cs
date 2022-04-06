@@ -86,8 +86,8 @@
                 .ToList();
 
         public bool IsDeletedShirt(
-            int shirtId,
             string userId,
+            int shirtId,
             string sizeName,
             bool flag)
         {

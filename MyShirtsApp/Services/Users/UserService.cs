@@ -1,22 +1,40 @@
 ﻿namespace MyShirtsApp.Services.Users
 {
     using MyShirtsApp.Data;
+    using MyShirtsApp.Data.Models;
+    using Microsoft.AspNetCore.Identity;
+
+    using static WebConstants;
 
     public class UserService : IUserService
     {
         private readonly MyShirtsAppDbContext data;
+        private readonly UserManager<User> userManager;
 
-        public UserService(MyShirtsAppDbContext data)
-            => this.data = data;
+        public UserService(
+            MyShirtsAppDbContext data,
+            UserManager<User> userManager)
+        {
+            this.data = data;
+            this.userManager = userManager;
+        }
 
         public void BecomeSeller(string userId, string companyName)
         {
             var user = this.data
                 .Users
-                .FirstOrDefault(u => u.Id == userId);
+                .Find(userId);
 
             user.IsSeller = true;
             user.CompanyName = companyName;
+
+            Task.Run(async () =>
+            {
+                await this.userManager.RemoveFromRoleAsync(user, UserRole);
+                await this.userManager.AddToRoleAsync(user, SellerRole);
+            })
+                .GetAwaiter()
+                .GetResult();
 
             this.data.SaveChanges();
         }

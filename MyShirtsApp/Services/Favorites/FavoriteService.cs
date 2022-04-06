@@ -9,13 +9,13 @@
 
     public class FavoriteService : IFavoriteService
     {
-        private readonly MyShirtsAppDbContext data;
         private readonly IMapper mapper;
+        private readonly MyShirtsAppDbContext data;
 
-        public FavoriteService(MyShirtsAppDbContext data, IMapper mapper)
+        public FavoriteService(IMapper mapper, MyShirtsAppDbContext data)
         {
-            this.data = data;
             this.mapper = mapper;
+            this.data = data;
         }
 
         public IEnumerable<ShirtServiceModel> All(string userId)

@@ -41,9 +41,11 @@
 
         public IActionResult DeleteShirt([FromQuery] CartQueryViewModel query)
         {
+            var userId = this.User.Id();
+
             var isDeleted = this.carts.IsDeletedShirt(
+                userId,
                 query.ShirtId,
-                this.User.Id(),
                 query.SizeName,
                 query.Flag);
 
@@ -52,14 +54,14 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(Mine));
+            return Ok();
         }
 
         public IActionResult Clear()
         {
             this.carts.ClearCart(this.User.Id());
 
-            return RedirectToAction(nameof(Mine));
+            return Ok();
         }
 
         public IActionResult Buy()
@@ -71,7 +73,7 @@
                 return View("Problems", problems);
             }
 
-            return View();
+            return RedirectToAction("All", "Shirts");
         }
     }
 }

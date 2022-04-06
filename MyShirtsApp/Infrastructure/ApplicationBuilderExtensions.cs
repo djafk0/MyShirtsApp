@@ -150,12 +150,18 @@
                     return;
                 }
 
-                var role = new IdentityRole
+                var sellerRole = new IdentityRole
+                {
+                    Name = SellerRole
+                };
+
+                var userRole = new IdentityRole
                 {
                     Name = UserRole
                 };
 
-                await roleManager.CreateAsync(role);
+                await roleManager.CreateAsync(sellerRole);
+                await roleManager.CreateAsync(userRole);
 
                 const string sellerEmail = "seller@msa.bg";
                 const string userEmail = "user@msa.bg";
@@ -165,12 +171,13 @@
                 {
                     Email = sellerEmail,
                     UserName = sellerEmail,
+                    CompanyName = SellerRole,
                     IsSeller = true
                 };
 
                 await userManager.CreateAsync(seller, password);
 
-                await userManager.AddToRoleAsync(seller, UserRole);
+                await userManager.AddToRoleAsync(seller, SellerRole);
 
                 mappedShirts.ForEach(s => s.UserId = seller.Id);
 
