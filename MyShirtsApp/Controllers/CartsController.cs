@@ -6,9 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
 
-    using static WebConstants;
-
-    [Authorize(Roles = UserRole)]
+    [Authorize(Roles = "User, Seller")]
     public class CartsController : Controller
     {
         private readonly ICartService carts;
@@ -43,25 +41,36 @@
         {
             var userId = this.User.Id();
 
-            var isDeleted = this.carts.IsDeletedShirt(
-                userId,
-                query.ShirtId,
-                query.SizeName,
-                query.Flag);
+            var isDeleted = this.carts
+                .IsDeletedShirt(
+                    userId,
+                    query.ShirtId,
+                    query.SizeName,
+                    query.Flag);
 
             if (!isDeleted)
             {
                 return BadRequest();
             }
 
-            return Ok();
+            return RedirectToAction(nameof(Mine));
         }
 
         public IActionResult Clear()
         {
             this.carts.ClearCart(this.User.Id());
 
-            return Ok();
+            return RedirectToAction(nameof(Mine));
+        }
+
+        public IActionResult Check()
+        {
+            var cart = this.carts.MyCart(this.User.Id());
+
+            return View(new CartResultViewModel
+            {
+                TotalPrice = cart.Sum(c => c.Price * c.Count)
+            });
         }
 
         public IActionResult Buy()

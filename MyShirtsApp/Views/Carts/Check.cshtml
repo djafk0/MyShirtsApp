@@ -1,0 +1,77 @@
+﻿@model CartResultViewModel
+
+@{
+    ViewData["Title"] = "Check";
+}
+
+<div style="margin: 0 auto;">
+    <div class="form-check">
+        <input onclick="onDelivery(this)" class="form-check-input" type="radio" name="flexRadioDefault" checked>
+        <label class="form-check-label">Cash on delivery</label>
+    </div>
+    <div class="form-check mb-3">
+        <input onclick="withCard(this)" class="form-check-input" type="radio" name="flexRadioDefault">
+        <label class="form-check-label">Credit/Debit card</label>
+    </div>
+</div>
+
+<row style="display: flex;">
+    <div class="col-md-4 mb-3" id="address-details">
+        <div class="card px-4">
+            <p class="h8 py-3">Address Details</p>
+            <div class="row">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Street</p> <input class="form-control mb-3 text-dark" type="text" value="Svoboda" disabled>
+                </div>
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">City</p> <input class="form-control mb-3 text-dark" type="text" value="Varna" disabled>
+                </div>
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">State</p> <input class="form-control mb-3 text-dark" type="text" value="Varna" disabled>
+                </div>
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Zip</p> <input class="form-control mb-3 pt-2 text-dark" value="9009" disabled>
+                </div>
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Country</p> <input class="form-control mb-3 pt-2 text-dark" value="Bulgaria" disabled>
+                </div>
+                <div class="col-12" id="pay-on-delivery-div">
+                    <a asp-controller="Carts" asp-action="Buy" class="btn bgcolor-blue mb-3 text-white">Pay on delivery $@Model.TotalPrice</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 m-2" id="with-card" style="display: none;">
+        <div class="card px-4">
+            <p class="h8 py-3">Payment Details</p>
+            <div class="row">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Person Name</p> <input class="form-control mb-3 text-dark" type="text" value="Barry Allen" disabled>
+                </div>
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Card Number</p> <input class="form-control mb-3 text-dark" type="text" value="1234 5678 1234 5678" disabled>
+                </div>
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">Expiry</p> <input class="form-control mb-3 text-dark" type="text" value="05/2022" disabled>
+                </div>
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">CVV/CVC</p> <input class="form-control mb-3 pt-2 text-dark" value="123" disabled>
+                </div>
+                <div class="col-12">
+                    <a asp-controller="Carts" asp-action="Buy" class="btn bgcolor-blue mb-3 text-white">Pay with card $@Model.TotalPrice</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</row>
+<script type="text/javascript">
+    function onDelivery(event){
+        document.getElementById("with-card").style.display = "none";
+        document.getElementById("pay-on-delivery-div").style.display = "block";
+    }
+    function withCard(event){
+        document.getElementById("with-card").style.display = "block";
+        document.getElementById("pay-on-delivery-div").style.display = "none";
+    }
+</script>

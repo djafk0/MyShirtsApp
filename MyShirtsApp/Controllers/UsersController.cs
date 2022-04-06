@@ -18,30 +18,18 @@
 
         public IActionResult Become()
         {
-            if (this.users.IsSeller(this.User.Id()))
-            {
-                return RedirectToAction("Mine", "Shirts");
-            }
-
             return View();
         }
 
         [HttpPost]
         public IActionResult Become(BecomeSellerFormModel user)
         {
-            if (this.users.IsSeller(this.User.Id()))
-            {
-                return RedirectToAction("Mine", "Shirts");
-            }
-
             if (!ModelState.IsValid)
             {
                 return View();
             }
 
             this.users.BecomeSeller(this.User.Id(), user.CompanyName);
-
-
 
             TempData[GlobalMessageKey] = "Thank you for becomming a seller !";
 

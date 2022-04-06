@@ -10,7 +10,7 @@
 
     using static WebConstants;
 
-    [Authorize(Roles = "User, Admin")]
+    [Authorize(Roles = "Seller, Admin")]
     public class ShirtsController : Controller
     {
         private readonly IShirtService shirts;
@@ -27,7 +27,7 @@
             this.mapper = mapper;
         }
 
-        [Authorize(Roles = UserRole)]
+        [Authorize(Roles = SellerRole)]
         public IActionResult Add()
         {
             var isSeller = this.users.IsSeller(this.User.Id());
@@ -43,7 +43,7 @@
             });
         }
 
-        [Authorize(Roles = UserRole)]
+        [Authorize(Roles = SellerRole)]
         [HttpPost]
         public IActionResult Add(ShirtFormModel shirt)
         {
@@ -105,7 +105,7 @@
             return View(query);
         }
 
-        [Authorize(Roles = UserRole)]
+        [Authorize(Roles = SellerRole)]
         public IActionResult Mine()
         {
             var isSeller = this.users.IsSeller(this.User.Id());
@@ -120,7 +120,7 @@
             return View(myShirts);
         }
 
-        [Authorize(Roles = UserRole)]
+        [Authorize(Roles = SellerRole)]
         public IActionResult Edit(int id)
         {
             var shirt = this.shirts.Details(id);
@@ -143,7 +143,7 @@
             return View(shirtForm);
         }
 
-        [Authorize(Roles = UserRole)]
+        [Authorize(Roles = SellerRole)]
         [HttpPost]
         public IActionResult Edit(int id, ShirtFormModel shirt)
         {

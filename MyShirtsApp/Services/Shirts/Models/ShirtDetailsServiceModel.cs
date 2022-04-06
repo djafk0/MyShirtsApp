@@ -13,5 +13,7 @@
         public string UserId { get; init; }
 
         public bool IsAvailable { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 }

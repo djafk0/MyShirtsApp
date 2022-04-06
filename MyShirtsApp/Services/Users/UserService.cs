@@ -33,8 +33,8 @@
                 await this.userManager.RemoveFromRoleAsync(user, UserRole);
                 await this.userManager.AddToRoleAsync(user, SellerRole);
             })
-                .GetAwaiter()
-                .GetResult();
+            .GetAwaiter()
+            .GetResult();
 
             this.data.SaveChanges();
         }

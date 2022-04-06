@@ -5,9 +5,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
 
-    using static WebConstants;
-
-    [Authorize(Roles = UserRole)]
+    [Authorize(Roles = "User, Seller")]
     public class FavoritesController : Controller
     {
         private readonly IFavoriteService favorites;

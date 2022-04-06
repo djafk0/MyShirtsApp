@@ -34,7 +34,7 @@
 
             var isValidShirtId = this.data
                 .Shirts
-                .Any(s => s.Id == id);
+                .Any(s => s.Id == id && s.IsPublic);
 
             var isValidSizeName = this.data
                 .Sizes

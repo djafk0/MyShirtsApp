@@ -17,6 +17,11 @@
 
         isAdmin = User.IsAdmin();
 
+        if(!Model.IsPublic)
+        {
+            isAdmin = true;
+        }
+
         isAuthenticated = true;
     }
 }
@@ -44,7 +49,7 @@
     </div>
 </div>
 
-@if (!isAdmin && isAuthenticated)
+@if (!isAdmin && isAuthenticated && Model.IsAvailable)
 {
     <div class="text-center mb-3">
         <span class="text-small text-dark">Select size to add in cart</span>
@@ -52,12 +57,12 @@
 }
 
 <row class="text-center rounded mx-auto d-block mb-3">
-    <a onclick="buy(this)" id="@Model.Id-XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XS</a>
-    <a onclick="buy(this)" id="@Model.Id-S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">S</a>
-    <a onclick="buy(this)" id="@Model.Id-M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">M</a>
-    <a onclick="buy(this)" id="@Model.Id-L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">L</a>
-    <a onclick="buy(this)" id="@Model.Id-XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
-    <a onclick="buy(this)" id="@Model.Id-XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
+    <a onclick="addToCart(this)" id="@Model.Id-XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XS</a>
+    <a onclick="addToCart(this)" id="@Model.Id-S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">S</a>
+    <a onclick="addToCart(this)" id="@Model.Id-M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">M</a>
+    <a onclick="addToCart(this)" id="@Model.Id-L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">L</a>
+    <a onclick="addToCart(this)" id="@Model.Id-XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
+    <a onclick="addToCart(this)" id="@Model.Id-XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
 </row>
 
 @if (userId == Model.UserId)
@@ -115,7 +120,7 @@
 </table>
 
 <script type="text/javascript">
-    function buy(event){
+    function addToCart(event){
         @if (!isAuthenticated)
         {
             <text>

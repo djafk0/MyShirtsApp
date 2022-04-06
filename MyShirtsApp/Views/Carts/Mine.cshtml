@@ -14,7 +14,7 @@
         <h2 class="text-center">Total Price: @Model.TotalPrice</h2>
         <div class="text-center">
             <a asp-controller="Carts"
-           asp-action="Buy"
+           asp-action="Check"
            class="btn bgcolor-blue text-white mb-2">Buy All</a>
         </div>
         <div class="text-center">
@@ -28,7 +28,7 @@
     {
         <div class="col-md-4 shirt-element">
             <div class="card mb-4 bgcolor-gray border-none">
-                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
+                <img onclick="details(this)" id="@shirt.ShirtId" src="@shirt.ImageUrl" class="card-img-top zoom" alt="@shirt.Name">
                 <div class="card-body">
                     <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName) - @shirt.Count @(shirt.Count == 1 ? "Piece" : "Pcs")</h5>
                     <h5 class="card-title text-center">@shirt.Price</h5>
@@ -59,5 +59,9 @@
             type: "GET",
             url: "/Carts/Clear",
         })
+    }
+
+    function details(event){
+        window.location.href = `/Shirts/Details/${event.id}/${event.alt.replace(" ", "-")}`
     }
 </script>
