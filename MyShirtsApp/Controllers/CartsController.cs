@@ -6,6 +6,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
 
+    using static WebConstants;
+
     [Authorize(Roles = "User, Seller")]
     public class CartsController : Controller
     {
@@ -53,14 +55,14 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(Mine));
+            return Ok();
         }
 
         public IActionResult Clear()
         {
             this.carts.ClearCart(this.User.Id());
 
-            return RedirectToAction(nameof(Mine));
+            return Ok();
         }
 
         public IActionResult Check()
@@ -75,12 +77,18 @@
 
         public IActionResult Buy()
         {
-            var problems = this.carts.BuyAll(this.User.Id());
+            var userId = this.User.Id();
+
+            var problems = this.carts.BuyAll(userId);
 
             if (problems.Any())
             {
                 return View("Problems", problems);
             }
+
+            this.carts.ClearCart(userId);
+
+            TempData[GlobalMessageKey] = "Your purchase was successful !";
 
             return RedirectToAction("All", "Shirts");
         }

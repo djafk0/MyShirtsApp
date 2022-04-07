@@ -11,7 +11,7 @@
 @if (!isCartEmpty)
 {
     <div id="non-empty-cart-info">
-        <h2 class="text-center">Total Price: @Model.TotalPrice</h2>
+        <h2 class="text-center" id="total-price">Total Price: $@Model.TotalPrice</h2>
         <div class="text-center">
             <a asp-controller="Carts"
            asp-action="Check"
@@ -29,16 +29,13 @@
         <div class="col-md-4 shirt-element">
             <div class="card mb-4 bgcolor-gray border-none">
                 <img onclick="details(this)" id="@shirt.ShirtId" src="@shirt.ImageUrl" class="card-img-top zoom" alt="@shirt.Name">
+                <input type="hidden" class="count" value="@shirt.Count">
+                <input type="hidden" class="size-name" value="@shirt.SizeName">
                 <div class="card-body">
                     <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName) - @shirt.Count @(shirt.Count == 1 ? "Piece" : "Pcs")</h5>
-                    <h5 class="card-title text-center">@shirt.Price</h5>
+                    <h5 class="card-title text-center price">$@shirt.Price/piece</h5>
                     <div class="text-center">
-                        <a asp-controller="Carts"
-                       asp-action="DeleteShirt"
-                       asp-route-shirtId="@shirt.ShirtId"
-                       asp-route-sizeName="@shirt.SizeName"
-                       asp-route-flag=@true
-                       class="btn btn-warning bgcolor-orange text-white mb-1">Remove From Cart</a>
+                        <a onclick="deleteShirt(@shirt.ShirtId)" class="btn bgcolor-orange text-white mb-1">Remove From Cart</a>
                     </div>
                 </div>
             </div>
@@ -49,6 +46,7 @@
 <script type="text/javascript">
     function clearCart(){
         let choice = confirm("Are you sure ?")
+
         if(choice){
             document.querySelectorAll(".shirt-element").forEach(x => x.remove())
             document.getElementById("empty-cart-message").style.display = "block";
@@ -59,6 +57,41 @@
             type: "GET",
             url: "/Carts/Clear",
         })
+    }
+
+    function deleteShirt(event){
+        let choice = confirm("Are you sure ?");
+        let shirtElement = document.getElementById(event).closest(".shirt-element");
+
+        if(choice){
+            let sizeName = shirtElement.querySelector("input.size-name").value.replace(" ", "-");
+
+            $.ajax({
+                type: "GET",
+                url: `/Carts/DeleteShirt?shirtId=${event}&sizeName=${sizeName}&flag=True`
+            })
+
+            let count = parseInt(shirtElement.querySelector("input.count").value);
+
+            let priceElement = shirtElement.querySelector(".price");
+
+            let price = parseFloat(priceElement.textContent.substring(1, priceElement.textContent.indexOf("/"))) * count;
+
+            let totalPriceElement = document.getElementById("total-price");
+
+            let totalPrice = parseFloat(totalPriceElement.textContent.substring(14));
+
+            totalPriceElement.textContent = `Total Price: $${totalPrice - price}`;
+
+            shirtElement.remove();
+
+            let elementsCount = document.querySelectorAll(".shirt-element").length;
+
+            if(elementsCount == 0){
+                document.getElementById("empty-cart-message").style.display = "block";
+                document.getElementById("non-empty-cart-info").style.display = "none";
+            }
+        }
     }
 
     function details(event){

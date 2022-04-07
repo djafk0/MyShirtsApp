@@ -43,12 +43,6 @@
     </div>
 </div>
 
-<div class="text-center mb-3">
-    <div class="alert-success" style="display:none;">
-        <h3 id="message">Successfully added to cart.</h3>
-    </div>
-</div>
-
 @if (!isAdmin && isAuthenticated && Model.IsAvailable)
 {
     <div class="text-center mb-3">
@@ -64,6 +58,12 @@
     <a onclick="addToCart(this)" id="@Model.Id-XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
     <a onclick="addToCart(this)" id="@Model.Id-XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
 </row>
+
+<div class="text-center mb-3">
+    <div class="alert-success" style="display:none;">
+        <h3 id="message">Successfully added to cart.</h3>
+    </div>
+</div>
 
 @if (userId == Model.UserId)
 {

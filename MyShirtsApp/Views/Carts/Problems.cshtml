@@ -1,39 +1,84 @@
 ﻿@model IEnumerable<ProblemBuyServiceModel>
 
 @{
-    ViewData["Title"] = "Problem";
+    ViewData["Title"] = "Problems";
 }
 
-<h2 class="text-danger text-center">Oopps...</h2>
+<h2 class="text-danger text-center" id="info-message">Ooppss...</h2>
 
 <div class="row">
     @foreach (var shirt in Model)
     {
-        <div class="col-md-4">
+        <div class="col-md-4 shirt-element">
             <div class="card mb-4 bgcolor-gray border-none">
-                <img src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
+                <img id="@shirt.Id" src="@shirt.ImageUrl" class="card-img-top" alt="@shirt.Name">
                 <div class="card-body">
                     <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName)</h5>
+                    <input type="hidden" class="size-name" value="@shirt.SizeName">
                     <h5 class="card-title text-center">
                         Available @shirt.ShirtSizeCount @(shirt.ShirtSizeCount <= 1 ? "pc" : "pcs") -
                         Your purchase @shirt.ShirtCartCount @(shirt.ShirtCartCount <= 1 ? "pc" : "pcs")
                     </h5>
                     <div class="text-center">
-                        <a asp-controller="Carts"
-                       asp-action="DeleteShirt"
-                       asp-route-shirtId="@shirt.Id"
-                       asp-route-sizeName="@shirt.SizeName"
-                       asp-route-flag=@false
-                       class="btn btn-success text-white mb-2">Remove Unnecessary</a>
-                        <a asp-controller="Carts"
-                       asp-action="DeleteShirt"
-                       asp-route-shirtId="@shirt.Id"
-                       asp-route-sizeName="@shirt.SizeName"
-                       asp-route-flag=@true
-                       class="btn bgcolor-orange text-white mb-2">Remove From Cart</a>
+                        <a onclick="deleteUnnecessary(@shirt.Id)" class="btn btn-success text-white mb-2">Remove Unnecessary</a>
+                        <a onclick="deleteShirt(@shirt.Id)" class="btn bgcolor-orange text-white mb-2">Remove From Cart</a>
                     </div>
                 </div>
             </div>
         </div>
     }
 </div>
+
+<script type="text/javascript">
+    function deleteShirt(event){
+        let choice = confirm("Are you sure ?");
+        let shirtElement = document.getElementById(event).closest(".shirt-element");
+        let sizeName = shirtElement.querySelector("input.size-name").value
+
+        if(choice){
+            $.ajax({
+                type: "GET",
+                url: `/Carts/DeleteShirt?shirtId=${event}&sizeName=${sizeName}&flag=True`
+            })
+
+            shirtElement.remove();
+
+            let elementsCount = document.querySelectorAll(".shirt-element").length;
+            let infoMessage = document.getElementById("info-message");
+
+            infoMessage.classList.replace("text-danger", "text-success");
+            infoMessage.textContent = ":("
+
+            if(elementsCount == 0){
+                setTimeout(function () {
+                    document.location.href = "/Carts/Mine";
+                }, 1000)
+            }
+        }
+    }
+
+    function deleteUnnecessary(event){
+        let shirtElement = document.getElementById(event).closest(".shirt-element");
+        let sizeName = shirtElement.querySelector("input.size-name").value
+
+        $.ajax({
+            type: "GET",
+            url: `/Carts/DeleteShirt?shirtId=${event}&sizeName=${sizeName}&flag=False`
+        })
+
+        shirtElement.remove();
+
+        let elementsCount = document.querySelectorAll(".shirt-element").length;
+        let infoMessage = document.getElementById("info-message");
+
+        infoMessage.classList.replace("text-danger", "text-success");
+        infoMessage.textContent = "Good..."
+
+        if(elementsCount == 0){
+            setTimeout(function () {
+                document.location.href = "/Carts/Mine";
+                
+            }, 1000)
+        }
+    }
+</script>
