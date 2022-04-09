@@ -27,7 +27,7 @@
         }
 
         [Fact]
-        public void BecomePostShouldWorksCorrectly()
+        public void BecomePostShouldReturnRedirectToAction()
         {
             var user = new User();
 
@@ -52,10 +52,11 @@
             var result = usersController.Become(model);
 
             Assert.NotNull(result);
+            Assert.IsType<RedirectToActionResult>(result);
         }
 
         [Fact]
-        public void BecomePostShouldWithModelState()
+        public void BecomePostShouldReturnViewWithModelState()
         {
             var user = new User();
 

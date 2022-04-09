@@ -23,7 +23,7 @@
         }
 
         [Fact]
-        public void ChangeVisibiltyShouldWorksCorrectly()
+        public void ChangeVisibiltyShouldReturnOk()
         {
             var shirt = new Shirt
             {
@@ -45,6 +45,7 @@
             var result = shirtsController.ChangeVisibility(shirt.Id);
 
             Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]

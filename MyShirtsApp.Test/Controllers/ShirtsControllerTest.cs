@@ -135,10 +135,11 @@
             var result = shirtsController.Add();
 
             Assert.NotNull(result);
+            Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
-        public void AddPostShouldWorksCorrectly()
+        public void AddPostShouldReturnRedirectToAction()
         {
             var user = new User
             {
@@ -172,6 +173,7 @@
             var result = shirtsController.Add(shirtForm);
 
             Assert.NotNull(result);
+            Assert.IsType<RedirectToActionResult>(result);
         }
 
         [Fact]
@@ -207,10 +209,11 @@
             var result = shirtsController.Add(shirtForm);
 
             Assert.NotNull(result);
+            Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
-        public void MineShouldWorksCorrectly()
+        public void MineShouldReturnView()
         {
             var user = new User();
 
@@ -243,7 +246,7 @@
         }
 
         [Fact]
-        public void EditGetShouldWorksCorrectly()
+        public void EditGetShouldReturnView()
         {
             var user = new User();
 
@@ -343,7 +346,7 @@
         }
 
         [Fact]
-        public void EditPostShouldWorksCorrectly()
+        public void EditPostShouldReturnRedirectToAction()
         {
             var user = new User();
 
@@ -382,6 +385,7 @@
             var result = shirtsController.Edit(shirt.Id, shirtForm);
 
             Assert.NotNull(result);
+            Assert.IsType<RedirectToActionResult>(result);
         }
 
         [Fact]
@@ -462,7 +466,7 @@
         }
 
         [Fact]
-        public void EditPostShouldReturnModelState()
+        public void EditPostShouldReturnViewWithModelState()
         {
             var user = new User();
 
@@ -504,7 +508,7 @@
         }
 
         [Fact]
-        public void DeleteShouldWorksCorrectly()
+        public void DeleteShouldReturnOk()
         {
             var user = new User();
 
@@ -533,6 +537,7 @@
             var result = shirtsController.Delete(shirt.Id);
 
             Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]

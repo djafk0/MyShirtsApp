@@ -34,7 +34,7 @@
         }
 
         [Fact]
-        public void ActionShouldWorksCorrectly()
+        public void ActionShouldReturnOk()
         {
             var user = new User();
 
@@ -62,6 +62,7 @@
             var result = favoritesController.Action(shirt.Id, shirt.Name);
 
             Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]

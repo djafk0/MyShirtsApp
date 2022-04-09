@@ -4,15 +4,15 @@
     using MyShirtsApp.Data.Models;
     using MyShirtsApp.Services.Carts;
     using MyShirtsApp.Test.Mocks;
-    using Microsoft.AspNetCore.Http;
-    using Xunit;
     using MyShirtsApp.Models.Carts;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Xunit;
 
     public class CartsControllerTest
     {
         [Fact]
-        public void AddShouldWorksCorrectly()
+        public void AddShouldReturnOk()
         {
             var shirt = new Shirt
             {
@@ -44,6 +44,7 @@
             var result = cartsController.Add(shirt.Id, size.Name);
 
             Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]
@@ -66,7 +67,7 @@
         }
 
         [Fact]
-        public void MineShouldWorksCorrectly()
+        public void MineShouldReturnViewWithCartAndSum()
         {
             var shirt = new Shirt
             {
@@ -110,7 +111,7 @@
         }
 
         [Fact]
-        public void DeleteShouldWorksCorrectly()
+        public void DeleteShouldReturnOk()
         {
             var shirt = new Shirt
             {
@@ -143,7 +144,7 @@
             {
                 Shirt = shirt,
                 Size = size,
-                Count = 3
+                Count = 1
             };
 
             var data = DatabaseMock.Instance;
@@ -172,6 +173,7 @@
             var result = cartsController.DeleteShirt(query);
 
             Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]
@@ -201,7 +203,7 @@
         }
 
         [Fact]
-        public void ClearShouldWorksCorrectly()
+        public void ClearShouldReturnOk()
         {
             var shirt = new Shirt
             {
@@ -239,10 +241,11 @@
             var result = cartsController.Clear();
 
             Assert.NotNull(result);
+            Assert.IsType<OkResult>(result);
         }
 
         [Fact]
-        public void CheckShouldWorksCorrectly()
+        public void CheckShouldReturnViewWithSum()
         {
             var shirt = new Shirt
             {
@@ -288,10 +291,11 @@
             var result = cartsController.Check();
 
             Assert.NotNull(result);
+            Assert.IsType<ViewResult>(result);
         }
 
         [Fact]
-        public void BuyShouldWorksCorrectly()
+        public void BuyShouldReturnRedirectToAction()
         {
             var size = new Size { Name = "XS" };
 
@@ -341,6 +345,7 @@
             var result = cartsController.Buy();
 
             Assert.NotNull(result);
+            Assert.IsType<RedirectToActionResult>(result);
         }
 
         [Fact]
