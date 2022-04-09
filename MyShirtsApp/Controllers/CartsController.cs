@@ -18,7 +18,9 @@
 
         public IActionResult Add(int id, [FromQuery] string size)
         {
-            var isAdded = this.carts.IsAdded(id, size, this.User.Id());
+            var userId = this.User.Id();
+
+            var isAdded = this.carts.IsAdded(id, size, userId);
 
             if (!isAdded)
             {
@@ -30,7 +32,9 @@
 
         public IActionResult Mine()
         {
-            var cart = this.carts.MyCart(this.User.Id());
+            var userId = this.User.Id();
+
+            var cart = this.carts.MyCart(userId);
 
             return View(new CartResultViewModel
             {
@@ -60,14 +64,18 @@
 
         public IActionResult Clear()
         {
-            this.carts.ClearCart(this.User.Id());
+            var userId = this.User.Id();
+
+            this.carts.ClearCart(userId);
 
             return Ok();
         }
 
         public IActionResult Check()
         {
-            var cart = this.carts.MyCart(this.User.Id());
+            var userId = this.User.Id();
+
+            var cart = this.carts.MyCart(userId);
 
             return View(new CartResultViewModel
             {
@@ -80,6 +88,11 @@
             var userId = this.User.Id();
 
             var problems = this.carts.BuyAll(userId);
+
+            if (problems == null)
+            {
+                return BadRequest();
+            }
 
             if (problems.Any())
             {

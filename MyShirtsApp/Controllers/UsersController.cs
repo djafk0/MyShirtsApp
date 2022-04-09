@@ -24,12 +24,14 @@
         [HttpPost]
         public IActionResult Become(BecomeSellerFormModel user)
         {
-            if (!ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(user.CompanyName))
             {
                 return View();
             }
 
-            this.users.BecomeSeller(this.User.Id(), user.CompanyName);
+            var userId = this.User.Id();
+
+            this.users.BecomeSeller(userId, user.CompanyName);
 
             TempData[GlobalMessageKey] = "Thank you for becomming a seller !";
 

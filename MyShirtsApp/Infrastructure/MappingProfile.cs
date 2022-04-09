@@ -29,23 +29,23 @@
             this.CreateMap<Shirt, ShirtDetailsServiceModel>()
                 .ForMember(s => s.IsAvailable, cfg => cfg.MapFrom(m => m.ShirtSizes.Any(ss => ss.Count > 0)))
                 .ForMember(s => s.SizeXS, cfg
-                    => cfg.MapFrom(m => m.ShirtSizes.First(x => x.SizeId == 1).Count == 0
-                          ? null : m.ShirtSizes.First(x => x.SizeId == 1).Count))
+                    => cfg.MapFrom(m => m.ShirtSizes.FirstOrDefault(x => x.SizeId == 1).Count == 0
+                          ? null : m.ShirtSizes.FirstOrDefault(x => x.SizeId == 1).Count))
                 .ForMember(s => s.SizeS, cfg 
-                    => cfg.MapFrom(m => m.ShirtSizes.First(x => x.SizeId == 2).Count == 0
-                          ? null : m.ShirtSizes.First(x => x.SizeId == 2).Count))
+                    => cfg.MapFrom(m => m.ShirtSizes.FirstOrDefault(x => x.SizeId == 2).Count == 0
+                          ? null : m.ShirtSizes.FirstOrDefault(x => x.SizeId == 2).Count))
                 .ForMember(s => s.SizeM, cfg
-                    => cfg.MapFrom(m => m.ShirtSizes.First(x => x.SizeId == 3).Count == 0
-                          ? null : m.ShirtSizes.First(x => x.SizeId == 3).Count))
+                    => cfg.MapFrom(m => m.ShirtSizes.FirstOrDefault(x => x.SizeId == 3).Count == 0
+                          ? null : m.ShirtSizes.FirstOrDefault(x => x.SizeId == 3).Count))
                 .ForMember(s => s.SizeL, cfg 
-                    => cfg.MapFrom(m => m.ShirtSizes.First(x => x.SizeId == 4).Count == 0
-                          ? null : m.ShirtSizes.First(x => x.SizeId == 4).Count))
+                    => cfg.MapFrom(m => m.ShirtSizes.FirstOrDefault(x => x.SizeId == 4).Count == 0
+                          ? null : m.ShirtSizes.FirstOrDefault(x => x.SizeId == 4).Count))
                 .ForMember(s => s.SizeXL, cfg 
-                    => cfg.MapFrom(m => m.ShirtSizes.First(x => x.SizeId == 5).Count == 0
-                          ? null : m.ShirtSizes.First(x => x.SizeId == 5).Count))
+                    => cfg.MapFrom(m => m.ShirtSizes.FirstOrDefault(x => x.SizeId == 5).Count == 0
+                          ? null : m.ShirtSizes.FirstOrDefault(x => x.SizeId == 5).Count))
                 .ForMember(s => s.SizeXXL, cfg 
-                    => cfg.MapFrom(m => m.ShirtSizes.First(x => x.SizeId == 6).Count == 0
-                          ? null : m.ShirtSizes.First(x => x.SizeId == 6).Count));
+                    => cfg.MapFrom(m => m.ShirtSizes.FirstOrDefault(x => x.SizeId == 6).Count == 0
+                          ? null : m.ShirtSizes.FirstOrDefault(x => x.SizeId == 6).Count));
         }
     }
 }

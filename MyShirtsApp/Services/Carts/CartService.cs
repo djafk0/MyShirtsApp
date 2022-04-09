@@ -166,7 +166,7 @@
 
             if (cart == null)
             {
-                return problems;
+                return null;
             }
 
             foreach (var shirtCart in cart.ShirtCarts)

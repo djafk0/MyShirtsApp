@@ -30,13 +30,6 @@
         [Authorize(Roles = SellerRole)]
         public IActionResult Add()
         {
-            var isSeller = this.users.IsSeller(this.User.Id());
-
-            if (!isSeller)
-            {
-                return RedirectToAction("Become", "Users");
-            }
-
             return View(new ShirtFormModel
             {
                 IsValidSize = true,
@@ -47,12 +40,7 @@
         [HttpPost]
         public IActionResult Add(ShirtFormModel shirt)
         {
-            var isSeller = this.users.IsSeller(this.User.Id());
-
-            if (!isSeller)
-            {
-                return RedirectToAction("Become", "Users");
-            }
+            var userId = this.User.Id();
 
             var sizes = this.shirts.SizesFromModel(shirt);
 
@@ -74,7 +62,7 @@
                 shirt.Name,
                 shirt.ImageUrl,
                 shirt.Price,
-                this.User.Id(),
+                userId,
                 sizes);
 
             TempData[GlobalMessageKey] = "Your shirt was added successfully and it is awaiting to be approved.";
@@ -108,14 +96,9 @@
         [Authorize(Roles = SellerRole)]
         public IActionResult Mine()
         {
-            var isSeller = this.users.IsSeller(this.User.Id());
+            var userId = this.User.Id();
 
-            if (!isSeller)
-            {
-                return RedirectToAction("Become", "Users");
-            }
-
-            var myShirts = this.shirts.ShirtsByUser(this.User.Id());
+            var myShirts = this.shirts.ShirtsByUser(userId);
 
             return View(myShirts);
         }
@@ -130,7 +113,9 @@
                 return BadRequest();
             }
 
-            if (shirt.UserId != this.User.Id())
+            var userId = this.User.Id();
+
+            if (shirt.UserId != userId)
             {
                 return Unauthorized();
             }
@@ -147,8 +132,6 @@
         [HttpPost]
         public IActionResult Edit(int id, ShirtFormModel shirt)
         {
-            var userId = this.User.Id();
-
             var shirtDetails = this.shirts.Details(id);
 
             if (shirtDetails == null)
@@ -156,9 +139,11 @@
                 return BadRequest();
             }
 
+            var userId = this.User.Id();
+
             if (shirtDetails.UserId != userId)
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
             var sizes = this.shirts.SizesFromModel(shirt);
@@ -210,9 +195,8 @@
 
         public IActionResult Delete(int id)
         {
-            var isAdmin = this.User.IsAdmin();
-
             var userId = this.User.Id();
+            var isAdmin = this.User.IsAdmin();
 
             var isDeleted = this.shirts
                 .Delete(id, userId, isAdmin);

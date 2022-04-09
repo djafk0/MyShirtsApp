@@ -57,7 +57,7 @@
                 currentPage = 1;
             }
 
-            if(shirtsPerPage < 1)
+            if (shirtsPerPage < 1)
             {
                 shirtsPerPage = int.MaxValue;
 
