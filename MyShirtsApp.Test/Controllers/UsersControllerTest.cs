@@ -8,6 +8,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
     using Xunit;
+    using Microsoft.AspNetCore.Identity;
+    using Moq;
 
     public class UsersControllerTest
     {
@@ -16,7 +18,7 @@
         {
             var data = DatabaseMock.Instance;
 
-            var userService = new UserService(data, null);
+            var userService = new UserService(data, null, SignInManagerMock.Instance);
 
             var usersController = new UsersController(userService);
 
@@ -35,7 +37,7 @@
             data.Users.Add(user);
             data.SaveChanges();
 
-            var userService = new UserService(data, UserManagerMock.Instance);
+            var userService = new UserService(data, UserManagerMock.Instance, SignInManagerMock.Instance);
 
             var usersController = new UsersController(userService);
             usersController.TempData = TempDataMock.Instance;
@@ -64,7 +66,7 @@
             data.Users.Add(user);
             data.SaveChanges();
 
-            var userService = new UserService(data, UserManagerMock.Instance);
+            var userService = new UserService(data, UserManagerMock.Instance, SignInManagerMock.Instance);
 
             var usersController = new UsersController(userService);
             usersController.TempData = TempDataMock.Instance;

@@ -10,6 +10,8 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Xunit;
+    using Microsoft.AspNetCore.Identity;
+    using Moq;
 
     public class ShirtsControllerTest
     {
@@ -22,7 +24,7 @@
 
             var shirtService = new ShirtService(mapper, data);
 
-            var userService = new UserService(data, null);
+            var userService = new UserService(data, null, SignInManagerMock.Instance);
 
             var shirtsController = new ShirtsController(shirtService, userService, mapper);
             shirtsController.ControllerContext.HttpContext = new DefaultHttpContext
@@ -124,7 +126,7 @@
         {
             var data = DatabaseMock.Instance;
 
-            var userService = new UserService(data, null);
+            var userService = new UserService(data, null, SignInManagerMock.Instance);
 
             var shirtsController = new ShirtsController(null, userService, null);
             shirtsController.ControllerContext.HttpContext = new DefaultHttpContext
@@ -161,7 +163,7 @@
 
             var shirtService = new ShirtService(MapperMock.Instance, data);
 
-            var userService = new UserService(data, null);
+            var userService = new UserService(data, null, SignInManagerMock.Instance);
 
             var shirtsController = new ShirtsController(shirtService, userService, null);
             shirtsController.TempData = TempDataMock.Instance;
@@ -198,7 +200,7 @@
 
             var shirtService = new ShirtService(MapperMock.Instance, data);
 
-            var userService = new UserService(data, null);
+            var userService = new UserService(data, null, SignInManagerMock.Instance);
 
             var shirtsController = new ShirtsController(shirtService, userService, null);
             shirtsController.ControllerContext.HttpContext = new DefaultHttpContext
