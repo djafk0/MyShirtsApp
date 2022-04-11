@@ -2,6 +2,8 @@
 
 EVERY SHIRT IS STOLEN FROM <a href="https://way-ve.com/">https://way-ve.com/</a>
 
+https://myshirts.azurewebsites.net/
+
 | **Roles** |   **Email**   | **Password** |
 |:---------:|:-------------:|--------------|
 |   Admin   |  admin@msa.bg |              |
