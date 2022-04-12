@@ -37,5 +37,7 @@
             List<int?> sizes);
 
         bool Delete(int id, string userId, bool isAdmin);
+
+        IEnumerable<ShirtServiceModel> Latest();
     }
 }
