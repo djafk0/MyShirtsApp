@@ -214,6 +214,15 @@
             return true;
         }
 
+        public IEnumerable<ShirtServiceModel> Latest()
+            => this.data
+                .Shirts
+                .Where(s => s.IsPublic)
+                .OrderByDescending(s => s.Id)
+                .Take(3)
+                .ProjectTo<ShirtServiceModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
         private IEnumerable<ShirtServiceModel> GetShirts(IQueryable<Shirt> shirtQuery)
             => shirtQuery
                 .ProjectTo<ShirtServiceModel>(this.mapper.ConfigurationProvider)
