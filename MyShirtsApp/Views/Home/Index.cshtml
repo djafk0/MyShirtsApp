@@ -36,13 +36,3 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
-<div class="text-center d-sm-none">
-    <a asp-area="" asp-controller="Shirts" asp-action="All" class="btn bgcolor-blue text-white">View All</a>
-</div>
-
-<script type="text/javascript">
-    function details(event){
-        window.location.href = `/Shirts/Details/${event.id}/${event.alt.replace(" ", "-")}`
-    }
-</script>

@@ -35,39 +35,3 @@
         }
     </tbody>
 </table>
-
-<script type="text/javascript">
-    function changeVisibility(event){
-        let tr = document.getElementById(event);
-        let changeVisibilityButton = tr.querySelector("a.change-visibility");
-        let isPublic = tr.querySelector("td.shirt-public");
-        isPublic.textContent = isPublic.textContent == "Yes" ? "No" : "Yes"
-        if(isPublic.classList.contains("text-success")){
-            isPublic.classList.replace("text-success", "text-danger");
-            changeVisibilityButton.textContent = "Show";
-            changeVisibilityButton.classList.replace("bgcolor-orange", "btn-success");
-        } else {
-            isPublic.classList.replace("text-danger", "text-success");
-            changeVisibilityButton.textContent = "Hide";
-            changeVisibilityButton.classList.replace("btn-success", "bgcolor-orange");
-        }
-
-        $.ajax({
-            type: "GET",
-            url: `/Admin/Shirts/ChangeVisibility/${event}`
-        })
-    }
-
-    function onDelete(event){
-        let choice = confirm("Are you sure ?");
-
-        if(choice){
-            $.ajax({
-                type: "GET",
-                url: `/Shirts/Delete/${event}`
-            })
-
-            document.getElementById(event).remove();
-        }
-    }
-</script>

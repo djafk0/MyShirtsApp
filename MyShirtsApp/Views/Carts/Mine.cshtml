@@ -35,66 +35,10 @@
                     <h5 class="card-title text-center">@shirt.Name (@shirt.SizeName) - @shirt.Count @(shirt.Count == 1 ? "Piece" : "Pcs")</h5>
                     <h5 class="card-title text-center price">$@shirt.Price/piece</h5>
                     <div class="text-center">
-                        <a onclick="deleteShirt(@shirt.ShirtId)" class="btn bgcolor-orange text-white mb-1">Remove From Cart</a>
+                        <a onclick="deleteShirtFromCart(@shirt.ShirtId)" class="btn bgcolor-orange text-white mb-1">Remove From Cart</a>
                     </div>
                 </div>
             </div>
         </div>
     }
 </div>
-
-<script type="text/javascript">
-    function clearCart(){
-        let choice = confirm("Are you sure ?")
-
-        if(choice){
-            document.querySelectorAll(".shirt-element").forEach(x => x.remove())
-            document.getElementById("empty-cart-message").style.display = "block";
-            document.getElementById("non-empty-cart-info").style.display = "none";
-        }
-
-        $.ajax({
-            type: "GET",
-            url: "/Carts/Clear",
-        })
-    }
-
-    function deleteShirt(event){
-        let choice = confirm("Are you sure ?");
-        let shirtElement = document.getElementById(event).closest(".shirt-element");
-
-        if(choice){
-            let sizeName = shirtElement.querySelector("input.size-name").value.replace(" ", "-");
-
-            $.ajax({
-                type: "GET",
-                url: `/Carts/DeleteShirt?shirtId=${event}&sizeName=${sizeName}&flag=True`
-            })
-
-            let count = parseInt(shirtElement.querySelector("input.count").value);
-
-            let priceElement = shirtElement.querySelector(".price");
-
-            let price = parseFloat(priceElement.textContent.substring(1, priceElement.textContent.indexOf("/"))) * count;
-
-            let totalPriceElement = document.getElementById("total-price");
-
-            let totalPrice = parseFloat(totalPriceElement.textContent.substring(14));
-
-            totalPriceElement.textContent = `Total Price: $${totalPrice - price}`;
-
-            shirtElement.remove();
-
-            let elementsCount = document.querySelectorAll(".shirt-element").length;
-
-            if(elementsCount == 0){
-                document.getElementById("empty-cart-message").style.display = "block";
-                document.getElementById("non-empty-cart-info").style.display = "none";
-            }
-        }
-    }
-
-    function details(event){
-        window.location.href = `/Shirts/Details/${event.id}/${event.alt.replace(" ", "-")}`
-    }
-</script>

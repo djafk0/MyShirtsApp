@@ -106,16 +106,34 @@
     <h2 class="text-center">There are not available shirts with this criteria!</h2>
 }
 
-<script>
-    function callChangeSize(size){
-        window.location.href = "/Shirts/All?currentPage=1&size=" + size + "&sorting=" + @((int)Model.Sorting) + "&shirtsPerPage=" + @(Model.ShirtsPerPage == int.MaxValue ? 0 : Model.ShirtsPerPage);
-    }
+@section Scripts{
+    <script>
+        function callChangeSize(size){
+            window.location.href = `/Shirts/All?currentPage=1&size=${size}&sorting=@((int)Model.Sorting)&shirtsPerPage=@(Model.ShirtsPerPage == int.MaxValue ? 0 : Model.ShirtsPerPage)`;
+        }
 
-    function callChangeOrder(sorting){
-        window.location.href = "/Shirts/All?currentPage=1&size=" + @Model.Size + "&sorting=" + sorting + "&shirtsPerPage=" + @(Model.ShirtsPerPage == int.MaxValue ? 0 : Model.ShirtsPerPage);
-    }
+        function callChangeOrder(sorting){
+            window.location.href = `/Shirts/All?currentPage=1&size=@Model.Size&sorting=${sorting}&shirtsPerPage=@(Model.ShirtsPerPage == int.MaxValue ? 0 : Model.ShirtsPerPage)`;
+        }
 
-    function callChangePagination(shirtsPerPage){
-        window.location.href = "/Shirts/All?currentPage=1&size=" + @Model.Size + "&sorting=" + @((int)Model.Sorting) + "&shirtsPerPage=" + shirtsPerPage;
-    }
-</script>
+        function callChangePagination(shirtsPerPage){
+            window.location.href = `/Shirts/All?currentPage=1&size=@Model.Size&sorting=@((int)Model.Sorting)&shirtsPerPage=${shirtsPerPage}`;
+        }
+
+        function checkAuthentication(event){
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <text>
+                    let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString() + Context.Request.QueryString.Value.Replace("&", "%26"))";
+                    window.location.href = url;
+                </text>
+            }
+            else
+            {
+                <text>
+                    addOrRemoveFromFavorites(event, @ViewBag.IsFavorites.ToString().ToLower());
+                </text>
+            }
+        };
+    </script>
+}

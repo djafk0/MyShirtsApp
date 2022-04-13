@@ -51,12 +51,12 @@
 }
 
 <row class="text-center rounded mx-auto d-block mb-3">
-    <a onclick="addToCart(this)" id="@Model.Id-XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XS</a>
-    <a onclick="addToCart(this)" id="@Model.Id-S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">S</a>
-    <a onclick="addToCart(this)" id="@Model.Id-M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">M</a>
-    <a onclick="addToCart(this)" id="@Model.Id-L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">L</a>
-    <a onclick="addToCart(this)" id="@Model.Id-XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
-    <a onclick="addToCart(this)" id="@Model.Id-XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
+    <a onclick="callAddToCart(this)" id="@Model.Id-XS" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XS</a>
+    <a onclick="callAddToCart(this)" id="@Model.Id-S" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeS == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">S</a>
+    <a onclick="callAddToCart(this)" id="@Model.Id-M" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeM == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">M</a>
+    <a onclick="callAddToCart(this)" id="@Model.Id-L" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">L</a>
+    <a onclick="callAddToCart(this)" id="@Model.Id-XL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XL</a>
+    <a onclick="callAddToCart(this)" id="@Model.Id-XXL" class="btn bgcolor-blue text-white rounded-circle@(Model.SizeXXL == null ? " disabled" : string.Empty)@(isAdmin ? " custom-disabled" : string.Empty)">XXL</a>
 </row>
 
 <div class="text-center mb-3">
@@ -69,7 +69,7 @@
 {
     <div class="text-center">
         <a asp-controller="Shirts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning text-dark mb-2">Edit</a>
-        <a onclick="onDelete(@Model.Id)" class="btn btn-danger text-white text-center mb-2">Delete</a>
+        <a onclick="onDeleteFromDetails(@Model.Id)" class="btn btn-danger text-white text-center mb-2">Delete</a>
     </div>
 }
 
@@ -119,53 +119,22 @@
     </tbody>
 </table>
 
-<script type="text/javascript">
-    function addToCart(event){
-        @if (!isAuthenticated)
-        {
-            <text>
-                let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString())";
-                window.location.href = url;
-            </text>
+@section Scripts{
+    <script type="text/javascript">
+        function callAddToCart(event){
+            @if (!isAuthenticated)
+            {
+                <text>
+                    let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString())";
+                    window.location.href = url;
+                </text>
+            }
+            else
+            {
+                <text>
+                    addToCart(event);
+                </text>
+            };
         }
-        else
-        {
-            <text>
-                let params = event.id;
-                let id = params.slice(0, params.indexOf("-"));
-                let size = params.slice(params.indexOf("-") + 1);
-                let buttons = document.querySelectorAll("a.rounded-circle");
-                buttons.forEach(x => x.classList += " custom-disabled");
-
-                $.ajax({
-                    type: "GET",
-                    url: `/Carts/Add/${id}?size=${size}`,
-                })
-                let message = document.getElementById("message");
-                message.parentElement.style.display = "inline-block";
-
-                setTimeout(function(){
-                    message.parentElement.style.display = "none";
-                    buttons.forEach(x => x.classList.remove("custom-disabled"));
-                }, 1000);
-            </text>
-        };
-    }
-
-    function onDelete(event){
-        let choice = confirm("Are you sure ?");
-
-        if(choice){
-            $.ajax({
-                type: "GET",
-                url: `/Shirts/Delete/${event}`
-            })
-
-            document.querySelector("main").innerHTML = `<h2 class="alert-success text-center">Successfully deleted !</h2>`;
-
-            setTimeout(function(){
-                window.location.href = "/Shirts/Mine";
-            }, 1000);
-        }
-    }
-</script>
+    </script>
+}

@@ -9,3 +9,23 @@
 <partial name="_ShirtsPartial" model="@Model" />
 
 <h2 class="text-center" id="no-shirts-message" style="@(Model.Any() ? "display: none;" : string.Empty)">You dont have favorite shirts.</h2>
+
+@section Scripts{
+    <script type="text/javascript">
+        function checkAuthentication(event){
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <text>
+                    let url = "/Identity/Account/Login?ReturnUrl=@(Context.Request.Path.ToString() + Context.Request.QueryString.Value.Replace("&", "%26"))";
+                    window.location.href = url;
+                </text>
+            }
+            else
+            {
+                <text>
+                    addOrRemoveFromFavorites(event, @ViewBag.IsFavorites.ToString().ToLower());
+                </text>
+            }
+        };
+    </script>
+}
