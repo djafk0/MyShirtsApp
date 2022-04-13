@@ -10,9 +10,7 @@ https://myshirts.azurewebsites.net/
 |   Seller  | seller@msa.bg |    msa123    |
 |    User   |  user@msa.bg  |              |
 
-Guest (not logged in) users can access /Shirts/All page.
-
-Guest (not logged in) users can access /Shirts/Details/{Id}/{Name} page.
+Guest can see all shirts in the site, details of each shirt and available sizes.
 
 ![image](https://user-images.githubusercontent.com/87133289/162712362-96550056-17a2-4789-88db-f337851f1c7b.png)
 
@@ -20,7 +18,7 @@ Guest (not logged in) users can access /Shirts/Details/{Id}/{Name} page.
 
 ![image](https://user-images.githubusercontent.com/87133289/162712714-87fa2d8d-5bac-4ade-bd87-b34c3452646a.png)
 
-Users can access all pages in CartsController.
+User can add/remove to/from cart, add/remove to/from favorites and buy.
 
 ![image](https://user-images.githubusercontent.com/87133289/162713446-f10a5e61-e645-4610-ab6f-70d687c273d6.png)
 
@@ -30,11 +28,11 @@ Users can access all pages in CartsController.
 
 ![image](https://user-images.githubusercontent.com/87133289/162713821-f5b29b7b-31ff-4a8d-a0c0-224e639227d4.png)
 
-Users can access BecomeSeller page.
+User can become seller.
 
 ![image](https://user-images.githubusercontent.com/87133289/162713122-d9da9863-40cd-4a4f-bded-36c9e15107be.png)
 
-Sellers can access all pages in ShirtsController and CartsController.
+Seller is almost like user but he can add a shirt in the site (if admin aproove it), he can edit or delete his shirts.
 
 ![image](https://user-images.githubusercontent.com/87133289/162714031-22c0111e-9700-4595-ace4-ab54ddbe53d7.png)
 
@@ -44,12 +42,6 @@ Sellers can access all pages in ShirtsController and CartsController.
 
 ![image](https://user-images.githubusercontent.com/87133289/162714428-f0d13cca-aa9f-449c-9b3d-73ae44dd9cdf.png)
 
-Administrators can not access CartsController.
-
-Administrators can not access /Shirts/Mine page.
-
-Administrators can not access /Shirts/Edit/{id} page.
-
-Administrators can access /Admin/Shirts/All page.
+Administrator is almost like guest but he has administration panel, where he can aproove or delete shirts.
 
 ![image](https://user-images.githubusercontent.com/87133289/162714640-228e6ff3-bb6a-4fc1-a3a3-3293e5a29dbe.png)
