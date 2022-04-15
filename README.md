@@ -12,7 +12,7 @@ https://myshirts.azurewebsites.net/
 
 Guest can see all shirts in the site, details of each shirt and available sizes.
 
-![image](https://user-images.githubusercontent.com/87133289/162712362-96550056-17a2-4789-88db-f337851f1c7b.png)
+![image](https://user-images.githubusercontent.com/87133289/163595223-fb9c2ad7-ed7f-4aed-aa4b-9f510520951b.png)
 
 ![image](https://user-images.githubusercontent.com/87133289/162712499-81ec3356-0331-46dd-b5d4-dbe7815ff08e.png)
 
