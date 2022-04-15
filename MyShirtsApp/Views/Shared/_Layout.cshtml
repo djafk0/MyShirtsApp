@@ -50,7 +50,7 @@
                     }
                 }
 
-                <a class="nav-link text-white mt-1" asp-area="" asp-controller="Shirts" asp-action="All">Shop</a>
+                <a class="nav-link text-white mt-1" asp-area="" asp-controller="Shirts" asp-action="All">View All</a>
 
                 @if (User.Identity.IsAuthenticated)
                 {
@@ -83,7 +83,7 @@
                                     </a>
                                 </li>
                             }
-                            else
+                            else if(!userIsAdmin)
                             {
                                 <li class="nav-item mt-1">
                                     <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="Become">Become Seller</a>
